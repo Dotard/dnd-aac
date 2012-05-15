@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/topbar"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/enter"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="saySomething"
+            android:text="Speak to me" />
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_below="@+id/topbar"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <fragment
+        android:id="@+id/listFragment"
+        android:layout_width="150dip"
+        android:layout_height="fill_parent"
+        class="com.dnd.aac.ListFragment" >
+        <!-- android:layout_marginTop="?android:attr/actionBarSize"-->
+        </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        class="com.dnd.aac.DetailFragment" >
+        <!-- Preview: layout=@layout/details -->
+    </fragment>
+
+    </LinearLayout>
+
+</RelativeLayout>
