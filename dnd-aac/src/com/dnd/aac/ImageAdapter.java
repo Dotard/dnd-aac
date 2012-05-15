@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
@@ -15,13 +16,15 @@ import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter{
 	  private Context mContext;
+	  private Cursor mCursor;
 
-	    public ImageAdapter(Context c) {
+	    public ImageAdapter(Context c,Cursor cursor) {
 	        mContext = c;
+	        mCursor = cursor;
 	    }
 
 	    public int getCount() {
-	        return 1;
+	        return mCursor.getCount();
 	    }
 
 	    public Object getItem(int position) {
@@ -29,7 +32,8 @@ public class ImageAdapter extends BaseAdapter{
 	    }
 
 	    public long getItemId(int position) {
-	        return 0;
+	        mCursor.moveToPosition(position);
+	        return mCursor.getLong(0);
 	    }
 
 	    // create a new ImageView for each item referenced by the Adapter
@@ -40,39 +44,27 @@ public class ImageAdapter extends BaseAdapter{
 	            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
 	            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 	            imageView.setPadding(8, 8, 8, 8);
+	            
+	            mCursor.moveToPosition(position);
+	            AssetManager am = mContext.getAssets();
+		        try {
+					BufferedInputStream buf = new BufferedInputStream(am.open("images/" + mCursor.getString(1)));
+					Bitmap bitmap = BitmapFactory.decodeStream(buf);
+					imageView.setImageBitmap(bitmap);
+					buf.close();
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
 	        } else {
 	            imageView = (ImageView) convertView;
 	        }	   
 
-	        //imageView.setImageResource(mThumbIds[position]);
-	        //imageView.setImageBitmap();
-	        AssetManager am = mContext.getAssets();
-	        try {
-				BufferedInputStream buf = new BufferedInputStream(am.open("images/sample_0.jpg"));
-				Bitmap bitmap = BitmapFactory.decodeStream(buf);
-				imageView.setImageBitmap(bitmap);
-				buf.close();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	        
+	       
 	        return imageView;
 	    }
-
-	    // references to our images
-	    private Integer[] mThumbIds = {
-	            R.drawable.sample_2, R.drawable.sample_3,
-	            R.drawable.sample_4, R.drawable.sample_5,
-	            R.drawable.sample_6, R.drawable.sample_7,
-	            R.drawable.sample_0, R.drawable.sample_1,
-	            R.drawable.sample_2, R.drawable.sample_3,
-	            R.drawable.sample_4, R.drawable.sample_5,
-	            R.drawable.sample_6, R.drawable.sample_7,
-	            R.drawable.sample_0, R.drawable.sample_1,
-	            R.drawable.sample_2, R.drawable.sample_3,
-	            R.drawable.sample_4, R.drawable.sample_5,
-	            R.drawable.sample_6, R.drawable.sample_7
-	    };
 }
 

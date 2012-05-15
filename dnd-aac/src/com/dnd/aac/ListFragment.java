@@ -42,7 +42,7 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment 
 		DetailFragment fragment = (DetailFragment) getFragmentManager()
 				.findFragmentById(R.id.detailFragment);
 		if (fragment != null && fragment.isInLayout()) {
-			fragment.setText(item);
+			//fragment.setText(item);
 		} else {
 			Intent intent = new Intent(getActivity().getApplicationContext(),
 					DetailActivity.class);

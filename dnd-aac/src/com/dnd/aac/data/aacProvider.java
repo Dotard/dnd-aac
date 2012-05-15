@@ -115,6 +115,8 @@ public class aacProvider extends ContentProvider {
         case CATEGORYS:
         	//queryBuilder.appendWhere("parentID" + " IS NULL");
         	break;
+        case IMAGES:
+        	break;
         case IMAGES_ID:
         	queryBuilder.appendWhere("imageID" + "="
         			+ uri.getLastPathSegment());

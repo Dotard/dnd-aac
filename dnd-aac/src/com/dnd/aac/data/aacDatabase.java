@@ -121,9 +121,21 @@ public class aacDatabase extends SQLiteOpenHelper {
 				+"('recentItemPhrase', 0, 1, 1);");
 		//Images
 		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('imageDesc', 'imageUri');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
 				+"('imageDesc', 'sample_0.jpg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('imageDesc', 'sample_1.jpg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('imageDesc', 'sample_2.jpg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('imageDesc', 'sample_3.jpg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('imageDesc', 'sample_4.jpg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('imageDesc', 'sample_5.jpg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('imageDesc', 'sample_6.jpg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('imageDesc', 'sample_7.jpg');");
 		//Category Items
 		db.execSQL("insert into Categorys_Items (categoryID, itemID) values"
 				+"(1, 1);");
