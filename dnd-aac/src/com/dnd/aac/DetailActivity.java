@@ -3,7 +3,6 @@ package com.dnd.aac;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.widget.TextView;
 
 public class DetailActivity extends Activity {
 	@Override
@@ -21,8 +20,6 @@ public class DetailActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			String s = extras.getString("value");
-			TextView view = (TextView) findViewById(R.id.detailsText);
-			view.setText(s);
 		}
 	}
 }
