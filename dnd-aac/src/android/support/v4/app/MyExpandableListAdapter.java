@@ -120,7 +120,9 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     { return subcategories.get(groupPosition).get(childPosition);}// membersGroupedByCriteria.get(groupPosition).get(childPosition); }
 
     public long getChildId(int groupPosition, int childPosition)
-    { return childPosition; }
+    { 
+    	Log.d("Please give back real ID","please.." + childPosition); //GIVE BACK IDS HERE
+    	return childPosition; }
 
     public int getChildrenCount(int groupPosition)
     { return subcategories.get(groupPosition).size(); }//membersGroupedByCriteria.get(groupPosition).size(); }
@@ -128,7 +130,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,  View convertView, ViewGroup parent)
     {
     	View row = ( (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(childlayout,null);
-    	
     		TextView textView = (TextView) row.findViewById( context.getResources().getIdentifier("data_item","id","com.dnd.aac"));
             textView.setText((String) getChild(groupPosition, childPosition));
             //Log.d("ChildView", getChild(groupPosition, childPosition) + " " + groupPosition + " " + childPosition);
@@ -142,7 +143,10 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     { return categories.size(); }
 
     public long getGroupId(int groupPosition)
-    { return groupPosition; }
+    { 
+    	Log.d("Please give back real ID","please.." + groupPosition); //GIVE BACK IDS HERE
+    	return groupPosition;
+    }
 
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
     {

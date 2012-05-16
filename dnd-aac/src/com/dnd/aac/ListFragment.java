@@ -20,11 +20,13 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ListFragment extends android.support.v4.app.ExpandableListFragment {
+public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 	
 	Cursor cat;
 	Cursor subcat;
@@ -42,8 +44,8 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 				android.R.layout.simple_list_item_1, values);
 		
-		String[] categoryProj = new String[] {"categoryID", "categoryName"};
-		String[] subcategoryProj = new String[] {"categoryID", "subcategoryName"};
+		String[] categoryProj = new String[] {"categoryID as _id","categoryID", "categoryName"};
+		String[] subcategoryProj = new String[] {"subcategoryID as _id","categoryID", "subcategoryName"};
 		cat = getActivity().getContentResolver().query(aacProvider.CATEGORYS_URI, categoryProj, null, null, null);
 		subcat = getActivity().getContentResolver().query(aacProvider.SUBCATEGORYS_URI, subcategoryProj, null, null, null);
 		
@@ -51,12 +53,43 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment 
 				getActivity().getApplicationContext(), R.layout.listitem,R.layout.listitem2,cat,subcat,values,ints,values,ints, 0);
 		setListAdapter(ela);
 		
-		getExpandableListView().setOnChildClickListener(this);
+		getExpandableListView().setOnChildClickListener(new OnChildClickListener(){
+			@Override
+			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
+			        int childPosition, long id) {
+				Log.d("Child clicked", "IncorrectID" + id);
+				DetailFragment fragment = (DetailFragment) getFragmentManager()
+						.findFragmentById(R.id.detailFragment);
+				if (fragment != null && fragment.isInLayout()) {
+						fragment.setSubcategory((int)id);
+				}
+				return false;
+			}
+		});
+		
+		getExpandableListView().setOnGroupClickListener(new OnGroupClickListener(){
+
+			@Override
+			public boolean onGroupClick(ExpandableListView el, View v,
+					int groupPosition, long id) {
+				Log.d("Group Clicked", "IncorrectID" + id);
+				DetailFragment fragment = (DetailFragment) getFragmentManager()
+						.findFragmentById(R.id.detailFragment);
+				if (fragment != null && fragment.isInLayout()) {
+						fragment.setCategory( (int)id);
+				}
+				return false;
+			}
+
+		});
 		
 	}
 
+	
+	
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
+		Log.d("It worked", "booya1");
 		Log.d("ItemClicked", v.getTag()+"");
 		String item = (String) getExpandableListAdapter().getChild(1, 1).toString(); //getItem(position);
 		DetailFragment fragment = (DetailFragment) getFragmentManager()
