@@ -49,6 +49,14 @@ public class aacDatabase extends SQLiteOpenHelper {
 			+ "categoryDesc TEXT "
 			+ ");";
 	
+	private static final String CREATE_TABLE_SUBCATEGORYS = "CREATE TABLE Subcategorys" + " ( "
+			+ "subcategoryID INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ "categoryID INTEGER REFERENCES Categorys (categoryID), "
+			+ "imageID INTEGER REFERENCES Images (imageID), "
+			+ "subcategoryName TEXT, "
+			+ "subcategoryDesc TEXT "
+			+ ");";
+	
 	private static final String CREATE_TABLE_ITEMS = "CREATE TABLE Items" + " ( "
 			+ "itemID INTEGER PRIMARY KEY AUTOINCREMENT, "			
 			+ "imageID INTEGER REFERENCES Images (imageID), "
@@ -69,9 +77,9 @@ public class aacDatabase extends SQLiteOpenHelper {
 			+ "imageUri TEXT "
 			+ ");";
 	
-	private static final String CREATE_TABLE_CATEGORYS_ITEMS = "CREATE TABLE Categorys_Items"  + " ( "
-			+ "categorys_ItemsID INTEGER PRIMARY KEY AUTOINCREMENT, "						
-			+ "categoryID INTEGER REFERENCES Categorys (categoryID), "
+	private static final String CREATE_TABLE_SUBCATEGORYS_ITEMS = "CREATE TABLE Subcategorys_Items"  + " ( "
+			+ "subcategorys_ItemsID INTEGER PRIMARY KEY AUTOINCREMENT, "						
+			+ "subcategoryID INTEGER REFERENCES Subcategorys (subcategoryID), "
 			+ "itemID INTEGER REFERENCES Items (itemID) "
 			+ ");";
 
@@ -83,10 +91,12 @@ public class aacDatabase extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_TABLE_CATEGORYS);
+		db.execSQL(CREATE_TABLE_SUBCATEGORYS);
 		db.execSQL(CREATE_TABLE_ITEMS);
 		db.execSQL(CREATE_TABLE_RECENTITEMS);
 		db.execSQL(CREATE_TABLE_IMAGES);
-		db.execSQL(CREATE_TABLE_CATEGORYS_ITEMS);
+		db.execSQL(CREATE_TABLE_SUBCATEGORYS_ITEMS);
+		
 		seedData(db);
 	}
 
@@ -111,11 +121,34 @@ public class aacDatabase extends SQLiteOpenHelper {
 	 */
 	private void seedData(SQLiteDatabase db) {
 		//Categorys
-		db.execSQL("insert into CATEGORYS (categoryName, categoryDesc, imageID) values"
-				+"('categoryName', 'categoryDesc', 1);");
+		db.execSQL("insert into Categorys (categoryName, categoryDesc, imageID) values"
+				+"('Companys', 'Companies', 1);");
+		db.execSQL("insert into Categorys (categoryName, categoryDesc, imageID) values"
+				+"('Schools', 'Schools', 2);");
+		//Subcategorys
+		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
+				+"('Google', 'categoryDesc', 1, 9);");
+		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
+				+"('Microsoft', 'categoryDesc', 1, 10);");
+		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
+				+"('Apple', 'categoryDesc', 1, 11);");
+		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
+				+"('Ryerson', 'categoryDesc', 2, 12);");
+		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
+				+"('Waterloo', 'categoryDesc', 2, 13);");
 		//Items
 		db.execSQL("insert into Items (itemPhrase, imageID) values"
-				+"('itemPhrase', 1);");
+				+"('GoogleAds', 1);");
+		db.execSQL("insert into Items (itemPhrase, imageID) values"
+				+"('BillGates', 2);");
+		db.execSQL("insert into Items (itemPhrase, imageID) values"
+				+"('Jobs', 3);");
+		db.execSQL("insert into Items (itemPhrase, imageID) values"
+				+"('Panar', 4);");
+		db.execSQL("insert into Items (itemPhrase, imageID) values"
+				+"('June Lowe', 5);");
+		db.execSQL("insert into Items (itemPhrase, imageID) values"
+				+"('Sadeg', 6);");
 		//Recent Items
 		db.execSQL("insert into RecentItems (recentItemPhrase, recentItemOutdated, itemID, imageID) values"
 				+"('recentItemPhrase', 0, 1, 1);");
@@ -136,9 +169,28 @@ public class aacDatabase extends SQLiteOpenHelper {
 				+"('imageDesc', 'sample_6.jpg');");
 		db.execSQL("insert into Images (imageDesc, imageUri) values"
 				+"('imageDesc', 'sample_7.jpg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('Apple Logo', 'apple.png');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('Google Logo', 'google.jpg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('MS Logo', 'microsoft.jpeg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('Ryerson', 'poring.jpg');");
+		db.execSQL("insert into Images (imageDesc, imageUri) values"
+				+"('Waterloo', 'uw.jpg');");
 		//Category Items
-		db.execSQL("insert into Categorys_Items (categoryID, itemID) values"
+		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
 				+"(1, 1);");
-		
+		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+				+"(2, 2);");
+		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+				+"(3, 3);");
+		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+				+"(4, 4);");
+		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+				+"(5, 5);");
+		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+				+"(4, 6);");
 	}
 }
