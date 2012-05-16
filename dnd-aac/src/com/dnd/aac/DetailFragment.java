@@ -16,6 +16,10 @@ import android.widget.Toast;
 
 
 public class DetailFragment extends android.support.v4.app.Fragment {
+	
+	private int subcategoryID;
+	private String projection[];
+	private GridView gridview;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
@@ -25,12 +29,9 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-		String projection[] = { "imageID as _id","imageUri" };
-		Cursor cursor = getActivity().getContentResolver().query(aacProvider.IMAGES_URI, projection, null, null, null);
-		GridView gridview = (GridView) getActivity().findViewById(R.id.gridview);
-		gridview.setAdapter(new ImageAdapter(getActivity(),cursor));
-
+		projection = new String[]{ "ITEMS.itemID as _id","Items.itemPhrase", "Images.imageUri" };;
+		gridview = (GridView) getActivity().findViewById(R.id.gridview);
+		
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				Toast.makeText(getActivity(), "" + position, Toast.LENGTH_SHORT).show();
@@ -49,5 +50,20 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 
 		    
 		return view;
+	}
+	
+	public void setSubcategory(int subcategoryID)
+	{
+		this.subcategoryID = subcategoryID;
+		
+		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.ITEMS_URI,String.valueOf(subcategoryID)), projection, null, null, null);
+		gridview.setAdapter(new ImageAdapter(getActivity(),cursor));
+	}
+	
+	public void setCategory(int categoryID)
+	{
+		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.CATEGORYS_URI,String.valueOf(categoryID)), projection, null, null, null);
+		
+		gridview.setAdapter(new ImageAdapter(getActivity(),cursor));	
 	}
 }

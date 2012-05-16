@@ -53,14 +53,19 @@ public class aacProvider extends ContentProvider {
     public static final int CATEGORYS_ID = 110;
     public static final int IMAGES = 200;
     public static final int IMAGES_ID = 210;
+    public static final int ITEMS = 300;
+    public static final int ITEMS_INCATEGORYID = 310;
 
     private static final String CATEGORYS_BASE_PATH = "Categorys";
     private static final String IMAGES_BASE_PATH = "Images";
+    private static final String ITEMS_BASE_PATH = "Items";
     
     public static final Uri CATEGORYS_URI = Uri.parse("content://" + AUTHORITY
             + "/" + CATEGORYS_BASE_PATH);
     public static final Uri IMAGES_URI = Uri.parse("content://" + AUTHORITY
             + "/" + IMAGES_BASE_PATH);
+    public static final Uri ITEMS_URI = Uri.parse("content://" + AUTHORITY
+            + "/" + ITEMS_BASE_PATH);
     
     public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
             + "/mt-tutorial";
@@ -75,7 +80,8 @@ public class aacProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, CATEGORYS_BASE_PATH, CATEGORYS);
         sURIMatcher.addURI(AUTHORITY, CATEGORYS_BASE_PATH + "/#", CATEGORYS_ID);    
         sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH, IMAGES);
-        sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH + "/#", IMAGES_ID);  
+        sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH + "/#", IMAGES_ID);
+        sURIMatcher.addURI(AUTHORITY, ITEMS_BASE_PATH + "/#", ITEMS_INCATEGORYID);  
     }
 
     @Override
@@ -96,11 +102,18 @@ public class aacProvider extends ContentProvider {
         switch (uriType) {
         case CATEGORYS_ID:
         case CATEGORYS:
-        	queryBuilder.setTables("Categorys");
+        	queryBuilder.setTables("Items " +
+        			" INNER JOIN Images ON ITEMS.imageID = IMAGES.imageID" +
+        			" INNER JOIN Subcategorys_Items ON ITEMS.itemID = Subcategorys_Items.itemID");
 			break;
         case IMAGES:
         case IMAGES_ID:
         	queryBuilder.setTables("Images");
+        	break;
+        case ITEMS_INCATEGORYID:
+        	queryBuilder.setTables("Items " +
+        			" INNER JOIN Images ON ITEMS.imageID = IMAGES.imageID" +
+        			" INNER JOIN Subcategorys_Items ON ITEMS.itemID = Subcategorys_Items.itemID");
         	break;
         default:
             throw new IllegalArgumentException("Unknown URI");
@@ -109,8 +122,10 @@ public class aacProvider extends ContentProvider {
         //Figure out the filter
         switch (uriType) {
         case CATEGORYS_ID:
-        	queryBuilder.appendWhere("categoryID" + "="
-                    + uri.getLastPathSegment());
+        	queryBuilder.appendWhere("Subcategorys_Items.subcategoryID IN " +
+        			"(SELECT Subcategorys.subcategoryID" +
+        			" from Subcategorys WHERE Subcategorys.categoryID = " +
+        			uri.getLastPathSegment() + ")" );
             break;
         case CATEGORYS:
         	//queryBuilder.appendWhere("parentID" + " IS NULL");
@@ -121,10 +136,14 @@ public class aacProvider extends ContentProvider {
         	queryBuilder.appendWhere("imageID" + "="
         			+ uri.getLastPathSegment());
         	break;
+        case ITEMS_INCATEGORYID:
+        	queryBuilder.appendWhere("Subcategorys_Items.subcategoryID" + "="
+        			+ uri.getLastPathSegment());
+        	break;
         default:
             throw new IllegalArgumentException("Unknown URI");
         }
-
+        
      
         Cursor cursor = queryBuilder.query(mDB.getReadableDatabase(),
                 projection, selection, selectionArgs, null, null, sortOrder);

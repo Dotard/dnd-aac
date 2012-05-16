@@ -127,28 +127,28 @@ public class aacDatabase extends SQLiteOpenHelper {
 				+"('Schools', 'Schools', 2);");
 		//Subcategorys
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Google', 'categoryDesc', 1, 9);");
+				+"('Google', 'categoryDesc', 1, 10);");
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
 				+"('Microsoft', 'categoryDesc', 1, 10);");
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Apple', 'categoryDesc', 1, 11);");
+				+"('Apple', 'categoryDesc', 1, 9);");
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
 				+"('Ryerson', 'categoryDesc', 2, 12);");
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
 				+"('Waterloo', 'categoryDesc', 2, 13);");
 		//Items
 		db.execSQL("insert into Items (itemPhrase, imageID) values"
-				+"('GoogleAds', 1);");
+				+"('GoogleAds', 10);");
 		db.execSQL("insert into Items (itemPhrase, imageID) values"
-				+"('BillGates', 2);");
+				+"('BillGates', 11);");
 		db.execSQL("insert into Items (itemPhrase, imageID) values"
-				+"('Jobs', 3);");
+				+"('Jobs', 9);");
 		db.execSQL("insert into Items (itemPhrase, imageID) values"
-				+"('Panar', 4);");
+				+"('Panar', 12);");
 		db.execSQL("insert into Items (itemPhrase, imageID) values"
-				+"('June Lowe', 5);");
+				+"('June Lowe', 13);");
 		db.execSQL("insert into Items (itemPhrase, imageID) values"
-				+"('Sadeg', 6);");
+				+"('Sadeg', 12);");
 		//Recent Items
 		db.execSQL("insert into RecentItems (recentItemPhrase, recentItemOutdated, itemID, imageID) values"
 				+"('recentItemPhrase', 0, 1, 1);");
@@ -179,7 +179,7 @@ public class aacDatabase extends SQLiteOpenHelper {
 				+"('Ryerson', 'poring.jpg');");
 		db.execSQL("insert into Images (imageDesc, imageUri) values"
 				+"('Waterloo', 'uw.jpg');");
-		//Category Items
+		//Subcategory Items
 		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
 				+"(1, 1);");
 		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"

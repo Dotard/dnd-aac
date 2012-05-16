@@ -40,15 +40,17 @@ public class ImageAdapter extends BaseAdapter{
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	        ImageView imageView;
 	        if (convertView == null) {  // if it's not recycled, initialize some attributes
-	            imageView = new CustomImageView(mContext,"hi im a dog");
+	        	mCursor.moveToPosition(position);
+	        	
+	            imageView = new CustomImageView(mContext,mCursor.getString(mCursor.getColumnIndex("itemPhrase")));
 	            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
 	            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 	            imageView.setPadding(8, 8, 8, 8);
 	            
-	            mCursor.moveToPosition(position);
+	            
 	            AssetManager am = mContext.getAssets();
 		        try {
-					BufferedInputStream buf = new BufferedInputStream(am.open("images/" + mCursor.getString(1)));
+					BufferedInputStream buf = new BufferedInputStream(am.open("images/" + mCursor.getString(mCursor.getColumnIndex("imageUri"))));
 					Bitmap bitmap = BitmapFactory.decodeStream(buf);
 					imageView.setImageBitmap(bitmap);
 					buf.close();
@@ -59,7 +61,7 @@ public class ImageAdapter extends BaseAdapter{
 				}
 		        
 	        } else {
-	            imageView = (ImageView) convertView;
+	            imageView = (CustomImageView) convertView;
 	        }	   
 
 	        
