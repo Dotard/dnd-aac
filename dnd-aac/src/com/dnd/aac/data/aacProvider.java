@@ -72,7 +72,7 @@ public class aacProvider extends ContentProvider {
     public static final Uri ITEMS_URI = Uri.parse("content://" + AUTHORITY
             + "/" + ITEMS_BASE_PATH);
     public static final Uri SUBCATEGORYS_URI = Uri.parse("content://" + AUTHORITY
-            + "/" + CATEGORYS_BASE_PATH);
+            + "/" + SUBCATEGORYS_BASE_PATH);
     
     public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
             + "/mt-tutorial";
