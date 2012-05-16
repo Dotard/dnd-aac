@@ -54,11 +54,16 @@ public class aacProvider extends ContentProvider {
     public static final int IMAGES = 200;
     public static final int IMAGES_ID = 210;
     public static final int ITEMS = 300;
-    public static final int ITEMS_INCATEGORYID = 310;
+    public static final int ITEMS_INSUBCATEGORY = 310;
+    public static final int ITEMS_INCATEGORY = 320;
+    public static final int SUBCATEGORYS = 400;
+    public static final int SUBCATEGORYS_ID = 410;
+    
 
     private static final String CATEGORYS_BASE_PATH = "Categorys";
     private static final String IMAGES_BASE_PATH = "Images";
     private static final String ITEMS_BASE_PATH = "Items";
+    private static final String SUBCATEGORYS_BASE_PATH = "Subcategorys";
     
     public static final Uri CATEGORYS_URI = Uri.parse("content://" + AUTHORITY
             + "/" + CATEGORYS_BASE_PATH);
@@ -66,6 +71,8 @@ public class aacProvider extends ContentProvider {
             + "/" + IMAGES_BASE_PATH);
     public static final Uri ITEMS_URI = Uri.parse("content://" + AUTHORITY
             + "/" + ITEMS_BASE_PATH);
+    public static final Uri SUBCATEGORYS_URI = Uri.parse("content://" + AUTHORITY
+            + "/" + CATEGORYS_BASE_PATH);
     
     public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
             + "/mt-tutorial";
@@ -81,7 +88,10 @@ public class aacProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, CATEGORYS_BASE_PATH + "/#", CATEGORYS_ID);    
         sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH, IMAGES);
         sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH + "/#", IMAGES_ID);
-        sURIMatcher.addURI(AUTHORITY, ITEMS_BASE_PATH + "/#", ITEMS_INCATEGORYID);  
+        sURIMatcher.addURI(AUTHORITY, ITEMS_BASE_PATH + "/1/#", ITEMS_INSUBCATEGORY);
+        sURIMatcher.addURI(AUTHORITY, ITEMS_BASE_PATH + "/2/#", ITEMS_INCATEGORY);
+        sURIMatcher.addURI(AUTHORITY, SUBCATEGORYS_BASE_PATH, SUBCATEGORYS); 
+        sURIMatcher.addURI(AUTHORITY, SUBCATEGORYS_BASE_PATH + "/#", SUBCATEGORYS_ID); 
     }
 
     @Override
@@ -102,18 +112,21 @@ public class aacProvider extends ContentProvider {
         switch (uriType) {
         case CATEGORYS_ID:
         case CATEGORYS:
-        	queryBuilder.setTables("Items " +
-        			" INNER JOIN Images ON ITEMS.imageID = IMAGES.imageID" +
-        			" INNER JOIN Subcategorys_Items ON ITEMS.itemID = Subcategorys_Items.itemID");
+        	queryBuilder.setTables("Categorys");
 			break;
         case IMAGES:
         case IMAGES_ID:
         	queryBuilder.setTables("Images");
         	break;
-        case ITEMS_INCATEGORYID:
+        case ITEMS_INCATEGORY:
+        case ITEMS_INSUBCATEGORY:
         	queryBuilder.setTables("Items " +
         			" INNER JOIN Images ON ITEMS.imageID = IMAGES.imageID" +
         			" INNER JOIN Subcategorys_Items ON ITEMS.itemID = Subcategorys_Items.itemID");
+        	break;
+        case SUBCATEGORYS_ID:
+        case SUBCATEGORYS:
+        	queryBuilder.setTables("Subcategorys");
         	break;
         default:
             throw new IllegalArgumentException("Unknown URI");
@@ -122,11 +135,9 @@ public class aacProvider extends ContentProvider {
         //Figure out the filter
         switch (uriType) {
         case CATEGORYS_ID:
-        	queryBuilder.appendWhere("Subcategorys_Items.subcategoryID IN " +
-        			"(SELECT Subcategorys.subcategoryID" +
-        			" from Subcategorys WHERE Subcategorys.categoryID = " +
-        			uri.getLastPathSegment() + ")" );
-            break;
+        	queryBuilder.appendWhere("categoryID" + "="
+        			+ uri.getLastPathSegment());
+        	break;
         case CATEGORYS:
         	//queryBuilder.appendWhere("parentID" + " IS NULL");
         	break;
@@ -136,9 +147,21 @@ public class aacProvider extends ContentProvider {
         	queryBuilder.appendWhere("imageID" + "="
         			+ uri.getLastPathSegment());
         	break;
-        case ITEMS_INCATEGORYID:
+        case ITEMS_INCATEGORY:
+        	queryBuilder.appendWhere("Subcategorys_Items.subcategoryID IN " +
+        			"(SELECT Subcategorys.subcategoryID" +
+        			" from Subcategorys WHERE Subcategorys.categoryID = " +
+        			uri.getLastPathSegment() + ")" );
+            break;
+        case ITEMS_INSUBCATEGORY:
         	queryBuilder.appendWhere("Subcategorys_Items.subcategoryID" + "="
         			+ uri.getLastPathSegment());
+        	break;
+        case SUBCATEGORYS:
+        	break;
+        case SUBCATEGORYS_ID:
+        	queryBuilder.appendWhere("subcategoryID = " +
+        			uri.getLastPathSegment());
         	break;
         default:
             throw new IllegalArgumentException("Unknown URI");

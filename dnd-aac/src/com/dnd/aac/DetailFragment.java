@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 public class DetailFragment extends android.support.v4.app.Fragment {
 	
-	private int subcategoryID;
 	private String projection[];
 	private GridView gridview;
 	@Override
@@ -41,6 +40,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 
 			}
 		});;
+		setCategory(2);
 	}
 
 	@Override
@@ -54,15 +54,13 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	
 	public void setSubcategory(int subcategoryID)
 	{
-		this.subcategoryID = subcategoryID;
-		
-		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.ITEMS_URI,String.valueOf(subcategoryID)), projection, null, null, null);
+		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.ITEMS_URI ,"1/" + String.valueOf(subcategoryID)), projection, null, null, null);
 		gridview.setAdapter(new ImageAdapter(getActivity(),cursor));
 	}
 	
 	public void setCategory(int categoryID)
 	{
-		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.CATEGORYS_URI,String.valueOf(categoryID)), projection, null, null, null);
+		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.ITEMS_URI,"2/" + String.valueOf(categoryID)), projection, null, null, null);
 		
 		gridview.setAdapter(new ImageAdapter(getActivity(),cursor));	
 	}
