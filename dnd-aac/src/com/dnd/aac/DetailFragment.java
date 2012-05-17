@@ -21,8 +21,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	private GridView gridview;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		 super.onCreate(savedInstanceState);
-		   
+		 super.onCreate(savedInstanceState);		   
 	}
 
 	@Override
@@ -37,28 +36,25 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 				CustomImageView a = (CustomImageView)v;
 				EditText et = (EditText) getActivity().findViewById(R.id.enter);
 				if (et.length() > 0) {et.append(" "+ a.getText());} else {et.append( a.getText());}
-
 			}
 		});;
-		setCategory(2);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.details, container, false);
-
-		    
+   
 		return view;
 	}
 	
-	public void setSubcategory(int subcategoryID)
+	public void setSubcategory(long subcategoryID)
 	{
 		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.ITEMS_URI ,"1/" + String.valueOf(subcategoryID)), projection, null, null, null);
 		gridview.setAdapter(new ImageAdapter(getActivity(),cursor));
 	}
 	
-	public void setCategory(int categoryID)
+	public void setCategory(long categoryID)
 	{
 		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.ITEMS_URI,"2/" + String.valueOf(categoryID)), projection, null, null, null);
 		
