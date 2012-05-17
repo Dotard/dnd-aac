@@ -25,6 +25,20 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 		super.onCreate(savedInstanceState);
 
 	}
+	
+
+	public void collapseAll() {
+        int count = this.getExpandableListAdapter().getGroupCount();
+        for (int i = 0; i <count ; i++)
+        	this.getExpandableListView().collapseGroup(i);  
+	}
+	
+
+	public void expandAll() {
+	     int count = this.getExpandableListAdapter().getGroupCount();
+	     for (int i = 0; i <count ; i++)
+	    	 this.getExpandableListView().expandGroup(i);
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {

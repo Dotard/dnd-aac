@@ -70,6 +70,17 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
 
          
     }
+    
+    public void expandAll(View view)  
+    {
+    	ListFragment listfragment = (ListFragment)  getSupportFragmentManager().findFragmentById(R.id.listFragment);
+     	listfragment.expandAll();
+    }
+    public void collapseAll(View view)  
+    {
+        ListFragment listfragment = (ListFragment)  getSupportFragmentManager().findFragmentById(R.id.listFragment);
+        listfragment.collapseAll();
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == MY_DATA_CHECK_CODE) {

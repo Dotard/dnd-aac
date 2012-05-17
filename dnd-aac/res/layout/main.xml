@@ -57,11 +57,13 @@
 		        android:id="@+id/zoomButton1"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
+		        android:onClick="expandAll"
 		        android:src="@android:drawable/btn_plus" />
 		     <ZoomButton
 		        android:id="@+id/zoomButton2"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
+		        android:onClick="collapseAll"
 		        android:src="@android:drawable/btn_minus" />
 
 		</LinearLayout>
