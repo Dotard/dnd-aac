@@ -32,7 +32,6 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 		
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				Toast.makeText(getActivity(), "" + position, Toast.LENGTH_SHORT).show();
 				CustomImageView a = (CustomImageView)v;
 				EditText et = (EditText) getActivity().findViewById(R.id.enter);
 				if (et.length() > 0) {et.append(" "+ a.getText());} else {et.append( a.getText());}

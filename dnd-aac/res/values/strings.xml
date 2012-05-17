@@ -3,5 +3,7 @@
 
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">AAC</string>
+    <string name="speakbtn">Speak</string>
+    <string name="speakbtncancel">Stop</string>
 
 </resources>
