@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -32,9 +33,9 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 		
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				CustomImageView a = (CustomImageView)v;
+				TextView tv = (TextView) v.findViewById(R.id.text);
 				EditText et = (EditText) getActivity().findViewById(R.id.enter);
-				if (et.length() > 0) {et.append(" "+ a.getText());} else {et.append( a.getText());}
+				if (et.length() > 0) {et.append(" "+ tv.getText());} else {et.append( tv.getText());}
 			}
 		});;
 	}
@@ -50,13 +51,13 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	public void setSubcategory(long subcategoryID)
 	{
 		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.ITEMS_URI ,"1/" + String.valueOf(subcategoryID)), projection, null, null, null);
-		gridview.setAdapter(new ImageAdapter(getActivity(),cursor));
+		gridview.setAdapter(new MyPictoAdapter(getActivity(),R.layout.picto,cursor));
 	}
 	
 	public void setCategory(long categoryID)
 	{
 		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.ITEMS_URI,"2/" + String.valueOf(categoryID)), projection, null, null, null);
 		
-		gridview.setAdapter(new ImageAdapter(getActivity(),cursor));	
+		gridview.setAdapter(new MyPictoAdapter(getActivity(),R.layout.picto,cursor));	
 	}
 }
