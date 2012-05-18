@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View;
@@ -29,7 +28,7 @@ import android.view.MotionEvent;
 public class MainActivity extends FragmentActivity implements OnItemClickListener, OnInitListener, TextToSpeech.OnUtteranceCompletedListener {
 	private int MY_DATA_CHECK_CODE = 0;
 	private TextToSpeech myTTS;
-	private HashMap<String, String> myHashAlarm = new HashMap();
+	private HashMap<String, String> myHashAlarm = new HashMap<String, String>();
 	private GestureDetector mGestureDetector;
 	private Handler mHandler; 
 	
@@ -47,9 +46,9 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
         
         mHandler = new Handler();
         
-        myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_STREAM,
-                String.valueOf(AudioManager.STREAM_ALARM));
         myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "test");
+        
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }   
 
     
@@ -68,6 +67,7 @@ public class MainActivity extends FragmentActivity implements OnItemClickListene
     		myTTS.stop();
     	}
 
+    	
          
     }
     

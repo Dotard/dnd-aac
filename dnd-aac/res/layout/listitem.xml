@@ -4,14 +4,15 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="12sp"
+    android:padding="12dp"
     android:tag="Category">
-
+    
         <TextView android:id="@+id/data_item"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="35dp"
-            android:tag="Category"/>
+            android:tag="Category"
+            android:gravity="center_vertical"/>
 </LinearLayout>

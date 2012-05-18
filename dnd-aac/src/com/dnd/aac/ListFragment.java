@@ -1,19 +1,15 @@
 package com.dnd.aac;
 
-import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.MyExpandableListAdapter;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.ListView;
-
 import com.dnd.aac.data.aacProvider;
 
 public class ListFragment extends android.support.v4.app.ExpandableListFragment{
@@ -24,6 +20,13 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		/*try {
+		XmlResourceParser xpp=Resources.getSystem().getXml(R.drawable.listitem_background); 
+		ColorStateList csl = ColorStateList.createFromXml(getResources(), 
+				xpp);
+		} catch (Exception e) {}
+		*/
+		
 	}
 	
 
@@ -55,6 +58,15 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 				getActivity().getApplicationContext(), R.layout.listitem,R.layout.listitem2,cat,subcat,values,ints,values,ints, 0);
 		setListAdapter(ela);
 		
+		// Create a Drawable object with states
+	    Drawable icon =	this.getResources().getDrawable(R.drawable.selector_listitem_icon);
+
+	    // Set the newly created Drawable object as group indicator.
+	    // Now you should be seeing your icons as group indicators.
+	    getExpandableListView().setGroupIndicator(icon);
+		
+		//getExpandableListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		//getExpandableListView().setSelector(R.drawable.listitem_background);
 		getExpandableListView().setOnChildClickListener(new OnChildClickListener(){
 			@Override
 			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition,
@@ -64,7 +76,11 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 						.findFragmentById(R.id.detailFragment);
 				if (fragment != null && fragment.isInLayout()) {
 						fragment.setSubcategory(id);
+						
 				}
+				MyExpandableListAdapter adapter = (MyExpandableListAdapter) getExpandableListAdapter();
+				adapter.setSelectedItem( groupPosition, childPosition);
+				adapter.notifyDataSetChanged();
 				return true;
 			}
 		});
@@ -82,6 +98,9 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 					if (fragment != null && fragment.isInLayout()) {
 							fragment.setCategory(id);
 					}
+					MyExpandableListAdapter adapter = (MyExpandableListAdapter) getExpandableListAdapter();
+					adapter.setSelectedItem( groupPosition);
+					adapter.notifyDataSetChanged();
 				}
 				return false;
 			}

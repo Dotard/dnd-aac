@@ -36,7 +36,6 @@
         android:orientation="vertical"
         android:layout_width="300dp"
         android:layout_height="fill_parent"
-        android:background="@drawable/listitem_background"
         >
 
 		<LinearLayout

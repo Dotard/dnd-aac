@@ -4,8 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.dnd.aac.R;
+
+import android.app.LauncherActivity.ListItem;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.XmlResourceParser;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +27,14 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 	
 	public Map<String, List<String>> objects;
 	
+	private int lastSelectedChild = -1,lastSelectedGroup = -1;
+	
 	Context context;
 	int parentlayout, childlayout, flags;
 	Cursor parentcursor, childcursor;
 	String[] from, from2;
 	String[] to, to2;
+	ColorStateList cl = null, cl2=null;
 
 	public MyExpandableListAdapter(Context context, int parentlayout, int childlayout, Cursor parentcursor, Cursor childcursor, String[] from, String[] to, String[] from2, String[] to2, int flags){
 		this.context = context;
@@ -90,6 +100,13 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 		        childcursor.moveToNext();
 			}
 		}	
+		
+		try {
+     	   XmlResourceParser xpp = context.getResources().getXml(R.drawable.selector_listitem_background);
+     	   cl = ColorStateList.createFromXml(context.getResources(), xpp);
+     	   xpp = context.getResources().getXml(R.drawable.selector_listitem_textcolor);
+     	   cl2 = ColorStateList.createFromXml(context.getResources(), xpp);
+     	} catch (Exception e) {}
 	}
     public Object getChild(int groupPosition, int childPosition)
     { return subcategories.get(groupPosition).get(childPosition);}// membersGroupedByCriteria.get(groupPosition).get(childPosition); }
@@ -109,6 +126,14 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     		TextView textView = (TextView) row.findViewById( context.getResources().getIdentifier("data_item","id","com.dnd.aac"));
     		HashMap<String,String> m = (HashMap<String,String>) getChild(groupPosition, childPosition);
             textView.setText(m.get("subcategoryName"));
+            
+            if (lastSelectedGroup == groupPosition && lastSelectedChild == childPosition) 
+            {	
+            	row.setBackgroundResource(android.R.color.darker_gray);
+            	//row.setBackgroundResource(cl);
+            	textView.setTextColor(cl2);
+            }
+            
             Log.d("ChildView", getChild(groupPosition, childPosition) + " " + groupPosition + " " + childPosition);
         return row;
     }
@@ -135,6 +160,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     		@SuppressWarnings("unchecked")
 			HashMap<String,String> m = (HashMap<String,String>) getGroup(groupPosition);
             textView.setText(m.get("categoryName"));
+
+            if (lastSelectedGroup == groupPosition ) 
+            {
+            	row.setBackgroundResource(android.R.color.darker_gray);
+            	textView.setTextColor(cl);
+            }
 
         return row;
     }
@@ -168,5 +199,27 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     	return false;
     	
     	
+    }
+    
+    public boolean lastSelectedItem (int groupPosition, int childPosition)
+    {
+    	if (lastSelectedItem(groupPosition) && lastSelectedChild == childPosition) return true;
+    	return false;
+    }
+    public boolean lastSelectedItem (int groupPosition)
+    {
+    	if (lastSelectedGroup == groupPosition) return true;
+    	return true;
+    }
+    
+    public void setSelectedItem (int groupPosition, int childPosition)
+    {
+    	lastSelectedChild = childPosition;
+    	lastSelectedGroup = groupPosition;
+    }
+    public void  setSelectedItem (int groupPosition)
+    {
+    	lastSelectedChild = -1;
+    	lastSelectedGroup = groupPosition;
     }
 }
