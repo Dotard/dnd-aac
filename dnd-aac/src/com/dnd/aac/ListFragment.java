@@ -3,7 +3,6 @@ package com.dnd.aac;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.MyExpandableListAdapter;
 import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
