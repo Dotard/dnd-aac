@@ -62,7 +62,7 @@ public class MyPictoAdapter extends BaseAdapter{
 				}
 		        
 		        TextView tv = (TextView)picto.findViewById(R.id.text);
-		        tv.setText(mCursor.getString(mCursor.getColumnIndex("itemPhrase")));
+		        tv.setText(mCursor.getString(mCursor.getColumnIndex("pictoPhrase")));
 		             
 	        } else {
 	        	picto = convertView;	        	

@@ -28,7 +28,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		projection = new String[]{ "ITEMS.itemID as _id","Items.itemPhrase", "Images.imageUri" };;
+		projection = new String[]{ "PICTOS.pictoID as _id","Pictos.pictoPhrase", "Images.imageUri" };;
 		gridview = (GridView) getActivity().findViewById(R.id.gridview);
 		
 		gridview.setOnItemClickListener(new OnItemClickListener() {
@@ -50,13 +50,13 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	
 	public void setSubcategory(long subcategoryID)
 	{
-		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.ITEMS_URI ,"1/" + String.valueOf(subcategoryID)), projection, null, null, null);
+		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI ,"1/" + String.valueOf(subcategoryID)), projection, null, null, null);
 		gridview.setAdapter(new MyPictoAdapter(getActivity(),R.layout.picto,cursor));
 	}
 	
 	public void setCategory(long categoryID)
 	{
-		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.ITEMS_URI,"2/" + String.valueOf(categoryID)), projection, null, null, null);
+		Cursor cursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI,"2/" + String.valueOf(categoryID)), projection, null, null, null);
 		
 		gridview.setAdapter(new MyPictoAdapter(getActivity(),R.layout.picto,cursor));	
 	}

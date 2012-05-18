@@ -57,18 +57,18 @@ public class aacDatabase extends SQLiteOpenHelper {
 			+ "subcategoryDesc TEXT "
 			+ ");";
 	
-	private static final String CREATE_TABLE_ITEMS = "CREATE TABLE Items" + " ( "
-			+ "itemID INTEGER PRIMARY KEY AUTOINCREMENT, "			
+	private static final String CREATE_TABLE_PICTOS = "CREATE TABLE Pictos" + " ( "
+			+ "pictoID INTEGER PRIMARY KEY AUTOINCREMENT, "			
 			+ "imageID INTEGER REFERENCES Images (imageID), "
-			+ "itemPhrase TEXT "
+			+ "pictoPhrase TEXT "
 			+ ");";
 	
-	private static final String CREATE_TABLE_RECENTITEMS = "CREATE TABLE RecentItems" + " ( "
-			+ "recentItemID INTEGER PRIMARY KEY AUTOINCREMENT, "			
+	private static final String CREATE_TABLE_RECENTPICTOS = "CREATE TABLE RecentPictos" + " ( "
+			+ "recentPictoID INTEGER PRIMARY KEY AUTOINCREMENT, "			
 			+ "imageID INTEGER REFERENCES Images (imageID), "
-			+ "itemID INTEGER REFERENCES Items (itemID), "
-			+ "recentItemPhrase TEXT, "
-			+ "recentItemOutdated INTEGER "
+			+ "pictoID INTEGER REFERENCES Pictos (pictoID), "
+			+ "recentPictoPhrase TEXT, "
+			+ "recentPictoOutdated INTEGER "
 			+ ");";
 			
 	private static final String CREATE_TABLE_IMAGES = "CREATE TABLE Images" + " ( "
@@ -77,10 +77,10 @@ public class aacDatabase extends SQLiteOpenHelper {
 			+ "imageUri TEXT "
 			+ ");";
 	
-	private static final String CREATE_TABLE_SUBCATEGORYS_ITEMS = "CREATE TABLE Subcategorys_Items"  + " ( "
-			+ "subcategorys_ItemsID INTEGER PRIMARY KEY AUTOINCREMENT, "						
+	private static final String CREATE_TABLE_SUBCATEGORYS_PICTOS = "CREATE TABLE Subcategorys_Pictos"  + " ( "
+			+ "subcategorys_PictosID INTEGER PRIMARY KEY AUTOINCREMENT, "						
 			+ "subcategoryID INTEGER REFERENCES Subcategorys (subcategoryID), "
-			+ "itemID INTEGER REFERENCES Items (itemID) "
+			+ "pictoID INTEGER REFERENCES Pictos (pictoID) "
 			+ ");";
 
 
@@ -92,10 +92,10 @@ public class aacDatabase extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_TABLE_CATEGORYS);
 		db.execSQL(CREATE_TABLE_SUBCATEGORYS);
-		db.execSQL(CREATE_TABLE_ITEMS);
-		db.execSQL(CREATE_TABLE_RECENTITEMS);
+		db.execSQL(CREATE_TABLE_PICTOS);
+		db.execSQL(CREATE_TABLE_RECENTPICTOS);
 		db.execSQL(CREATE_TABLE_IMAGES);
-		db.execSQL(CREATE_TABLE_SUBCATEGORYS_ITEMS);
+		db.execSQL(CREATE_TABLE_SUBCATEGORYS_PICTOS);
 		
 		seedData(db);
 	}
@@ -106,10 +106,10 @@ public class aacDatabase extends SQLiteOpenHelper {
 				"Upgrading database. Existing contents will be lost. ["
 						+ oldVersion + "]->[" + newVersion + "]");
 		db.execSQL("DROP TABLE IF EXISTS " + "Categorys");
-		db.execSQL("DROP TABLE IF EXISTS " + "Items");
-		db.execSQL("DROP TABLE IF EXISTS " + "RecentItems");
-		db.execSQL("DROP TABLE IF EXISTS " + "Items");
-		db.execSQL("DROP TABLE IF EXISTS " + "Categorys_Items");
+		db.execSQL("DROP TABLE IF EXISTS " + "Pictos");
+		db.execSQL("DROP TABLE IF EXISTS " + "RecentPictos");
+		db.execSQL("DROP TABLE IF EXISTS " + "Pictos");
+		db.execSQL("DROP TABLE IF EXISTS " + "Categorys_Pictos");
 		onCreate(db);
 	}
 
@@ -136,22 +136,22 @@ public class aacDatabase extends SQLiteOpenHelper {
 				+"('Ryerson', 'categoryDesc', 2, 12);");
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
 				+"('Waterloo', 'categoryDesc', 2, 13);");
-		//Items
-		db.execSQL("insert into Items (itemPhrase, imageID) values"
+		//Pictos
+		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
 				+"('GoogleAds', 10);");
-		db.execSQL("insert into Items (itemPhrase, imageID) values"
+		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
 				+"('BillGates', 11);");
-		db.execSQL("insert into Items (itemPhrase, imageID) values"
+		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
 				+"('Jobs', 9);");
-		db.execSQL("insert into Items (itemPhrase, imageID) values"
+		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
 				+"('Panar', 12);");
-		db.execSQL("insert into Items (itemPhrase, imageID) values"
+		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
 				+"('June Lowe', 13);");
-		db.execSQL("insert into Items (itemPhrase, imageID) values"
+		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
 				+"('Sadeg', 12);");
-		//Recent Items
-		db.execSQL("insert into RecentItems (recentItemPhrase, recentItemOutdated, itemID, imageID) values"
-				+"('recentItemPhrase', 0, 1, 1);");
+		//Recent Pictos
+		db.execSQL("insert into RecentPictos (recentPictoPhrase, recentPictoOutdated, pictoID, imageID) values"
+				+"('recentPictoPhrase', 0, 1, 1);");
 		//Images
 		db.execSQL("insert into Images (imageDesc, imageUri) values"
 				+"('imageDesc', 'sample_0.jpg');");
@@ -179,18 +179,18 @@ public class aacDatabase extends SQLiteOpenHelper {
 				+"('Ryerson', 'poring.jpg');");
 		db.execSQL("insert into Images (imageDesc, imageUri) values"
 				+"('Waterloo', 'uw.jpg');");
-		//Subcategory Items
-		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+		//Subcategory Pictos
+		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
 				+"(1, 1);");
-		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
 				+"(2, 2);");
-		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
 				+"(3, 3);");
-		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
 				+"(4, 4);");
-		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
 				+"(5, 5);");
-		db.execSQL("insert into Subcategorys_Items (subcategoryID, itemID) values"
+		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
 				+"(4, 6);");
 	}
 }
