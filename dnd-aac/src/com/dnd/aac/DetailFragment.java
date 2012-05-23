@@ -3,8 +3,10 @@ package com.dnd.aac;
 import com.dnd.aac.data.aacProvider;
 
 import android.database.Cursor;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +36,13 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 		
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				ImageView image = (ImageView) v.findViewById(R.id.image);
 				TextView tv = (TextView) v.findViewById(R.id.text);
-				EditText et = (EditText) getActivity().findViewById(R.id.enter);
-				if (et.length() > 0) {et.append(" "+ tv.getText());} else {et.append( tv.getText());}
+
+				((MainActivity) getActivity()).addPicto(new Picto(0, tv.getText()+"", ((BitmapDrawable)image.getDrawable()).getBitmap()));
+				
+				//EditText et = (EditText) getActivity().findViewById(R.id.enter);
+				//if (et.length() > 0) {et.append(" "+ tv.getText());} else {et.append( tv.getText());}
 			}
 		});;
 	}
