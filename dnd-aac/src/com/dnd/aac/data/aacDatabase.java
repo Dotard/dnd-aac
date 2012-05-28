@@ -113,6 +113,8 @@ public class aacDatabase extends SQLiteOpenHelper {
  
         	try {
     			copyDataBase();
+    			SQLiteDatabase newDb = mContext.openOrCreateDatabase(DB_NAME, 0, null);
+				newDb.setVersion(DB_VERSION);
     		} catch (IOException e) {
         		throw new Error("Error copying database");
         	}
@@ -121,21 +123,22 @@ public class aacDatabase extends SQLiteOpenHelper {
     
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-
 	}
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//		Log.d("tag","Attemping upgrade from " + oldVersion + "to " + newVersion);
-//		if( mContext.deleteDatabase(DB_NAME)){
-//			try {
-//				createDataBase();
-//			} catch (IOException e) {
-//				throw new Error("Error creating database");
-//			}
-//		} else {
-//			throw new Error("onUpgrade: Error deleting database");
-//		}		
+		Log.d("tag","ONUPGRADE ATTEMPING UPGRADE " + oldVersion + " to " + newVersion);
+		if( mContext.deleteDatabase(DB_NAME)){
+			try {
+				copyDataBase();
+				SQLiteDatabase newDb = mContext.openOrCreateDatabase(DB_NAME, 0, null);
+				newDb.setVersion(newVersion);
+			} catch (IOException e) {
+				throw new Error("Error creating database");
+			}
+		} else {
+			throw new Error("onUpgrade: Error deleting database");
+		}		
 	}
 
 	/**
