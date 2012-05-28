@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/speech_selected" android:state_pressed="true"/>
+    <item android:drawable="@drawable/speech_icons" android:state_hovered="true"/>
+    <item android:drawable="@drawable/speech_icons"/>   
+</selector>

@@ -60,7 +60,8 @@ public class aacDatabase extends SQLiteOpenHelper {
 	private static final String CREATE_TABLE_PICTOS = "CREATE TABLE Pictos" + " ( "
 			+ "pictoID INTEGER PRIMARY KEY AUTOINCREMENT, "			
 			+ "imageID INTEGER REFERENCES Images (imageID), "
-			+ "pictoPhrase TEXT "
+			+ "pictoPhrase TEXT, "
+			+ "playCount INTEGER"
 			+ ");";
 	
 	private static final String CREATE_TABLE_RECENTPICTOS = "CREATE TABLE RecentPictos" + " ( "
@@ -122,33 +123,36 @@ public class aacDatabase extends SQLiteOpenHelper {
 	private void seedData(SQLiteDatabase db) {
 		//Categorys
 		db.execSQL("insert into Categorys (categoryName, categoryDesc, imageID) values"
+				+"('Favourites', 'Favourites', 0);");
+		db.execSQL("insert into Categorys (categoryName, categoryDesc, imageID) values"
 				+"('Companys', 'Companies', 1);");
 		db.execSQL("insert into Categorys (categoryName, categoryDesc, imageID) values"
 				+"('Schools', 'Schools', 2);");
+		
 		//Subcategorys
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Google', 'categoryDesc', 1, 10);");
+				+"('Google', 'categoryDesc', 2, 10);");
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Microsoft', 'categoryDesc', 1, 10);");
+				+"('Microsoft', 'categoryDesc', 2, 10);");
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Apple', 'categoryDesc', 1, 9);");
+				+"('Apple', 'categoryDesc', 2, 9);");
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Ryerson', 'categoryDesc', 2, 12);");
+				+"('Ryerson', 'categoryDesc', 3, 12);");
 		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Waterloo', 'categoryDesc', 2, 13);");
+				+"('Waterloo', 'categoryDesc', 3, 13);");
 		//Pictos
-		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
-				+"('GoogleAds', 10);");
-		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
-				+"('BillGates', 11);");
-		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
-				+"('Jobs', 9);");
-		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
-				+"('Panar', 12);");
-		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
-				+"('June Lowe', 13);");
-		db.execSQL("insert into Pictos (pictoPhrase, imageID) values"
-				+"('Sadeg', 12);");
+		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
+				+"('GoogleAds', 	10,		24);");
+		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
+				+"('BillGates', 	11, 	1);");
+		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
+				+"('Jobs', 			9, 		190);");
+		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
+				+"('Panar', 		12, 	74);");
+		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
+				+"('June Lowe', 	13, 	73);");
+		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
+				+"('Sadeg', 		12, 	200);");
 		//Recent Pictos
 		db.execSQL("insert into RecentPictos (recentPictoPhrase, recentPictoOutdated, pictoID, imageID) values"
 				+"('recentPictoPhrase', 0, 1, 1);");

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="glowing">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/android_blue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">@color/android_blue</item>
+        <item name="android:shadowDx">0.5</item>
+        <item name="android:shadowDy">0.5</item>
+        <item name="android:shadowRadius">10</item> 
+    </style>
+    <style name="notglowing">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/android_blue</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

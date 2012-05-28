@@ -10,43 +10,67 @@
         android:layout_width="fill_parent"
         android:layout_height="135dp" >
         
-        
+        <FrameLayout 
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+		  	android:layout_weight="1"
+              >
+               
           <com.devsmart.android.ui.HorizontalListView
   			android:id="@+id/listview"
-  			android:layout_width="0dp"
+  			android:layout_width="fill_parent"
   			android:layout_height="fill_parent"
-  			android:layout_weight="1"
-  			android:background="#fff"
-  			android:padding="10dp"
+  			android:background="@android:drawable/editbox_background"
+  			android:layout_margin="10dp"
   			android:paddingLeft="20dp"
+  			android:paddingRight="50dp"
   			/>
           
-          <FrameLayout 
-              android:layout_width="75dp"
-              android:layout_height="fill_parent"
-               android:background="#FFF">
+                      <TextView
+              android:id="@+id/emptyTextView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="left|center_vertical"
+              android:text="Tap pictos to add them here."
+              android:textColor="#CCC"
+              android:textSize="40sp"
+              android:padding="30dp"
+              />
 
           <ImageView
               android:id="@+id/imageView1"
-              android:layout_width="fill_parent"
+              android:layout_width="50dp"
               android:layout_height="fill_parent"
-              android:background="#FFF"
               android:src="@drawable/ic_input_delete"
               android:visibility="invisible"
               android:onClick="deletePictos"
+              android:layout_gravity="right|center_vertical"
+              android:layout_marginRight="15dp"
               />
+          
+          
           </FrameLayout>
           
         <Button
             android:id="@+id/button1"
-            android:layout_width="135dp"
-            android:layout_height="fill_parent"
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_gravity="center_vertical"
             android:onClick="saySomething"
-            android:text="@string/speakbtn" />
+            android:background="@drawable/statelist_speechbtn"
+            android:text="" />
 
     </LinearLayout>
-
-    <LinearLayout android:layout_below="@+id/topbar"
+    
+    <View android:layout_below="@+id/topbar"
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#33B5E5"
+        />
+    
+    
+    <LinearLayout android:layout_below="@+id/divider"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
@@ -57,7 +81,7 @@
         android:layout_height="fill_parent"
         >
 
-		<LinearLayout
+		<!-- <LinearLayout
 		    android:layout_width="fill_parent"
 		    android:layout_height="50dp"
 		    android:layout_gravity="top"
@@ -67,47 +91,63 @@
 		    <TextView
 		        android:id="@+id/textView1"
 		        android:layout_width="0dp"
-		        android:layout_height="wrap_content"
-		        android:text="Categories"
+		        android:layout_height="fill_parent"
+		        android:text="Picto Categories"
+		        android:gravity="center|center_vertical"
 		        android:layout_weight="1"
-		        android:textAppearance="?android:attr/textAppearanceLarge"	  /> 
+		        android:textAppearance="?android:attr/textAppearanceMedium"	  /> 
 
 		    <ZoomButton
 		        android:id="@+id/zoomButton1"
-		        android:layout_width="50dp"
-		        android:layout_height="50dp"
+		        android:layout_width="37dp"
+		        android:layout_height="37dp"
 		        android:maxWidth="50dp"
 		        android:onClick="expandAll"
 		        android:src="@android:drawable/btn_plus"
 		        android:adjustViewBounds="true"
 		        android:scaleType="fitCenter"
 		        android:padding="0dp"
-		        android:paddingLeft="20dp" />
+		        />
 		     <ZoomButton
 		        android:id="@+id/zoomButton2"
-		        android:layout_width="50dp"
-		        android:layout_height="50dp"
+		        android:layout_width="37dp"
+		        android:layout_height="37dp"
 		        android:maxWidth="50dp"
 		        android:onClick="collapseAll"
 		        android:src="@android:drawable/btn_minus"
 		        android:adjustViewBounds="true"
 		        android:scaleType="fitCenter"
 		        android:padding="0dp"
-		        android:paddingRight="20dp"/>
+		        />
 
-		</LinearLayout>
+		</LinearLayout>  -->
+		
+			
+		
+		<LinearLayout
+		    android:layout_width="300dp"
+		    android:layout_height="fill_parent"
+		    android:orientation="horizontal"
 		    
+	 >
+		
         <fragment
         android:id="@+id/listFragment"
-        android:layout_width="300dip"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
+        android:layout_weight="1"
         class="com.dnd.aac.ListFragment" >
         <!-- android:layout_marginTop="?android:attr/actionBarSize"-->
         </fragment>
         
+        <View
+        android:layout_width="1dp"
+        android:layout_height="fill_parent"
+        android:background="#33B5E5"
+        />
         </LinearLayout>
         
-        
+        </LinearLayout>
 
     <fragment
         android:id="@+id/detailFragment"

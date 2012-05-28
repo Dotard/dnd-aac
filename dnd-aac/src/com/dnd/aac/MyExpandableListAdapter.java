@@ -1,5 +1,6 @@
 package com.dnd.aac;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,14 +11,26 @@ import com.dnd.aac.R;
 import android.app.LauncherActivity.ListItem;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.NinePatch;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.NinePatchDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MyExpandableListAdapter extends BaseExpandableListAdapter
@@ -35,6 +48,13 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 	String[] from, from2;
 	String[] to, to2;
 	ColorStateList cl = null, cl2=null;
+	AnimationSet c;
+	
+	NinePatchDrawable ninePatchStar, ninePatchExpanded, ninePatchCollapsed; 
+	
+	// Setup fadein/out animations
+	   AnimationSet fadeIn, fadeOut;
+	   
 
 	public MyExpandableListAdapter(Context context, int parentlayout, int childlayout, Cursor parentcursor, Cursor childcursor, String[] from, String[] to, String[] from2, String[] to2, int flags){
 		this.context = context;
@@ -57,14 +77,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 		{ 
 			//Error matching bind
 		}
-			
 		
 		int COL_CHILD_SUBID = childcursor.getColumnIndexOrThrow("subcategoryID");
 		int COL_CHILD_CATID = childcursor.getColumnIndexOrThrow("categoryID");
 		int COL_CHILD_CATNAME = childcursor.getColumnIndexOrThrow("subcategoryName");
 		int COL_PARENT_CATNAME= parentcursor.getColumnIndexOrThrow("categoryName");
 		int COL_PARENT_CATID = parentcursor.getColumnIndexOrThrow("categoryID");
-		Log.d("Array Sizes", parentcursor.getCount()+" "+childcursor.getCount());
 		HashMap<String,String> childMap;    
 		HashMap<String,String> parentMap;
 		HashMap<Long,Integer> lookupMap = new HashMap<Long,Integer>();//child looks up correct position of parent
@@ -107,6 +125,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
      	   xpp = context.getResources().getXml(R.drawable.selector_listitem_textcolor);
      	   cl2 = ColorStateList.createFromXml(context.getResources(), xpp);
      	} catch (Exception e) {}
+
 	}
     public Object getChild(int groupPosition, int childPosition)
     { return subcategories.get(groupPosition).get(childPosition);}// membersGroupedByCriteria.get(groupPosition).get(childPosition); }
@@ -129,12 +148,11 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
             
             if (lastSelectedGroup == groupPosition && lastSelectedChild == childPosition) 
             {	
-            	row.setBackgroundResource(android.R.color.darker_gray);
+            	row.setBackgroundResource(R.color.gray_40);
             	//row.setBackgroundResource(cl);
             	textView.setTextColor(cl2);
             }
             
-            Log.d("ChildView", getChild(groupPosition, childPosition) + " " + groupPosition + " " + childPosition);
         return row;
     }
 
@@ -151,6 +169,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     	return Long.parseLong(m.get("categoryID"));
     }
 
+    
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
     {   	
     	View row = ( (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(parentlayout, null);
@@ -163,12 +182,26 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 
             if (lastSelectedGroup == groupPosition ) 
             {
-            	row.setBackgroundResource(android.R.color.darker_gray);
+            	row.setBackgroundResource(R.color.gray_40);
             	textView.setTextColor(cl);
+            	
             }
+            
+            ImageView iv = (ImageView) row.findViewById(R.id.groupIndicator);
+            
+            if (groupPosition == 0) {
+            	//get_ninepatch(R.raw.btn_rating_star_off_normal, 35, 35, context);       	
+            	iv.setImageResource(R.drawable.btn_rating_star_off_normal);
+            } else if (isExpanded){           
+            	iv.setImageBitmap(get_ninepatch(R.raw.expander_ic_maximized, 33, 35, context));
+            } else {
+            	iv.setImageBitmap(get_ninepatch(R.raw.expander_ic_minimized, 33, 35, context));
+            }		   
+    		    
 
         return row;
     }
+
 
     public boolean isChildSelectable(int groupPosition, int childPosition)
     { return true; }
@@ -181,7 +214,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     
     public boolean moveToId(Cursor c, int id, String colname) {
     	int colID = c.getColumnIndex(colname);
-    	Log.d("Checker", "moveToId: (colID,colname) - ("+colID+","+colname+")"  );
     	if (colID != -1) {
     		
     		int initPos = c.getPosition();
@@ -189,7 +221,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 	    	c.moveToFirst();
 	    	while (c.isAfterLast() == false) {
 	    	  if (c.getInt(colID) == id ) {
-	    		  Log.d("Checker", "We found it!"  );
 	    	      return true;
 	    	  }
 	    	  c.moveToNext();
@@ -221,5 +252,28 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     {
     	lastSelectedChild = -1;
     	lastSelectedGroup = groupPosition;
+    }
+    
+    public static Bitmap get_ninepatch(int id,int x, int y, Context context){
+        // id is a resource id for a valid ninepatch
+
+        Bitmap bitmap = BitmapFactory.decodeResource(
+                context.getResources(), id);
+
+        byte[] chunk = bitmap.getNinePatchChunk();
+        boolean result = NinePatch.isNinePatchChunk(chunk);
+        if (!result) { 
+        	Log.d("get_ninepatch", "Chunk BAD!");
+        	return null;
+        }
+        NinePatchDrawable np_drawable = new NinePatchDrawable(context.getResources(), bitmap,
+                chunk, new Rect(), null);
+        np_drawable.setBounds(0, 0,x, y);
+        
+        Bitmap output_bitmap = Bitmap.createBitmap(x, y, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output_bitmap);
+        np_drawable.draw(canvas);
+        
+        return output_bitmap;
     }
 }

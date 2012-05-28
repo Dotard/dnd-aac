@@ -50,6 +50,7 @@ public class aacProvider extends ContentProvider {
 
     private static final String AUTHORITY = "com.dnd.aac.data.aacProvider";
     public static final int CATEGORYS = 100;
+    public static final int FAVOURITES = 111;
     public static final int CATEGORYS_ID = 110;
     public static final int IMAGES = 200;
     public static final int IMAGES_ID = 210;
@@ -88,6 +89,7 @@ public class aacProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, CATEGORYS_BASE_PATH + "/#", CATEGORYS_ID);    
         sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH, IMAGES);
         sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH + "/#", IMAGES_ID);
+        sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/2/1", FAVOURITES);
         sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/1/#", PICTOS_INSUBCATEGORY);
         sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/2/#", PICTOS_INCATEGORY);
         sURIMatcher.addURI(AUTHORITY, SUBCATEGORYS_BASE_PATH, SUBCATEGORYS); 
@@ -108,6 +110,8 @@ public class aacProvider extends ContentProvider {
         
         int uriType = sURIMatcher.match(uri);
         
+        String limit = null;
+        
         //Figure out Table
         switch (uriType) {
         case CATEGORYS_ID:
@@ -118,12 +122,20 @@ public class aacProvider extends ContentProvider {
         case IMAGES_ID:
         	queryBuilder.setTables("Images");
         	break;
+        case FAVOURITES:
+        	queryBuilder.setTables("Pictos " +
+        			" INNER JOIN Images ON PICTOS.imageID = IMAGES.imageID");
+        			sortOrder = "PICTOS.playCount DESC";
+        			limit = "0 , 4";
+        	break;
         case PICTOS_INCATEGORY:
         case PICTOS_INSUBCATEGORY:
+        	Log.d("Provider", "PICTOS_* case triggered");
         	queryBuilder.setTables("Pictos " +
         			" INNER JOIN Images ON PICTOS.imageID = IMAGES.imageID" +
         			" INNER JOIN Subcategorys_Pictos ON PICTOS.pictoID = Subcategorys_Pictos.pictoID");
         	break;
+
         case SUBCATEGORYS_ID:
         case SUBCATEGORYS:
         	queryBuilder.setTables("Subcategorys");
@@ -146,6 +158,9 @@ public class aacProvider extends ContentProvider {
         case IMAGES_ID:
         	queryBuilder.appendWhere("imageID" + "="
         			+ uri.getLastPathSegment());
+        	break;	
+        case FAVOURITES:
+        	Log.d("Provider", "FAVOURITES case triggered");
         	break;
         case PICTOS_INCATEGORY:
         	queryBuilder.appendWhere("Subcategorys_Pictos.subcategoryID IN " +
@@ -169,7 +184,7 @@ public class aacProvider extends ContentProvider {
         
      
         Cursor cursor = queryBuilder.query(mDB.getReadableDatabase(),
-                projection, selection, selectionArgs, null, null, sortOrder);
+                projection, selection, selectionArgs, null, null, sortOrder, limit);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
