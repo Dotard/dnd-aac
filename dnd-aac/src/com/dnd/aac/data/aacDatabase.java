@@ -30,8 +30,14 @@
  */
 package com.dnd.aac.data;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -39,6 +45,8 @@ public class aacDatabase extends SQLiteOpenHelper {
 	private static final String DEBUG_TAG = "aacDatabase";
 	private static final int DB_VERSION = 1;
 	private static final String DB_NAME = "aac_data";
+	private static final String DB_PATH = "/data/data/com.dnd.aac/databases/";
+	private Context mContext;
 
 	//add table names column names here
 	
@@ -86,115 +94,95 @@ public class aacDatabase extends SQLiteOpenHelper {
 
 
 	public aacDatabase(Context context) {
-		super(context, DB_NAME, null, DB_VERSION);		
-	}
-
-	@Override
-	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(CREATE_TABLE_CATEGORYS);
-		db.execSQL(CREATE_TABLE_SUBCATEGORYS);
-		db.execSQL(CREATE_TABLE_PICTOS);
-		db.execSQL(CREATE_TABLE_RECENTPICTOS);
-		db.execSQL(CREATE_TABLE_IMAGES);
-		db.execSQL(CREATE_TABLE_SUBCATEGORYS_PICTOS);
-		
-		seedData(db);
-	}
-
-	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.w(DEBUG_TAG,
-				"Upgrading database. Existing contents will be lost. ["
-						+ oldVersion + "]->[" + newVersion + "]");
-		db.execSQL("DROP TABLE IF EXISTS " + "Categorys");
-		db.execSQL("DROP TABLE IF EXISTS " + "Pictos");
-		db.execSQL("DROP TABLE IF EXISTS " + "RecentPictos");
-		db.execSQL("DROP TABLE IF EXISTS " + "Pictos");
-		db.execSQL("DROP TABLE IF EXISTS " + "Categorys_Pictos");
-		onCreate(db);
+		super(context, DB_NAME, null, DB_VERSION);
+		mContext = context;
 	}
 
 	/**
-	 * Create sample data to use
-	 * 
-	 * @param db
-	 *            The open database
-	 */
-	private void seedData(SQLiteDatabase db) {
-		//Categorys
-		db.execSQL("insert into Categorys (categoryName, categoryDesc, imageID) values"
-				+"('Favourites', 'Favourites', 0);");
-		db.execSQL("insert into Categorys (categoryName, categoryDesc, imageID) values"
-				+"('Companys', 'Companies', 1);");
-		db.execSQL("insert into Categorys (categoryName, categoryDesc, imageID) values"
-				+"('Schools', 'Schools', 2);");
-		
-		//Subcategorys
-		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Google', 'categoryDesc', 2, 10);");
-		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Microsoft', 'categoryDesc', 2, 10);");
-		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Apple', 'categoryDesc', 2, 9);");
-		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Ryerson', 'categoryDesc', 3, 12);");
-		db.execSQL("insert into Subcategorys (subcategoryName, subcategoryDesc, categoryID,imageID) values"
-				+"('Waterloo', 'categoryDesc', 3, 13);");
-		//Pictos
-		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
-				+"('GoogleAds', 	10,		24);");
-		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
-				+"('BillGates', 	11, 	1);");
-		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
-				+"('Jobs', 			9, 		190);");
-		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
-				+"('Panar', 		12, 	74);");
-		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
-				+"('June Lowe', 	13, 	73);");
-		db.execSQL("insert into Pictos (pictoPhrase, imageID, playCount) values"
-				+"('Sadeg', 		12, 	200);");
-		//Recent Pictos
-		db.execSQL("insert into RecentPictos (recentPictoPhrase, recentPictoOutdated, pictoID, imageID) values"
-				+"('recentPictoPhrase', 0, 1, 1);");
-		//Images
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('imageDesc', 'sample_0.jpg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('imageDesc', 'sample_1.jpg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('imageDesc', 'sample_2.jpg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('imageDesc', 'sample_3.jpg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('imageDesc', 'sample_4.jpg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('imageDesc', 'sample_5.jpg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('imageDesc', 'sample_6.jpg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('imageDesc', 'sample_7.jpg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('Apple Logo', 'apple.png');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('Google Logo', 'google.jpg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('MS Logo', 'microsoft.jpeg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('Ryerson', 'poring.jpg');");
-		db.execSQL("insert into Images (imageDesc, imageUri) values"
-				+"('Waterloo', 'uw.jpg');");
-		//Subcategory Pictos
-		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
-				+"(1, 1);");
-		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
-				+"(2, 2);");
-		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
-				+"(3, 3);");
-		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
-				+"(4, 4);");
-		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
-				+"(5, 5);");
-		db.execSQL("insert into Subcategorys_Pictos (subcategoryID, pictoID) values"
-				+"(4, 6);");
+     * Creates a empty database on the system and rewrites it with your own database.
+     * */
+    public void createDataBase() throws IOException{
+    	boolean dbExist = checkDataBase();
+ 
+    	if(dbExist){
+    		//do nothing - database already exist
+    	}else{ 
+    		//By calling this method and empty database will be created into the default system path
+               //of your application so we are gonna be able to overwrite that database with our database.
+        	this.getReadableDatabase();
+ 
+        	try {
+    			copyDataBase();
+    		} catch (IOException e) {
+        		throw new Error("Error copying database");
+        	}
+    	}
+    }
+    
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+
 	}
+	
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//		Log.d("tag","Attemping upgrade from " + oldVersion + "to " + newVersion);
+//		if( mContext.deleteDatabase(DB_NAME)){
+//			try {
+//				createDataBase();
+//			} catch (IOException e) {
+//				throw new Error("Error creating database");
+//			}
+//		} else {
+//			throw new Error("onUpgrade: Error deleting database");
+//		}		
+	}
+
+	/**
+     * Check if the database already exist to avoid re-copying the file each time you open the application.
+     * @return true if it exists, false if it doesn't
+     */
+    private boolean checkDataBase(){
+    	SQLiteDatabase checkDB = null;
+ 
+    	try{
+    		String myPath = DB_PATH + DB_NAME;
+    		checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+    	}catch(SQLiteException e){
+    	}
+ 
+    	if(checkDB != null) checkDB.close();
+    	
+    	return checkDB != null ? true : false;
+    }
+    
+    /**
+     * Copies your database from your local assets-folder to the just created empty database in the
+     * system folder, from where it can be accessed and handled.
+     * This is done by transfering bytestream.
+     * */
+    private void copyDataBase() throws IOException{
+ 
+    	//Open your local db as the input stream
+    	InputStream myInput = mContext.getAssets().open("db/" + DB_NAME);
+ 
+    	// Path to the just created empty db
+    	String outFileName = DB_PATH + DB_NAME;
+ 
+    	//Open the empty db as the output stream
+    	OutputStream myOutput = new FileOutputStream(outFileName);
+ 
+    	//transfer bytes from the inputfile to the outputfile
+    	byte[] buffer = new byte[1024];
+    	int length;
+    	while ((length = myInput.read(buffer))>0){
+    		myOutput.write(buffer, 0, length);
+    	}
+ 
+    	//Close the streams
+    	myOutput.flush();
+    	myOutput.close();
+    	myInput.close();
+    }
+
 }

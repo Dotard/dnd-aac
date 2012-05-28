@@ -30,6 +30,8 @@
  */
 package com.dnd.aac.data;
 
+import java.io.IOException;
+
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -99,6 +101,12 @@ public class aacProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         mDB = new aacDatabase(getContext());
+        try {
+			mDB.createDataBase();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return true;
     }
 

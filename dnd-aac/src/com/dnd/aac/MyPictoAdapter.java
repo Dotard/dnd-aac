@@ -2,8 +2,12 @@ package com.dnd.aac;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import com.android.vending.expansion.zipfile.APKExpansionSupport;
+import com.android.vending.expansion.zipfile.ZipResourceFile;
+
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,11 +23,19 @@ public class MyPictoAdapter extends BaseAdapter{
 	  private Context mContext;
 	  private int layout;
 	  private Cursor mCursor;
+	  private ZipResourceFile mExpansionFile;
 	  
 	    public MyPictoAdapter(Context c,int layout,Cursor cursor) {
 	        mContext = c;
 	        this.layout = layout;
 	        mCursor = cursor;
+	        try {
+				mExpansionFile = APKExpansionSupport.getAPKExpansionZipFile(mContext,
+				        1, 0);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			};
 	    }
 
 	    public int getCount() {
@@ -49,9 +61,11 @@ public class MyPictoAdapter extends BaseAdapter{
 	        	picto.setLayoutParams(new GridView.LayoutParams(115,115));	
 	        	
 	        	ImageView imageView = (ImageView)picto.findViewById(R.id.image);
-	            AssetManager am = mContext.getAssets();
 		        try {
-					BufferedInputStream buf = new BufferedInputStream(am.open("images/" + mCursor.getString(mCursor.getColumnIndex("imageUri"))));
+					
+					InputStream fileStream = mExpansionFile.getInputStream("picto/" + mCursor.getString(mCursor.getColumnIndex("imageUri")));
+					
+					BufferedInputStream buf = new BufferedInputStream(fileStream);
 					Bitmap bitmap = BitmapFactory.decodeStream(buf);
 					imageView.setImageBitmap(bitmap);
 					buf.close();
