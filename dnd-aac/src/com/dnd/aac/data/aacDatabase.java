@@ -43,7 +43,7 @@ import android.util.Log;
 
 public class aacDatabase extends SQLiteOpenHelper {
 	private static final String DEBUG_TAG = "aacDatabase";
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 5;
 	private static final String DB_NAME = "aac_data";
 	private static final String DB_PATH = "/data/data/com.dnd.aac/databases/";
 	private Context mContext;

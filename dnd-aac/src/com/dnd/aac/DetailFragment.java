@@ -39,7 +39,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 				ImageView image = (ImageView) v.findViewById(R.id.image);
 				TextView tv = (TextView) v.findViewById(R.id.text);
 
-				((MainActivity) getActivity()).addPicto(new Picto(0, tv.getText()+"", ((BitmapDrawable)image.getDrawable()).getBitmap()));
+				((MainActivity) getActivity()).addPicto(new Picto((int) id, tv.getText()+"", ((BitmapDrawable)image.getDrawable()).getBitmap()));
 				
 				//EditText et = (EditText) getActivity().findViewById(R.id.enter);
 				//if (et.length() > 0) {et.append(" "+ tv.getText());} else {et.append( tv.getText());}

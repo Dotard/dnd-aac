@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/itemid_0"
+        android:title="Search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:orderInCategory="0"
+        android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/itemid_1"
+        android:title="Settings"
+        android:orderInCategory="0" />
+    <item android:id="@+id/itemid_2"
+        android:title="Exit AAC"
+        android:orderInCategory="0" />
+</menu>

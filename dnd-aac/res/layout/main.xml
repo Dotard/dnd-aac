@@ -36,6 +36,15 @@
               android:textSize="40sp"
               android:padding="30dp"
               />
+                      
+           <LinearLayout android:id="@+id/suggestbox"
+        	android:orientation="horizontal"
+        	android:layout_width="wrap_content"
+       		 android:layout_height="wrap_content"
+       		 android:background="@drawable/btn_search_dialog_voice_default"
+       		 android:layout_margin="15dp"
+       		 android:visibility="invisible">               
+           </LinearLayout>
 
           <ImageView
               android:id="@+id/imageView1"
@@ -47,6 +56,7 @@
               android:layout_gravity="right|center_vertical"
               android:layout_marginRight="15dp"
               />
+          
           
           
           </FrameLayout>

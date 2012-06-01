@@ -32,6 +32,8 @@ package com.dnd.aac.data;
 
 import java.io.IOException;
 
+import com.dnd.aac.Picto;
+
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -48,261 +50,341 @@ import android.util.Log;
 
 public class aacProvider extends ContentProvider {
 
-    private aacDatabase mDB;
+	private aacDatabase mDB;
 
-    private static final String AUTHORITY = "com.dnd.aac.data.aacProvider";
-    public static final int CATEGORYS = 100;
-    public static final int FAVOURITES = 111;
-    public static final int CATEGORYS_ID = 110;
-    public static final int IMAGES = 200;
-    public static final int IMAGES_ID = 210;
-    public static final int PICTOS = 300;
-    public static final int PICTOS_INSUBCATEGORY = 310;
-    public static final int PICTOS_INCATEGORY = 320;
-    public static final int SUBCATEGORYS = 400;
-    public static final int SUBCATEGORYS_ID = 410;
-    
+	public static final String QUERY_PARAMETER_LIMIT = "limit";
 
-    private static final String CATEGORYS_BASE_PATH = "Categorys";
-    private static final String IMAGES_BASE_PATH = "Images";
-    private static final String PICTOS_BASE_PATH = "Pictos";
-    private static final String SUBCATEGORYS_BASE_PATH = "Subcategorys";
-    
-    public static final Uri CATEGORYS_URI = Uri.parse("content://" + AUTHORITY
-            + "/" + CATEGORYS_BASE_PATH);
-    public static final Uri IMAGES_URI = Uri.parse("content://" + AUTHORITY
-            + "/" + IMAGES_BASE_PATH);
-    public static final Uri PICTOS_URI = Uri.parse("content://" + AUTHORITY
-            + "/" + PICTOS_BASE_PATH);
-    public static final Uri SUBCATEGORYS_URI = Uri.parse("content://" + AUTHORITY
-            + "/" + SUBCATEGORYS_BASE_PATH);
-    
-    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
-            + "/mt-tutorial";
-    public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
-            + "/mt-tutorial";
+	private static final String AUTHORITY = "com.dnd.aac.data.aacProvider";
+	public static final int CATEGORYS = 100;
+	public static final int FAVOURITES = 111;
+	public static final int CATEGORYS_ID = 110;
+	public static final int IMAGES = 200;
+	public static final int IMAGES_ID = 210;
+	public static final int PICTOS = 300;
+	public static final int PICTOS_INSUBCATEGORY = 310;
+	public static final int PICTOS_INCATEGORY = 320;
+	public static final int SUBCATEGORYS = 400;
+	public static final int SUBCATEGORYS_ID = 410;
+	public static final int TRIE_SEARCH_BY_PICTOID = 500;
+	public static final int TRIE_SEARCH_BY_TRIEID = 501;
+	public static final int TRIE_SUGGEST_BY_TRIEID = 510;
+	public static final int TRIE_INSERT = 520;
+	
+	public static final int PICTO_HIT = 800;
+	public static final int TRIE_HIT = 801;
 
-    private static final UriMatcher sURIMatcher = new UriMatcher(
-            UriMatcher.NO_MATCH);
+	private static final String CATEGORYS_BASE_PATH = "Categorys";
+	private static final String IMAGES_BASE_PATH = "Images";
+	private static final String PICTOS_BASE_PATH = "Pictos";
+	private static final String SUBCATEGORYS_BASE_PATH = "Subcategorys";
+	private static final String PICTOTREE_BASE_PATH = "PictoTree";
 
-    private static final String DEBUG_TAG = "aacDatabase";
-    static {
-        sURIMatcher.addURI(AUTHORITY, CATEGORYS_BASE_PATH, CATEGORYS);
-        sURIMatcher.addURI(AUTHORITY, CATEGORYS_BASE_PATH + "/#", CATEGORYS_ID);    
-        sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH, IMAGES);
-        sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH + "/#", IMAGES_ID);
-        sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/2/1", FAVOURITES);
-        sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/1/#", PICTOS_INSUBCATEGORY);
-        sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/2/#", PICTOS_INCATEGORY);
-        sURIMatcher.addURI(AUTHORITY, SUBCATEGORYS_BASE_PATH, SUBCATEGORYS); 
-        sURIMatcher.addURI(AUTHORITY, SUBCATEGORYS_BASE_PATH + "/#", SUBCATEGORYS_ID); 
-    }
+	public static final Uri CATEGORYS_URI = Uri.parse("content://" + AUTHORITY
+			+ "/" + CATEGORYS_BASE_PATH);
+	public static final Uri IMAGES_URI = Uri.parse("content://" + AUTHORITY
+			+ "/" + IMAGES_BASE_PATH);
+	public static final Uri PICTOS_URI = Uri.parse("content://" + AUTHORITY
+			+ "/" + PICTOS_BASE_PATH);
+	public static final Uri SUBCATEGORYS_URI = Uri.parse("content://"
+			+ AUTHORITY + "/" + SUBCATEGORYS_BASE_PATH);
+	
+	
+	public static final Uri PICTO_SEARCH_URI = Uri.parse("content://"
+			+ AUTHORITY + "/" + PICTOS_BASE_PATH + "/pictos");
+	public static final Uri PICTO_HIT_URI = Uri.parse("content://" + AUTHORITY
+			+ "/" + PICTOS_BASE_PATH + "/hit");
+	
+	
+	public static final Uri TRIE_PICTOID_URI = Uri.parse("content://"
+			+ AUTHORITY + "/" + PICTOTREE_BASE_PATH + "/pictoID");
+	public static final Uri TRIE_TRIEID_URI = Uri.parse("content://"
+			+ AUTHORITY + "/" + PICTOTREE_BASE_PATH + "/trieID");
+	public static final Uri TRIE_INSERT_URI = Uri.parse("content://"
+			+ AUTHORITY + "/" + PICTOTREE_BASE_PATH + "/insert");
+	public static final Uri TRIE_SUGGEST_URI = Uri.parse("content://"
+			+ AUTHORITY + "/" + PICTOTREE_BASE_PATH + "/suggest");
+	public static final Uri TRIE_HIT_URI = Uri.parse("content://" 
+			+ AUTHORITY	+ "/" + PICTOTREE_BASE_PATH + "/hit");
 
-    @Override
-    public boolean onCreate() {
-        mDB = new aacDatabase(getContext());
-        try {
+
+
+	public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
+			+ "/mt-tutorial";
+	public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
+			+ "/mt-tutorial";
+
+	private static final UriMatcher sURIMatcher = new UriMatcher(
+			UriMatcher.NO_MATCH);
+
+	private static final String DEBUG_TAG = "aacDatabase";
+	static {
+		
+		sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/hit/#", PICTO_HIT);
+	
+		
+		sURIMatcher.addURI(AUTHORITY, CATEGORYS_BASE_PATH, CATEGORYS);
+		sURIMatcher.addURI(AUTHORITY, CATEGORYS_BASE_PATH + "/#", CATEGORYS_ID);
+		
+		sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH, IMAGES);
+		sURIMatcher.addURI(AUTHORITY, IMAGES_BASE_PATH + "/#", IMAGES_ID);
+		
+		sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/pictos", PICTOS);
+		sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/2/1", FAVOURITES);
+		sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/1/#",PICTOS_INSUBCATEGORY);
+		sURIMatcher.addURI(AUTHORITY, PICTOS_BASE_PATH + "/2/#",PICTOS_INCATEGORY);
+		
+		sURIMatcher.addURI(AUTHORITY, SUBCATEGORYS_BASE_PATH, SUBCATEGORYS);
+		sURIMatcher.addURI(AUTHORITY, SUBCATEGORYS_BASE_PATH + "/#",SUBCATEGORYS_ID);
+		
+		sURIMatcher.addURI(AUTHORITY, PICTOTREE_BASE_PATH + "/pictoID/#",TRIE_SEARCH_BY_PICTOID);
+		sURIMatcher.addURI(AUTHORITY, PICTOTREE_BASE_PATH + "/trieID/#",TRIE_SEARCH_BY_TRIEID);
+		sURIMatcher.addURI(AUTHORITY, PICTOTREE_BASE_PATH + "/insert/#",TRIE_INSERT);
+		sURIMatcher.addURI(AUTHORITY, PICTOTREE_BASE_PATH + "/suggest/#", TRIE_SUGGEST_BY_TRIEID);
+		sURIMatcher.addURI(AUTHORITY, PICTOTREE_BASE_PATH + "/hit/#", TRIE_HIT);
+
+	}
+
+	@Override
+	public boolean onCreate() {
+		mDB = new aacDatabase(getContext());
+		try {
 			mDB.createDataBase();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
-            String[] selectionArgs, String sortOrder) {
+	@Override
+	public Cursor query(Uri uri, String[] projection, String selection,
+			String[] selectionArgs, String sortOrder) {
 
-        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        
-        int uriType = sURIMatcher.match(uri);
-        
-        String limit = null;
-        
-        //Figure out Table
-        switch (uriType) {
-        case CATEGORYS_ID:
-        case CATEGORYS:
-        	queryBuilder.setTables("Categorys");
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+
+		int uriType = sURIMatcher.match(uri);
+
+		String limit = uri.getQueryParameter(QUERY_PARAMETER_LIMIT);
+
+		Log.d ("UriType",""+uriType);
+		// Figure out Table
+		switch (uriType) {
+		case TRIE_SEARCH_BY_PICTOID:
+		case TRIE_SEARCH_BY_TRIEID:
+		case TRIE_SUGGEST_BY_TRIEID:
+		case TRIE_HIT:
+			queryBuilder.setTables("PictoTree");
 			break;
-        case IMAGES:
-        case IMAGES_ID:
-        	queryBuilder.setTables("Images");
-        	break;
-        case FAVOURITES:
-        	queryBuilder.setTables("Pictos " +
-        			" INNER JOIN Images ON PICTOS.imageID = IMAGES.imageID");
-        			sortOrder = "PICTOS.playCount DESC";
-        			limit = "0 , 4";
-        	break;
-        case PICTOS_INCATEGORY:
-        case PICTOS_INSUBCATEGORY:
-        	Log.d("Provider", "PICTOS_* case triggered");
-        	queryBuilder.setTables("Pictos " +
-        			" INNER JOIN Images ON PICTOS.imageID = IMAGES.imageID" +
-        			" INNER JOIN Subcategorys_Pictos ON PICTOS.pictoID = Subcategorys_Pictos.pictoID");
-        	break;
+		case PICTO_HIT:
+			queryBuilder.setTables("Pictos");
+			break;
+		case CATEGORYS_ID:
+		case CATEGORYS:
+			queryBuilder.setTables("Categorys");
+			break;
+		case IMAGES:
+		case IMAGES_ID:
+			queryBuilder.setTables("Images");
+			break;		
+		case FAVOURITES:
+			queryBuilder.setTables("Pictos "
+					+ " INNER JOIN Images ON PICTOS.imageID = IMAGES.imageID");
+			sortOrder = "PICTOS.playCount DESC";
+			limit = "0 , 4";
+			break;
+		case PICTOS_INCATEGORY:
+		case PICTOS_INSUBCATEGORY:
+		case PICTOS:
+			Log.d("Provider", "PICTOS_* case triggered");
+			queryBuilder
+					.setTables("Pictos "
+							+ " INNER JOIN Images ON PICTOS.imageID = IMAGES.imageID"
+							+ " INNER JOIN Subcategorys_Pictos ON PICTOS.pictoID = Subcategorys_Pictos.pictoID");
+			break;
+		case SUBCATEGORYS_ID:
+		case SUBCATEGORYS:
+			queryBuilder.setTables("Subcategorys");
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI");
+		}
 
-        case SUBCATEGORYS_ID:
-        case SUBCATEGORYS:
-        	queryBuilder.setTables("Subcategorys");
-        	break;
-        default:
-            throw new IllegalArgumentException("Unknown URI");
-        }
-        
-        //Figure out the filter
-        switch (uriType) {
-        case CATEGORYS_ID:
-        	queryBuilder.appendWhere("categoryID" + "="
-        			+ uri.getLastPathSegment());
-        	break;
-        case CATEGORYS:
-        	//queryBuilder.appendWhere("parentID" + " IS NULL");
-        	break;
-        case IMAGES:
-        	break;
-        case IMAGES_ID:
-        	queryBuilder.appendWhere("imageID" + "="
-        			+ uri.getLastPathSegment());
-        	break;	
-        case FAVOURITES:
-        	Log.d("Provider", "FAVOURITES case triggered");
-        	break;
-        case PICTOS_INCATEGORY:
-        	queryBuilder.appendWhere("Subcategorys_Pictos.subcategoryID IN " +
-        			"(SELECT Subcategorys.subcategoryID" +
-        			" from Subcategorys WHERE Subcategorys.categoryID = " +
-        			uri.getLastPathSegment() + ")" );
-            break;
-        case PICTOS_INSUBCATEGORY:
-        	queryBuilder.appendWhere("Subcategorys_Pictos.subcategoryID" + "="
-        			+ uri.getLastPathSegment());
-        	break;
-        case SUBCATEGORYS:
-        	break;
-        case SUBCATEGORYS_ID:
-        	queryBuilder.appendWhere("subcategoryID = " +
-        			uri.getLastPathSegment());
-        	break;
-        default:
-            throw new IllegalArgumentException("Unknown URI");
-        }
-        
-     
-        Cursor cursor = queryBuilder.query(mDB.getReadableDatabase(),
-                projection, selection, selectionArgs, null, null, sortOrder, limit);
-        cursor.setNotificationUri(getContext().getContentResolver(), uri);
-        return cursor;
-    }
+		// Figure out the filter
+		switch (uriType) {
+		
+		case CATEGORYS:
+		case IMAGES:
+		case PICTOS:
+		case FAVOURITES:
+		case SUBCATEGORYS:
+					break;
+		case CATEGORYS_ID:
+			queryBuilder.appendWhere("categoryID" + "=" + uri.getLastPathSegment());
+			break;
+		case TRIE_SUGGEST_BY_TRIEID:
+			queryBuilder.appendWhere("parentTrieID" + "="+ uri.getLastPathSegment());
+			break;
+		case IMAGES_ID:
+			queryBuilder.appendWhere("imageID" + "=" + uri.getLastPathSegment());
+			break;
+		case TRIE_SEARCH_BY_PICTOID:
+		case PICTO_HIT:
+			queryBuilder.appendWhere("pictoID" + "=" + uri.getLastPathSegment());
+			break;
+		case TRIE_SEARCH_BY_TRIEID:
+		case TRIE_HIT:
+			queryBuilder.appendWhere("trieID" + "=" + uri.getLastPathSegment());
+			break;
+		
+		case PICTOS_INCATEGORY:
+			queryBuilder.appendWhere("Subcategorys_Pictos.subcategoryID IN "
+					+ "(SELECT Subcategorys.subcategoryID"
+					+ " from Subcategorys WHERE Subcategorys.categoryID = "
+					+ uri.getLastPathSegment() + ")");
+			break;
+		case PICTOS_INSUBCATEGORY:
+			queryBuilder.appendWhere("Subcategorys_Pictos.subcategoryID" + "=" + uri.getLastPathSegment());
+			break;
+		case SUBCATEGORYS_ID:
+			queryBuilder.appendWhere("subcategoryID = "	+ uri.getLastPathSegment());
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI");
+		}
 
+		Cursor cursor = queryBuilder.query(mDB.getReadableDatabase(),
+				projection, selection, selectionArgs, null, null, sortOrder,
+				limit);
+		cursor.setNotificationUri(getContext().getContentResolver(), uri);
+		return cursor;
+	}
 
-    @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
-        int uriType = sURIMatcher.match(uri);
-        SQLiteDatabase sqlDB = mDB.getWritableDatabase();
-        int rowsAffected = 0;
-        switch (uriType) {
-        case CATEGORYS:
-            rowsAffected = sqlDB.delete("Categorys",
-                    selection, selectionArgs);
-            break;
-        case CATEGORYS_ID:
-            String id = uri.getLastPathSegment();
-            if (TextUtils.isEmpty(selection)) {
-                rowsAffected = sqlDB.delete("Categorys",
-                		"categoryID" + "=" + id, null);
-            } else {
-                rowsAffected = sqlDB.delete("Categorys",
-                        selection + " and " + "categoryID" + "=" + id,
-                        selectionArgs);
-            }
-            break;
-        default:
-            throw new IllegalArgumentException("Unknown or Invalid URI " + uri);
-        }
-        getContext().getContentResolver().notifyChange(uri, null);
-        return rowsAffected;
-    }
+	@Override
+	public int delete(Uri uri, String selection, String[] selectionArgs) {
+		int uriType = sURIMatcher.match(uri);
+		SQLiteDatabase sqlDB = mDB.getWritableDatabase();
+		int rowsAffected = 0;
+		switch (uriType) {
+		case CATEGORYS:
+			rowsAffected = sqlDB.delete("Categorys", selection, selectionArgs);
+			break;
+		case CATEGORYS_ID:
+			String id = uri.getLastPathSegment();
+			if (TextUtils.isEmpty(selection)) {
+				rowsAffected = sqlDB.delete("Categorys", "categoryID" + "="
+						+ id, null);
+			} else {
+				rowsAffected = sqlDB.delete("Categorys", selection + " and "
+						+ "categoryID" + "=" + id, selectionArgs);
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown or Invalid URI " + uri);
+		}
+		getContext().getContentResolver().notifyChange(uri, null);
+		return rowsAffected;
+	}
 
-    @Override
-    public String getType(Uri uri) {
-        int uriType = sURIMatcher.match(uri);
-        switch (uriType) {
-        case CATEGORYS:
-            return CONTENT_TYPE;
-        case CATEGORYS_ID:
-            return CONTENT_ITEM_TYPE;
-        default:
-            return null;
-        }
-    }
+	@Override
+	public String getType(Uri uri) {
+		int uriType = sURIMatcher.match(uri);
+		switch (uriType) {
+		case CATEGORYS:
+			return CONTENT_TYPE;
+		case CATEGORYS_ID:
+			return CONTENT_ITEM_TYPE;
+		default:
+			return null;
+		}
+	}
 
-    @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        int uriType = sURIMatcher.match(uri);
+	@Override
+	public Uri insert(Uri uri, ContentValues values) {
+		int uriType = sURIMatcher.match(uri);
 
-        String tableName = "";
-        switch(uriType)
-        {
-        case CATEGORYS:
-        	tableName = "Categorys";
-        	break;
-        case CATEGORYS_ID:
-        	tableName = "Categorys";
-        	break;
-        default:
-        	throw new IllegalArgumentException("Invalid URI for insert");
-        }
+		String tableName = "";
+		switch (uriType) {
+		case TRIE_INSERT:
+			tableName = "PictoTree";
+			break;
+		case CATEGORYS:
+			tableName = "Categorys";
+			break;
+		case CATEGORYS_ID:
+			tableName = "Categorys";
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid URI for insert");
+		}
 
-        SQLiteDatabase sqlDB = mDB.getWritableDatabase();
-        try {
-            long newID = sqlDB.insertOrThrow(tableName,
-                    null, values);
-            if (newID > 0) {
-                Uri newUri = ContentUris.withAppendedId(uri, newID);
-                getContext().getContentResolver().notifyChange(uri, null);
-                return newUri;
-            } else {
-                throw new SQLException("Failed to insert row into " + uri);
-            }
-        } catch (SQLiteConstraintException e) {
-            Log.i(DEBUG_TAG, "Ignoring constraint failure.");
-        }
-        return null;
-    }
+		SQLiteDatabase sqlDB = mDB.getWritableDatabase();
+		try {
+			long newID = sqlDB.insertOrThrow(tableName, null, values);
+			if (newID > 0) {
+				Uri newUri = ContentUris.withAppendedId(uri, newID);
+				getContext().getContentResolver().notifyChange(uri, null);
+				return newUri;
+			} else {
+				throw new SQLException("Failed to insert row into " + uri);
+			}
+		} catch (SQLiteConstraintException e) {
+			Log.i(DEBUG_TAG, "Ignoring constraint failure.");
+		}
+		return null;
+	}
 
-    @Override
-    public int update(Uri uri, ContentValues values, String selection,
-            String[] selectionArgs) {
-        int uriType = sURIMatcher.match(uri);
-        SQLiteDatabase sqlDB = mDB.getWritableDatabase();
-        int rowsAffected;
-        String id;
-        StringBuilder modSelection;
+	@Override
+	public int update(Uri uri, ContentValues values, String selection,
+			String[] selectionArgs) {
+		int uriType = sURIMatcher.match(uri);
+		SQLiteDatabase sqlDB = mDB.getWritableDatabase();
+		int rowsAffected;
+		String id;
+		StringBuilder modSelection;
 
-        switch (uriType) {
-        case CATEGORYS_ID:
-            id = uri.getLastPathSegment();
-            modSelection = new StringBuilder("categoryID"
-                    + "=" + id);
+		switch (uriType) {
+		case PICTO_HIT:
+			id = uri.getLastPathSegment();
+			modSelection = new StringBuilder("pictoID" + "=" + id);
 
-            if (!TextUtils.isEmpty(selection)) {
-                modSelection.append(" AND " + selection);
-            }
+			if (!TextUtils.isEmpty(selection)) {
+				modSelection.append(" AND " + selection);
+			}
 
-            rowsAffected = sqlDB.update("Categorys",
-                    values, modSelection.toString(), null);
-            break;
-        case CATEGORYS:
-            rowsAffected = sqlDB.update("Categorys",
-                    values, selection, selectionArgs);
-            break;
-        default:
-            throw new IllegalArgumentException("Unknown URI");
-        }
-        getContext().getContentResolver().notifyChange(uri, null);
-        return rowsAffected;
-    }
+			rowsAffected = sqlDB.update("Pictos", values,
+					modSelection.toString(), null);
+			break;
+		case TRIE_HIT:
+			id = uri.getLastPathSegment();
+			modSelection = new StringBuilder("trieID" + "=" + id);
+
+			if (!TextUtils.isEmpty(selection)) {
+				modSelection.append(" AND " + selection);
+			}
+
+			rowsAffected = sqlDB.update("PictoTree", values,
+					modSelection.toString(), null);
+			break;
+		case CATEGORYS_ID:
+			id = uri.getLastPathSegment();
+			modSelection = new StringBuilder("categoryID" + "=" + id);
+
+			if (!TextUtils.isEmpty(selection)) {
+				modSelection.append(" AND " + selection);
+			}
+
+			rowsAffected = sqlDB.update("Categorys", values,
+					modSelection.toString(), null);
+			break;
+		case CATEGORYS:
+			rowsAffected = sqlDB.update("Categorys", values, selection,
+					selectionArgs);
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI");
+		}
+		getContext().getContentResolver().notifyChange(uri, null);
+		return rowsAffected;
+	}
+
 }

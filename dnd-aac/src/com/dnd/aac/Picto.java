@@ -8,6 +8,7 @@ public class Picto {
 	private int id = 0;
 	private String name = "test" ;
 	private Bitmap bitmap = null;
+	public int trieID = 0;
 	
 	public Picto (int id, String name){
 		this.id = id;
