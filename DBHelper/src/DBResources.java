@@ -42,6 +42,13 @@ public class DBResources {
 			+ "subcategoryID INTEGER REFERENCES Subcategorys (subcategoryID) NOT NULL, "
 			+ "pictoID INTEGER REFERENCES Pictos (pictoID) NOT NULL "
 			+ ");";
+	
+	public static final String CREATE_TABLE_PICTOTREE = "CREATE TABLE PictoTree"  + " ( "
+			+ "trieID INTEGER PRIMARY KEY AUTOINCREMENT, "						
+			+ "parentTrieID INTEGER REFERENCES PictoTree (trieID) NOT NULL DEFAULT 0, "
+			+ "pictoID INTEGER REFERENCES Pictos (pictoID) NOT NULL, "
+			+ "hits INTEGER DEFAULT 0"
+			+ ");";
 
 	//FKI
 	public static final String CREATE_FKI_CATEGORYS_IMAGES = "CREATE TRIGGER fki_categorys_images " +

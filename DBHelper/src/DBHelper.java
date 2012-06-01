@@ -25,6 +25,7 @@ public class DBHelper {
 			stat.executeUpdate("drop table if exists Images;");
 			stat.executeUpdate("drop table if exists Subcategorys_Pictos;");
 			stat.executeUpdate("drop table if exists android_metadata;");
+			stat.executeUpdate("drop table if exists PictoTree;");
 			
 			stat.executeUpdate(DBResources.CREATE_TABLE_CATEGORYS);
 			stat.executeUpdate(DBResources.CREATE_TABLE_SUBCATEGORYS);
@@ -32,6 +33,7 @@ public class DBHelper {
 			stat.executeUpdate(DBResources.CREATE_TABLE_RECENTPICTOS);
 			stat.executeUpdate(DBResources.CREATE_TABLE_IMAGES);
 			stat.executeUpdate(DBResources.CREATE_TABLE_SUBCATEGORYS_PICTOS);
+			stat.executeUpdate(DBResources.CREATE_TABLE_PICTOTREE);
 			
 			stat.executeUpdate(DBResources.CREATE_FKI_CATEGORYS_IMAGES);
 			stat.executeUpdate(DBResources.CREATE_FKI_SUBCATEGORYS_IMAGES);
@@ -59,7 +61,7 @@ public class DBHelper {
 			
 			conn.setAutoCommit(false); //Transaction
 			
-			File[] files = new File("/Users/c2lieu/Desktop/picto").listFiles();
+			File[] files = new File("/Users/djly/Desktop/picto").listFiles();
 		   			
 			prep = conn.prepareStatement("insert into Categorys (categoryName, categoryDesc, imageID) values(?, ?, 1)",Statement.RETURN_GENERATED_KEYS);
 		    //Insert Categories
