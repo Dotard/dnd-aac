@@ -4,9 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.android.vending.expansion.zipfile.APKExpansionSupport;
-import com.android.vending.expansion.zipfile.ZipResourceFile;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -19,16 +16,23 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.vending.expansion.zipfile.APKExpansionSupport;
+import com.android.vending.expansion.zipfile.ZipResourceFile;
+
 public class MyPictoAdapter extends BaseAdapter{
 	  private Context mContext;
 	  private int layout;
 	  private Cursor mCursor;
 	  private ZipResourceFile mExpansionFile;
+	  private int uriIndex;
+	  private int phraseIndex;
 	  
 	    public MyPictoAdapter(Context c,int layout,Cursor cursor) {
 	        mContext = c;
 	        this.layout = layout;
 	        mCursor = cursor;
+	        uriIndex = mCursor.getColumnIndex("imageUri");
+	        phraseIndex = mCursor.getColumnIndex("pictoPhrase");
 	        try {
 				mExpansionFile = APKExpansionSupport.getAPKExpansionZipFile(mContext,
 				        1, 0);
@@ -52,38 +56,42 @@ public class MyPictoAdapter extends BaseAdapter{
 	    }
 
 	    // create a new ImageView for each item referenced by the Adapter
-	    public View getView(int position, View convertView, ViewGroup parent) {
-	        View picto;
-	        if (convertView == null) {  // if it's not recycled, initialize some attributes
-	        	mCursor.moveToPosition(position);
+	    @Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+	        mCursor.moveToPosition(position);
+	        ViewHolder holder;
+	        if (convertView == null) {  
+	        	convertView = ( (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(layout,null);
+	        	convertView.setLayoutParams(new GridView.LayoutParams(115,115));
 	        	
-	        	picto = ( (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(layout,null);	        	
-	        	picto.setLayoutParams(new GridView.LayoutParams(115,115));	
-	        	
-	        	ImageView imageView = (ImageView)picto.findViewById(R.id.image);
-		        try {
-					
-					InputStream fileStream = mExpansionFile.getInputStream("picto/" + mCursor.getString(mCursor.getColumnIndex("imageUri")));
-					
-					BufferedInputStream buf = new BufferedInputStream(fileStream);
-					Bitmap bitmap = BitmapFactory.decodeStream(buf);
-					imageView.setImageBitmap(bitmap);
-					buf.close();
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        
-		        TextView tv = (TextView)picto.findViewById(R.id.text);
-		        tv.setText(mCursor.getString(mCursor.getColumnIndex("pictoPhrase")));
-		             
+	        	holder = new ViewHolder();
+	        	holder.text = (TextView)convertView.findViewById(R.id.text);
+	        	holder.image = (ImageView)convertView.findViewById(R.id.image);
+	        	convertView.setTag(holder);
 	        } else {
-	        	picto = convertView;	        	
-	        }	   
-    
-	        return picto;
+	        	holder = (ViewHolder) convertView.getTag();
+	        }
+	        	
+	        holder.text.setText(mCursor.getString(phraseIndex));	        	
+	        	
+	        try {
+	        	InputStream fileStream = mExpansionFile.getInputStream("picto/" + mCursor.getString(mCursor.getColumnIndex("imageUri")));
+//	        	BufferedInputStream buf = new BufferedInputStream(new FileInputStream("/mnt/sdcard/Android/data/com.dnd.aac/main.1.com.dnd.aac/picto/" + mCursor.getString(uriIndex)));
+	        	BufferedInputStream buf = new BufferedInputStream(fileStream);
+	        	Bitmap bitmap = BitmapFactory.decodeStream(buf);
+	        	holder.image.setImageBitmap(bitmap);
+	        	buf.close();
+	        } catch (IOException e) {
+	        	e.printStackTrace();
+	        }
+		        
+	        return convertView;
 	    }
+
+		class ViewHolder{
+			public TextView text;
+			public ImageView image;
+		}
 }
 
 

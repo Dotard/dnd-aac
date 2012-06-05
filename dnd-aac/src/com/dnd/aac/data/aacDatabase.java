@@ -30,6 +30,7 @@
  */
 package com.dnd.aac.data;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -115,6 +116,7 @@ public class aacDatabase extends SQLiteOpenHelper {
     			copyDataBase();
     			SQLiteDatabase newDb = mContext.openOrCreateDatabase(DB_NAME, 0, null);
 				newDb.setVersion(DB_VERSION);
+				newDb.close();
     		} catch (IOException e) {
         		throw new Error("Error copying database");
         	}
@@ -133,6 +135,7 @@ public class aacDatabase extends SQLiteOpenHelper {
 				copyDataBase();
 				SQLiteDatabase newDb = mContext.openOrCreateDatabase(DB_NAME, 0, null);
 				newDb.setVersion(newVersion);
+				newDb.close();
 			} catch (IOException e) {
 				throw new Error("Error creating database");
 			}
@@ -146,17 +149,9 @@ public class aacDatabase extends SQLiteOpenHelper {
      * @return true if it exists, false if it doesn't
      */
     private boolean checkDataBase(){
-    	SQLiteDatabase checkDB = null;
- 
-    	try{
-    		String myPath = DB_PATH + DB_NAME;
-    		checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-    	}catch(SQLiteException e){
-    	}
- 
-    	if(checkDB != null) checkDB.close();
-    	
-    	return checkDB != null ? true : false;
+    	String myPath = DB_PATH + DB_NAME;
+		File dbFile = new File(myPath);
+		return dbFile.exists();
     }
     
     /**
