@@ -3,6 +3,7 @@ package com.dnd.aac;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -91,8 +92,8 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 		String[] values = new String[] { "Android" };
 		String[] ints = new String[] { "android.R.id.text1"};
 		
-		String[] categoryProj = new String[] {"categoryID", "categoryName"};
-		String[] subcategoryProj = new String[] {"subcategoryID","categoryID", "subcategoryName"};
+		String[] categoryProj = new String[] {"categoryID", "categoryName" , "imageUri"};
+		String[] subcategoryProj = new String[] {"subcategoryID","categoryID", "subcategoryName", "imageUri"};
 		cat = getActivity().getContentResolver().query(aacProvider.CATEGORYS_URI, categoryProj, null, null, null);
 		subcat = getActivity().getContentResolver().query(aacProvider.SUBCATEGORYS_URI, subcategoryProj, null, null, null);
 		

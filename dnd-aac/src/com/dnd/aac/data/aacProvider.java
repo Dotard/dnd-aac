@@ -166,7 +166,6 @@ public class aacProvider extends ContentProvider {
 
 		String limit = uri.getQueryParameter(QUERY_PARAMETER_LIMIT);
 
-		Log.d ("UriType",""+uriType);
 		// Figure out Table
 		switch (uriType) {
 		case TRIE_SEARCH_BY_PICTOID:
@@ -180,7 +179,8 @@ public class aacProvider extends ContentProvider {
 			break;
 		case CATEGORYS_ID:
 		case CATEGORYS:
-			queryBuilder.setTables("Categorys");
+			queryBuilder.setTables("Categorys"
+					+ " INNER JOIN Images ON CATEGORYS.imageID = IMAGES.imageID");
 			break;
 		case IMAGES:
 		case IMAGES_ID:
@@ -190,12 +190,11 @@ public class aacProvider extends ContentProvider {
 			queryBuilder.setTables("Pictos "
 					+ " INNER JOIN Images ON PICTOS.imageID = IMAGES.imageID");
 			sortOrder = "PICTOS.playCount DESC";
-			limit = "0 , 4";
+			limit = "0 , 70";
 			break;
 		case PICTOS_INCATEGORY:
 		case PICTOS_INSUBCATEGORY:
 		case PICTOS:
-			Log.d("Provider", "PICTOS_* case triggered");
 			queryBuilder
 					.setTables("Pictos "
 							+ " INNER JOIN Images ON PICTOS.imageID = IMAGES.imageID"
@@ -203,7 +202,8 @@ public class aacProvider extends ContentProvider {
 			break;
 		case SUBCATEGORYS_ID:
 		case SUBCATEGORYS:
-			queryBuilder.setTables("Subcategorys");
+			queryBuilder.setTables("Subcategorys"
+					+ " INNER JOIN Images ON SUBCATEGORYS.imageID = IMAGES.imageID");
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI");

@@ -23,4 +23,5 @@
             android:paddingLeft="15dp"
             android:tag="Category"
             android:gravity="center_vertical"/>
+           
 </LinearLayout>

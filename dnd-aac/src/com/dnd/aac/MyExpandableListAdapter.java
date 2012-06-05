@@ -1,11 +1,15 @@
 package com.dnd.aac;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.android.vending.expansion.zipfile.APKExpansionSupport;
+import com.android.vending.expansion.zipfile.ZipResourceFile;
 import com.dnd.aac.R;
 
 import android.app.LauncherActivity.ListItem;
@@ -50,10 +54,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 	ColorStateList cl = null, cl2=null;
 	AnimationSet c;
 	
-	NinePatchDrawable ninePatchStar, ninePatchExpanded, ninePatchCollapsed; 
+	Bitmap ninePatchExpanded, ninePatchCollapsed; 
 	
 	// Setup fadein/out animations
 	   AnimationSet fadeIn, fadeOut;
+	   
+		private ZipResourceFile mExpansionFile;
 	   
 
 	public MyExpandableListAdapter(Context context, int parentlayout, int childlayout, Cursor parentcursor, Cursor childcursor, String[] from, String[] to, String[] from2, String[] to2, int flags){
@@ -78,11 +84,18 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 			//Error matching bind
 		}
 		
+		ninePatchExpanded = get_ninepatch(R.raw.expander_ic_maximized, 33, 35, context);
+		ninePatchCollapsed = get_ninepatch(R.raw.expander_ic_minimized, 33, 35, context);
+		
 		int COL_CHILD_SUBID = childcursor.getColumnIndexOrThrow("subcategoryID");
 		int COL_CHILD_CATID = childcursor.getColumnIndexOrThrow("categoryID");
 		int COL_CHILD_CATNAME = childcursor.getColumnIndexOrThrow("subcategoryName");
+		int COL_CHILD_IMG = childcursor.getColumnIndexOrThrow("imageUri");
+		
 		int COL_PARENT_CATNAME= parentcursor.getColumnIndexOrThrow("categoryName");
 		int COL_PARENT_CATID = parentcursor.getColumnIndexOrThrow("categoryID");
+		int COL_PARENT_IMG = parentcursor.getColumnIndexOrThrow("imageUri");
+		
 		HashMap<String,String> childMap;    
 		HashMap<String,String> parentMap;
 		HashMap<Long,Integer> lookupMap = new HashMap<Long,Integer>();//child looks up correct position of parent
@@ -94,6 +107,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 				parentMap = new HashMap<String,String>();
 				parentMap.put("categoryID", catID);
 				parentMap.put("categoryName", parentcursor.getString(COL_PARENT_CATNAME));
+				parentMap.put("imageUri", parentcursor.getString(COL_PARENT_IMG));
 				categories.add(parentMap); //add Category
 				
 				childList = new ArrayList<HashMap<String,String>> ();
@@ -113,6 +127,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 				childMap = new HashMap<String,String>();
 		        childMap.put("subcategoryID", childcursor.getString(COL_CHILD_SUBID));
 		        childMap.put("subcategoryName", childcursor.getString(COL_CHILD_CATNAME));
+		        childMap.put("imageUri", childcursor.getString(COL_CHILD_IMG));
 		        childList.add(childMap);
 		        
 		        childcursor.moveToNext();
@@ -139,12 +154,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     public int getChildrenCount(int groupPosition)
     { return subcategories.get(groupPosition).size(); }//membersGroupedByCriteria.get(groupPosition).size(); }
 
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,  View convertView, ViewGroup parent)
+    @SuppressWarnings("unchecked")
+	public View getChildView(int groupPosition, int childPosition, boolean isLastChild,  View convertView, ViewGroup parent)
     {
     	View row = ( (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(childlayout,null);
-    		TextView textView = (TextView) row.findViewById( context.getResources().getIdentifier("data_item","id","com.dnd.aac"));
-    		HashMap<String,String> m = (HashMap<String,String>) getChild(groupPosition, childPosition);
-            textView.setText(m.get("subcategoryName"));
+    		TextView textView = (TextView) row.findViewById( R.id.data_item);
+            textView.setText(((HashMap<String,String>) getChild(groupPosition, childPosition)).get("subcategoryName"));
             
             if (lastSelectedGroup == groupPosition && lastSelectedChild == childPosition) 
             {	
@@ -161,41 +176,57 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 
     public int getGroupCount()
     { return categories.size(); }
-
+    
+	@SuppressWarnings("unchecked")
     public long getGroupId(int groupPosition)
     { 
-    	@SuppressWarnings("unchecked")
-		HashMap<String,String> m = (HashMap<String,String>) getGroup(groupPosition);
-    	return Long.parseLong(m.get("categoryID"));
+
+    	return Long.parseLong(((HashMap<String,String>) getGroup(groupPosition)).get("categoryID"));
     }
 
     
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
+    @SuppressWarnings("unchecked")
+	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
     {   	
     	View row = ( (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(parentlayout, null);
     	
-    		TextView textView = (TextView) row.findViewById(context.getResources().getIdentifier("data_item","id","com.dnd.aac"));
+    		TextView textView = (TextView) row.findViewById(R.id.data_item);
+    		
     		if (textView == null) {Log.d("Checker", "textView is null..");}
-    		@SuppressWarnings("unchecked")
-			HashMap<String,String> m = (HashMap<String,String>) getGroup(groupPosition);
-            textView.setText(m.get("categoryName"));
+            textView.setText(((HashMap<String,String>) getGroup(groupPosition)).get("categoryName"));
 
-            if (lastSelectedGroup == groupPosition ) 
+            if (lastSelectedGroup == groupPosition && lastSelectedChild == -1 ) 
             {
             	row.setBackgroundResource(R.color.gray_40);
             	textView.setTextColor(cl);
-            	
+            	;
             }
             
+            //ImageView groupIcon = (ImageView) row.findViewById(R.id.groupIcon);
+            
+//	        try {
+//				Log.d("ImageURI", "picto/" + m.get("imageUri"));
+//				InputStream fileStream = MainActivity.mExpansionFile.getInputStream("picto/" + m.get("imageUri"));
+//				
+//				BufferedInputStream buf = new BufferedInputStream(fileStream);
+//				Bitmap bitmap = BitmapFactory.decodeStream(buf);
+//				groupIcon.setImageBitmap(bitmap);
+//				buf.close();
+//				
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				//e.printStackTrace();
+//			}
+	        
             ImageView iv = (ImageView) row.findViewById(R.id.groupIndicator);
             
             if (groupPosition == 0) {
             	//get_ninepatch(R.raw.btn_rating_star_off_normal, 35, 35, context);       	
             	iv.setImageResource(R.drawable.btn_rating_star_off_normal);
             } else if (isExpanded){           
-            	iv.setImageBitmap(get_ninepatch(R.raw.expander_ic_maximized, 33, 35, context));
+            	iv.setImageBitmap(ninePatchExpanded);
             } else {
-            	iv.setImageBitmap(get_ninepatch(R.raw.expander_ic_minimized, 33, 35, context));
+            	iv.setImageBitmap(ninePatchCollapsed);
             }		   
     		    
 

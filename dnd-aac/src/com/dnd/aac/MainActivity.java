@@ -17,6 +17,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.android.vending.expansion.zipfile.APKExpansionSupport;
 import com.android.vending.expansion.zipfile.ZipResourceFile;
 
+import android.R.menu;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -61,6 +62,7 @@ import android.view.MotionEvent;
 public class MainActivity extends SherlockFragmentActivity implements
 		OnItemClickListener, OnInitListener,
 		TextToSpeech.OnUtteranceCompletedListener {
+	static public ZipResourceFile mExpansionFile;
 	private int MY_DATA_CHECK_CODE = 0;
 	private TextToSpeech myTTS;
 	private HashMap<String, String> myHashAlarm = new HashMap<String, String>();
@@ -68,7 +70,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 	private Handler mHandler;
 	private ArrayList<Picto> arrayOfPictos = new ArrayList<Picto>();
 	private int SUGGESTION_BOX_START_X = 20; 
-	private ZipResourceFile mExpansionFile;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -89,13 +90,14 @@ public class MainActivity extends SherlockFragmentActivity implements
 		HorizontalListView pictoView = (HorizontalListView) findViewById(R.id.listview);
 		pictoView.setOnItemClickListener(pictoClicked);
 		pictoView.setAdapter(editPictoAdapter);
-
+		
 		SharedPreferences myPrefs = this.getSharedPreferences("myPrefs",
 				MODE_WORLD_READABLE);
 		SharedPreferences.Editor prefsEditor = myPrefs.edit();
 		// prefsEditor.putString(MY_NAME, "Sai");
 		// prefsEditor.putString(MY_WALLPAPER, "f664.PNG");
-		// prefsEditor.commit();
+		// prefsEditor.commit();		
+		
 		
         try {
 			mExpansionFile = APKExpansionSupport.getAPKExpansionZipFile(this,
@@ -121,19 +123,36 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 	MenuInflater menuInflater = getSupportMenuInflater();
-        menuInflater.inflate(R.menu.settings_menu, menu);
-
-        /*menu.add(Menu.NONE, 0 ,Menu.NONE, R.string.settingsmenustring)
-            .setIcon(android.R.drawable.ic_menu_agenda)
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        //menuInflater.inflate(R.menu.settings_menu, menu);
         
-        menu.add("Search")
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        final EditText et = (EditText)((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(R.layout.collapsible_edittext,null);
+        
+		et.addTextChangedListener(new TextWatcher(){
+			
+			@Override
+		    public void afterTextChanged(Editable s) {
+		        // TODO Auto-generated method stub
+				Log.d("ActionBar", et.getText()+"");
+		    }
 
-        menu.add("Refresh")
-            .setIcon(isLight ? R.drawable.ic_refresh_inverse : R.drawable.ic_refresh)
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
-*/
+		    @Override
+		    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+		        // TODO Auto-generated method stub
+		    }
+
+		    @Override
+		    public void onTextChanged(CharSequence s, int start, int before, int count) {
+		        // TODO Auto-generated method stub
+		    }
+	
+		});
+        
+       /* menu.add("Search")
+    	.setIcon(R.drawable.ic_search)
+    	.setActionView(et)
+    	.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        
+     */
         return true;
     }
 	
@@ -299,7 +318,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 			int i = 0;
 			for (; i < arrayOfPictos.size(); i++)
 			{
-				Log.d("Sending this Uri",aacProvider.TRIE_HIT_URI + "/" + arrayOfPictos.get(i).trieID);
 				triehit = getContentResolver().query(Uri.parse(aacProvider.TRIE_HIT_URI + "/" + arrayOfPictos.get(i).trieID), trieProj, null, null, null);
 				if (!triehit.moveToFirst()) return false; 
 				values = new ContentValues (1);
@@ -337,10 +355,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			LinearLayout suggestbox = (LinearLayout) findViewById(R.id.suggestbox);
 			suggestbox.setVisibility(View.INVISIBLE);
 			suggestbox.setX(SUGGESTION_BOX_START_X + arrayOfPictos.size() * 125);
-			
-			Log.d("Suggestions trieID,size-1", arrayOfPictos.get(arrayOfPictos.size()-1).trieID + "," +
-			(arrayOfPictos.size()-1));
-			
+						
 			Cursor suggestions = getApplicationContext().getContentResolver().query(Uri.parse(aacProvider.TRIE_SUGGEST_URI + "/" 
 			+ arrayOfPictos.get(arrayOfPictos.size()-1).trieID).buildUpon().appendQueryParameter(
 			        aacProvider.QUERY_PARAMETER_LIMIT,
@@ -350,7 +365,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 			if (suggestions.moveToFirst()){	do { pictoIDs [i++] = Integer.parseInt(suggestions.getString(suggestions.getColumnIndex("pictoID"))); } while (suggestions.moveToNext());}
 
 			int numFound = i;
-			Log.d("Suggestions", "numFound = "+numFound);
 			while (i < 3) {	pictoIDs [i++] = 0;	};
 			//return an array of int of PictoIDs
 			
@@ -400,9 +414,9 @@ public class MainActivity extends SherlockFragmentActivity implements
 			
 			if (numFound > 0) suggestbox.setVisibility(View.VISIBLE);
 			
-			for (int k = 0; k < arrayOfPictos.size(); k++){
+			/*for (int k = 0; k < arrayOfPictos.size(); k++){
 			Log.d("Suggestion ["+k+"] trieID, pictoID", arrayOfPictos.get(k).trieID + ", " + arrayOfPictos.get(k).getId() );
-			}
+			}*/
 			return pictoIDs;
 		}
 	

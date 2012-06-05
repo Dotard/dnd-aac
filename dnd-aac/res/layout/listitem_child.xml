@@ -6,11 +6,18 @@
     android:orientation="horizontal"
     android:padding="12sp">
 
+          
         <TextView android:id="@+id/data_item"
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="50dp"/>
+            android:paddingLeft="50dp"/>    
+            
+                <View
+        android:layout_width="1dp"
+        android:layout_height="fill_parent"
+        android:background="#33B5E5"
+        />
 
 </LinearLayout>
