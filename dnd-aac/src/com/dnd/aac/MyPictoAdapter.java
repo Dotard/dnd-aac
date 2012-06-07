@@ -1,13 +1,9 @@
 package com.dnd.aac;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +13,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dnd.aac.cache.DiskLruCache;
 import com.dnd.aac.cache.ImageResizer;
 
 public class MyPictoAdapter extends BaseAdapter{
@@ -32,12 +27,8 @@ public class MyPictoAdapter extends BaseAdapter{
       private int mActionBarHeight = -1;
       private GridView.LayoutParams mImageViewLayoutParams;
       private ImageResizer mImageWorker;
+      private int mPictoSize;
       
-      
-	  
-	  private int uriIndex;
-	  private int phraseIndex;
-	  
 	    public MyPictoAdapter(Context c,int layout,Cursor cursor, ImageResizer mImageWorker) {
 	    	 mContext = c;
 		        this.layout = layout;
@@ -45,6 +36,9 @@ public class MyPictoAdapter extends BaseAdapter{
 		        uriIndex = mCursor.getColumnIndex("imageUri");
 		        phraseIndex = mCursor.getColumnIndex("pictoPhrase");	
 		        this.mImageWorker = mImageWorker;
+		        
+		        
+	        	mPictoSize = MyPreferences.getPictoSize(mContext, mContext.getString(R.string.pref_pictosize));
 		    }
 
 	    public int getCount() {
@@ -83,12 +77,12 @@ public class MyPictoAdapter extends BaseAdapter{
 	    // create a new ImageView for each item referenced by the Adapter
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	        mCursor.moveToPosition(position);
-	        ViewHolder holder;
-	        	        
+	        
+	        ViewHolder holder;     
 	        if (convertView == null) {  
-	        	convertView = ( (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(layout,null);
-	        	convertView.setLayoutParams(new GridView.LayoutParams(115,115));
-	        		        	
+	        	convertView = ( (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(layout,null);	            	 	        	    
+	        	convertView.setLayoutParams(new GridView.LayoutParams(mPictoSize,mPictoSize));
+	        		        		        	
 	        	holder = new ViewHolder();
 	        	holder.text = (TextView)convertView.findViewById(R.id.text);
 	        	holder.image = (ImageView)convertView.findViewById(R.id.image);
@@ -96,27 +90,23 @@ public class MyPictoAdapter extends BaseAdapter{
 	        	convertView.setTag(holder);
 	        } else {
 	        	holder = (ViewHolder) convertView.getTag();
+	        	
+	        	if(convertView.getLayoutParams().height != mPictoSize){
+	        		convertView.setLayoutParams(new GridView.LayoutParams(mPictoSize,mPictoSize));
+	        	}
 	        }
 	        	
 	        holder.text.setText(mCursor.getString(phraseIndex));	        	
-	        
-//	        try {
-//	        	InputStream fileStream = MainActivity.mExpansionFile.getInputStream("picto/" + mCursor.getString(mCursor.getColumnIndex("imageUri")));
-//	        	
-////	        	BufferedInputStream buf = new BufferedInputStream(new FileInputStream("/mnt/sdcard/Android/data/com.dnd.aac/main.1.com.dnd.aac/picto/" + mCursor.getString(uriIndex)));
-//	        	BufferedInputStream buf = new BufferedInputStream(fileStream);
-//	        	Bitmap bitmap = BitmapFactory.decodeStream(buf);
-//	        	holder.image.setImageBitmap(bitmap);
-//	        	buf.close();
-//	        } catch (IOException e) {
-//	        	e.printStackTrace();
-//	        }
 	        
 	        mImageWorker.loadImage(mCursor.getString(mCursor.getColumnIndex("imageUri")), holder.image);
 		        
 	        return convertView;
 	    }
-
+	    
+	    public void refreshPictoSize(){
+	    	mPictoSize = MyPreferences.getPictoSize(mContext, mContext.getString(R.string.pref_pictosize));	    			
+	    }
+	    
 		class ViewHolder{
 			public TextView text;
 			public ImageView image;

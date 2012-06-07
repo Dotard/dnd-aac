@@ -165,6 +165,12 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 		mGridView.setAdapter(mAdapter);
 	}
 	
+	public void refreshGridView(){
+		mAdapter.refreshPictoSize();
+		mAdapter.notifyDataSetChanged();
+		mGridView.invalidateViews();
+	}
+	
     @Override
     public void onResume() {
         super.onResume();

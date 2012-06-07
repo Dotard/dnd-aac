@@ -16,9 +16,15 @@
 -->
 
 <resources>
-
+    <!-- Picto Size Prefs used in MyPreferences.java -->
+    <dimen name="picto_xs">75dp</dimen>
+    <dimen name="picto_s">85dp</dimen>
+    <dimen name="picto_m">95dp</dimen>
+    <dimen name="picto_l">105dp</dimen>
+    <dimen name="picto_xl">115dp</dimen>
+    <dimen name="picto_xxl">125dp</dimen>
+    
     <dimen name="image_thumbnail_size">100dp</dimen>
     <dimen name="image_thumbnail_spacing">1dp</dimen>
     <dimen name="image_detail_pager_margin">80dp</dimen>
-
 </resources>

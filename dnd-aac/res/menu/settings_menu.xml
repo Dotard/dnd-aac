@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/itemid_0"
-        android:title="Search"
-        android:icon="@android:drawable/ic_menu_search"
-        android:orderInCategory="0"
-        android:showAsAction="ifRoom|withText" />
-    <item android:id="@+id/itemid_1"
+ 	<item android:id="@+id/menu_search" android:showAsAction="ifRoom|withText"
+	android:title="Search" android:actionViewClass="android.widget.SearchView" />
+    <item android:id="@+id/menu_settings"
         android:title="Settings"
         android:orderInCategory="0" />
-    <item android:id="@+id/itemid_2"
+     	<!-- Navigation submenu -->
+	<item android:id="@+id/menu_size" android:title="Picto Size">
+		<menu>
+			<group android:id="@+id/menu_size_group"
+				android:checkableBehavior="single">
+				
+				<item android:id="@+id/menu_size_xs" android:title="XS" android:checked="true" />
+
+				<item android:id="@+id/menu_size_s" android:title="S" />
+
+				<item android:id="@+id/menu_size_m" android:title="M" />
+				
+				<item android:id="@+id/menu_size_l" android:title="L" />
+				
+				<item android:id="@+id/menu_size_xl" android:title="XL" />
+				
+				<item android:id="@+id/menu_size_xxl" android:title="XXL" />
+			</group>
+		</menu>
+	</item>
+    <item android:id="@+id/menu_exit"
         android:title="Exit AAC"
         android:orderInCategory="0" />
+   
+
 </menu>

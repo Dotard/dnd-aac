@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory android:title="Picto Sizes"
+	    android:summary="Pictogram sizes">
+	    <com.dnd.aac.PictoSizePrefs android:key="@string/pref_pictosize"
+	        android:title="Picto size"
+	        android:summary="Set picto size"/> <!-- PictoSizePrefs sets default programmatically -->
+	</PreferenceCategory>
+	    
+    
+    
+    
+</PreferenceScreen>
+    
