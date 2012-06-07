@@ -28,6 +28,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.text.Editable;
@@ -45,6 +46,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,67 +82,93 @@ public class MainActivity extends SherlockFragmentActivity implements
 		pictoView.setOnItemClickListener(pictoClicked);
 		pictoView.setAdapter(editPictoAdapter);
 		
-		SharedPreferences myPrefs = this.getSharedPreferences("myPrefs",
-				MODE_WORLD_READABLE);
-		SharedPreferences.Editor prefsEditor = myPrefs.edit();
-		
+		//Load defaults; first time ONLY
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		
         try {
 			mExpansionFile = APKExpansionSupport.getAPKExpansionZipFile(this,
 			        1, 0);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		};
-
 	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getSupportMenuInflater();
+        menuInflater.inflate(R.menu.settings_menu, menu);
+        
+        Menu sizesMenu = menu.findItem(R.id.menu_size).getSubMenu(); //get menu for picto sizes 
+        SearchView searchView = (SearchView)menu.findItem(R.id.menu_search).getActionView();
+        
+        
+        ArrayList<Integer> sizePrefs = MyPreferences.getPictoSizePrefs(this);
+        sizePrefs.remove(0);//remove default entry
+        int selectedSize = MyPreferences.getPictoSize(this, getString(R.string.pref_pictosize));
+            
+        for(int i = 0; i < sizePrefs.size(); i++){
+        	if(selectedSize == sizePrefs.get(i)){
+        		sizesMenu.getItem(i).setChecked(true); 
+        		break;
+        	}
+        }
+        
+        //do stuff for searchView
+        
+        return true;
+    }
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
+		DetailFragment detailsFragment;
 	    switch (item.getItemId()) {
-	        case 0:
-	            Log.d("ActionBar", "Settings button clicked");
-	            return true;
+	        case R.id.menu_settings:
+	        	return true;
+	        case R.id.menu_size_xs:
+	        	item.setChecked(true);	        	
+	        	MyPreferences.saveString(this, getString(R.string.pref_pictosize), String.valueOf(getResources().getDimension(R.dimen.picto_xs)));	        	
+	        	break;
+	        case R.id.menu_size_s:
+	        	item.setChecked(true);	        	
+	        	MyPreferences.saveString(this, getString(R.string.pref_pictosize), String.valueOf(getResources().getDimension(R.dimen.picto_s)));
+	        	break;	        	
+	        case R.id.menu_size_m:
+	        	item.setChecked(true);	        	
+	        	MyPreferences.saveString(this, getString(R.string.pref_pictosize), String.valueOf(getResources().getDimension(R.dimen.picto_m)));
+	        	break;
+	        case R.id.menu_size_l:
+	        	item.setChecked(true);        	
+	        	MyPreferences.saveString(this, getString(R.string.pref_pictosize), String.valueOf(getResources().getDimension(R.dimen.picto_l)));
+	        	break;
+	        case R.id.menu_size_xl:
+	        	item.setChecked(true);	        	
+	        	MyPreferences.saveString(this, getString(R.string.pref_pictosize), String.valueOf(getResources().getDimension(R.dimen.picto_xl)));
+	        	break;
+	        case R.id.menu_size_xxl:
+	        	item.setChecked(true);	        	
+	        	MyPreferences.saveString(this, getString(R.string.pref_pictosize), String.valueOf(getResources().getDimension(R.dimen.picto_xxl)));
+	        	break;
+	        case R.id.menu_exit:
+	        	finish();
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+	    
+	    switch(item.getItemId()){
+	    case R.id.menu_size_xs:
+	    case R.id.menu_size_s:	
+	    case R.id.menu_size_m:
+	    case R.id.menu_size_l:
+	    case R.id.menu_size_xl:
+	    case R.id.menu_size_xxl:
+	    	detailsFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
+	    	detailsFragment.refreshGridView();
+	    	return true;
+	    default:
+	    	return super.onOptionsItemSelected(item);
+	    }
 	}
-
-	public boolean onCreateOptionsMenu(Menu menu) {
-	MenuInflater menuInflater = getSupportMenuInflater();
-        //menuInflater.inflate(R.menu.settings_menu, menu);
-        
-        final EditText et = (EditText)((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(R.layout.collapsible_edittext,null);
-        
-		et.addTextChangedListener(new TextWatcher(){
-			
-			@Override
-		    public void afterTextChanged(Editable s) {
-		        // TODO Auto-generated method stub
-				Log.d("ActionBar", et.getText()+"");
-		    }
-
-		    @Override
-		    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-		        // TODO Auto-generated method stub
-		    }
-
-		    @Override
-		    public void onTextChanged(CharSequence s, int start, int before, int count) {
-		        // TODO Auto-generated method stub
-		    }
-	
-		});
-        
-       /* menu.add("Search")
-    	.setIcon(R.drawable.ic_search)
-    	.setActionView(et)
-    	.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        
-     */
-        return true;
-    }
 	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -399,9 +427,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			}
 			
 			if (numFound > 0) suggestbox.setVisibility(View.VISIBLE);
-			/*for (int k = 0; k < arrayOfPictos.size(); k++){
-			Log.d("Suggestion ["+k+"] trieID, pictoID", arrayOfPictos.get(k).trieID + ", " + arrayOfPictos.get(k).getId() );
-			}*/
+
 			return pictoIDs;
 		}
 	
@@ -466,19 +492,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			/*View retval = LayoutInflater.from(parent.getContext()).inflate(
-					R.layout.editpicto, null);
-			TextView title = (TextView) retval.findViewById(R.id.text);
-			ImageView image = (ImageView) retval.findViewById(R.id.image);
-			title.setText(arrayOfPictos.get(position).getText());
-			// Drawable resImg =
-			// getApplicationContext().getResources().getDrawable(arrayOfPictos.get(position).getDrawableId(getApplicationContext()));
-			image.setBackgroundDrawable(arrayOfPictos.get(position).getImageView().getDrawable());
-			*/
-			//.setImageBitmap(arrayOfPictos.get(position).getBitmap());
-
-			// image.setOnClickListener((OnClickListener) mOnButtonClicked);
-			// ll.setOnClickListener((OnClickListener) mOnButtonClicked);
 
 			return arrayOfPictos.get(position).getPictoView();
 		}
