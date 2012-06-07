@@ -1,9 +1,7 @@
 package com.dnd.aac;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +36,7 @@ public class MyPictoAdapter extends BaseAdapter{
 		        this.mImageWorker = mImageWorker;
 		        
 		        
-	        	mPictoSize = MyPreferences.getPictoSize(mContext, mContext.getString(R.string.pref_pictosize));
+	        	refreshPictoSize();
 		    }
 
 	    public int getCount() {
@@ -87,6 +85,7 @@ public class MyPictoAdapter extends BaseAdapter{
 	        	holder.text = (TextView)convertView.findViewById(R.id.text);
 	        	holder.image = (ImageView)convertView.findViewById(R.id.image);
 	        	holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+	        	holder.imageUri = mCursor.getString(mCursor.getColumnIndex("imageUri"));
 	        	convertView.setTag(holder);
 	        } else {
 	        	holder = (ViewHolder) convertView.getTag();
@@ -110,6 +109,7 @@ public class MyPictoAdapter extends BaseAdapter{
 		class ViewHolder{
 			public TextView text;
 			public ImageView image;
+			public String imageUri;
 		}		
 		
 }

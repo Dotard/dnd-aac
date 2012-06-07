@@ -2,7 +2,6 @@ package com.dnd.aac;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
-import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 

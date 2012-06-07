@@ -32,8 +32,6 @@ package com.dnd.aac.data;
 
 import java.io.IOException;
 
-import com.dnd.aac.Picto;
-
 import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentUris;

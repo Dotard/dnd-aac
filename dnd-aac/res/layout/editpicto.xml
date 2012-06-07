@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="135dp"
-    android:layout_height="115dp"
+    android:layout_width="120dp"
+    android:layout_height="100dp"
     android:orientation="vertical"
-    android:background="@android:drawable/list_selector_background"
-    android:focusableInTouchMode="true"
-    android:clickable="true"
-    android:padding="5dp"
-        android:id="@+id/picto">
-     
+    android:padding="10dp"
+
+    android:id="@+id/picto">
     <ImageView
         android:id="@+id/image"
-        android:layout_width="115dp"
+        android:layout_width="100dp"
+		android:layout_weight="1"
     	android:layout_height="0dp"
 		android:contentDescription="image"
-		android:layout_weight="3"
-		android:layout_marginTop="10dp"
         />
     
     <TextView
         android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:textSize="15sp"
-        android:layout_weight="1"
-        android:layout_gravity="center"
         android:textColor="#000000"
-        android:text="@string/hello" 
-        android:layout_marginBottom="0dp"/>
+        android:text="@string/hello" />
 </LinearLayout>

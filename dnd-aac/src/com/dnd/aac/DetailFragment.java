@@ -1,38 +1,31 @@
 package com.dnd.aac;
 
-import java.io.File;
-
-import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dnd.aac.cache.DiskLruCache;
 import com.dnd.aac.cache.ImageCache;
 import com.dnd.aac.cache.ImageCache.ImageCacheParams;
 import com.dnd.aac.cache.ImageFetcher;
 import com.dnd.aac.cache.ImageResizer;
-import com.dnd.aac.cache.ImageWorker.ImageWorkerAdapter;
 import com.dnd.aac.cache.Images;
 import com.dnd.aac.cache.Utils;
 import com.dnd.aac.data.aacProvider;
 import com.dnd.aac.BuildConfig;
+import com.dnd.aac.MyPictoAdapter.ViewHolder;
 
 
 public class DetailFragment extends android.support.v4.app.Fragment {
@@ -47,7 +40,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
     private int mImageThumbSize;
     private int mImageThumbSpacing;
     private MyPictoAdapter mAdapter;
-    private ImageResizer mImageWorker;
+    protected static ImageResizer mImageWorker;
 	private Cursor mCursor;
 	GridView mGridView = null;
     
@@ -95,11 +88,21 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         mGridView.setAdapter(mAdapter);
         mGridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				ImageView image = (ImageView) v.findViewById(R.id.image);
-				TextView tv = (TextView) v.findViewById(R.id.text);
+						
+				/*BitmapDrawable bd;
 
-				((MainActivity) getActivity()).addPicto(new Picto((int) id, tv.getText()+"", ((BitmapDrawable)image.getDrawable()).getBitmap()));
+				Cursor pictoCursor = getActivity().getContentResolver().query(aacProvider.PICTOS_URI, projection, "imageID = " + id, null, null);
+				mImageWorker.loadImage(pictoCursor.getString(pictoCursor.getColumnIndex("imageUri")), image);
+				pictoCursor.close();*/
 				
+				/*try {
+					bd = (BitmapDrawable) image.getDrawable();
+				} catch (Exception e){
+					bd = (BitmapDrawable) ((TransitionDrawable)image.getDrawable()).getDrawable(1);
+				}
+				*/
+				
+				((MainActivity) getActivity()).addPicto(new Picto((int) id, ((ViewHolder) v.getTag()).text.getText()+"", getActivity()));
 				//EditText et = (EditText) getActivity().findViewById(R.id.enter);
 				//if (et.length() > 0) {et.append(" "+ tv.getText());} else {et.append( tv.getText());}
 			}
@@ -110,7 +113,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         // number of columns and the width of each column. The width of each column is variable
         // as the GridView has stretchMode=columnWidth. The column width is used to set the height
         // of each view so we get nice square thumbnails.
-        mGridView.getViewTreeObserver().addOnGlobalLayoutListener(
+        /*mGridView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
@@ -129,7 +132,8 @@ public class DetailFragment extends android.support.v4.app.Fragment {
                         }
                     }
                 });
-		
+                */
+        
 		return view;
 	}
 
@@ -137,7 +141,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		mGridView.setOnItemClickListener(new OnItemClickListener() {
+		/*mGridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				ImageView image = (ImageView) v.findViewById(R.id.image);
 				TextView tv = (TextView) v.findViewById(R.id.text);
@@ -147,7 +151,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 				//EditText et = (EditText) getActivity().findViewById(R.id.enter);
 				//if (et.length() > 0) {et.append(" "+ tv.getText());} else {et.append( tv.getText());}
 			}
-		});;
+		});;*/
 	}
 	
 
@@ -174,14 +178,14 @@ public class DetailFragment extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mImageWorker.setExitTasksEarly(false);
+        //mImageWorker.setExitTasksEarly(false);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mImageWorker.setExitTasksEarly(true);
+        //mImageWorker.setExitTasksEarly(true);
     }
 	
 }

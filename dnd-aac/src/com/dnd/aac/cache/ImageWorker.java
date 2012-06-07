@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import com.dnd.aac.BuildConfig;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * This class wraps up completing some arbitrary long running work when loading a bitmap to an
@@ -76,9 +77,14 @@ public abstract class ImageWorker {
             imageView.setImageBitmap(bitmap);
         } else if (cancelPotentialWork(data, imageView)) {
             final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+            try {
             final AsyncDrawable asyncDrawable =
-                    new AsyncDrawable(mContext.getResources(), mLoadingBitmap, task);
+                    new AsyncDrawable(mContext.getResources(), mLoadingBitmap, task);    
             imageView.setImageDrawable(asyncDrawable);
+            } catch (RejectedExecutionException e) {
+            	if (BuildConfig.DEBUG) Log.d("AsyncTask", "Retrying");
+            	loadImage(data, imageView);
+            }
             task.execute(data);
         }
     }

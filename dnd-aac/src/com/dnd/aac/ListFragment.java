@@ -1,21 +1,16 @@
 package com.dnd.aac;
 
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.dnd.aac.data.aacProvider;
 
 public class ListFragment extends android.support.v4.app.ExpandableListFragment{
@@ -157,6 +152,6 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 			
 		});	
 		
-		startAnimation();
+		//startAnimation();
 	}
 }

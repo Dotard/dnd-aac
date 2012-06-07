@@ -1,21 +1,15 @@
 package com.dnd.aac;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.android.vending.expansion.zipfile.APKExpansionSupport;
 import com.android.vending.expansion.zipfile.ZipResourceFile;
 import com.dnd.aac.R;
 
-import android.app.LauncherActivity.ListItem;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -23,16 +17,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.NinePatch;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,7 +34,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 	
 	public Map<String, List<String>> objects;
 	
-	private int lastSelectedChild = -1,lastSelectedGroup = -1;
+	private int lastSelectedChild = -1,lastSelectedGroup = 0;
 	
 	Context context;
 	int parentlayout, childlayout, flags;
