@@ -36,7 +36,6 @@ public class MyPreferences{
 	
 	public static String getString(Context c, String key){
 		SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(c);
-		Log.d("aac","In prefs " + sPref.getString(key, null));
 		return sPref.getString(key, null);
 	}
 	
