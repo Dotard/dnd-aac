@@ -2,159 +2,97 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-	 >
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/topbar"
-        android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="180dp"
         android:background="@android:drawable/spinner_background"
+        android:orientation="horizontal"
         android:padding="10dp" >
-        
-        <FrameLayout 
+
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-		  	android:layout_weight="1"
-              >
-               
-          <com.devsmart.android.ui.HorizontalListView
-  			android:id="@+id/listview"
-  			android:layout_width="fill_parent"
-  			android:layout_height="fill_parent"
-  			android:background="@android:drawable/editbox_background"
-  			/>
-          
-           <TextView
-              android:id="@+id/emptyTextView"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="left|center_vertical"
-              android:text="Tap pictos to add them here."
-              android:textColor="#CCC"
-              android:textSize="40sp"
-              android:padding="30dp"
-              />
-                      
-           <LinearLayout android:id="@+id/suggestbox"
-        	android:orientation="horizontal"
-        	android:layout_width="wrap_content"
-       		 android:layout_height="wrap_content"
-       		 android:background="@drawable/btn_search_dialog_voice_default"
-       		 android:layout_margin="15dp"
-       		 android:visibility="invisible">               
-           </LinearLayout>
+            android:layout_weight="1" >
 
-          <ImageView
-              android:id="@+id/imageView1"
-              android:layout_width="50dp"
-              android:layout_height="fill_parent"
-              android:src="@drawable/ic_input_delete"
-              android:visibility="invisible"
-              android:onClick="deletePictos"
-              android:layout_gravity="right|center_vertical"
-              android:layout_marginRight="15dp"
-              />
-          
-          </FrameLayout>
-          
+            <com.devsmart.android.ui.HorizontalListView
+                android:id="@+id/listview"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@android:drawable/editbox_background" />
+
+            <TextView
+                android:id="@+id/emptyTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:padding="30dp"
+                android:text="Tap pictos to add them here."
+                android:textColor="#CCC"
+                android:textSize="40sp" />
+
+            <LinearLayout
+                android:id="@+id/suggestbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:background="@drawable/btn_search_dialog_voice_default"
+                android:orientation="horizontal"
+                android:visibility="invisible" >
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="80dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="15dp"
+                android:contentDescription="Delete Button"
+                android:onClick="deletePictos"
+                android:src="@drawable/ic_input_delete"
+                android:visibility="invisible" />
+        </FrameLayout>
+
         <Button
             android:id="@+id/button1"
             android:layout_width="115dp"
             android:layout_height="115dp"
             android:layout_gravity="center_vertical"
-            android:onClick="saySomething"
             android:background="@drawable/statelist_speechbtn"
+            android:onClick="saySomething"
             android:text="" />
-
+        
     </LinearLayout>
-    
-    <View android:layout_below="@+id/topbar"
+
+    <View
         android:id="@+id/divider"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#33B5E5"
-        />
-    
-    
-    <LinearLayout android:layout_below="@+id/divider"
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-         android:background="@drawable/panel_background"
-        android:paddingTop="8dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="16dp" >
-        
-		<LinearLayout
-        android:orientation="vertical"
-        android:layout_width="300dp"
-        android:layout_height="fill_parent"
-        >
+        android:layout_height="1dp"
+        android:layout_below="@+id/topbar"
+        android:background="#33B5E5" />
 
-		<!-- <LinearLayout
-		    android:layout_width="fill_parent"
-		    android:layout_height="50dp"
-		    android:layout_gravity="top"
-		    android:orientation="horizontal"
-	 >
-
-		    <TextView
-		        android:id="@+id/textView1"
-		        android:layout_width="0dp"
-		        android:layout_height="fill_parent"
-		        android:text="Picto Categories"
-		        android:gravity="center|center_vertical"
-		        android:layout_weight="1"
-		        android:textAppearance="?android:attr/textAppearanceMedium"	  /> 
-
-		    <ZoomButton
-		        android:id="@+id/zoomButton1"
-		        android:layout_width="37dp"
-		        android:layout_height="37dp"
-		        android:maxWidth="50dp"
-		        android:onClick="expandAll"
-		        android:src="@android:drawable/btn_plus"
-		        android:adjustViewBounds="true"
-		        android:scaleType="fitCenter"
-		        android:padding="0dp"
-		        />
-		     <ZoomButton
-		        android:id="@+id/zoomButton2"
-		        android:layout_width="37dp"
-		        android:layout_height="37dp"
-		        android:maxWidth="50dp"
-		        android:onClick="collapseAll"
-		        android:src="@android:drawable/btn_minus"
-		        android:adjustViewBounds="true"
-		        android:scaleType="fitCenter"
-		        android:padding="0dp"
-		        />
-
-		</LinearLayout>  -->
-		
-					
         <fragment
-        android:id="@+id/listFragment"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        class="com.dnd.aac.ListFragment" >
-        <!-- android:layout_marginTop="?android:attr/actionBarSize"-->
+            android:id="@+id/listFragment"
+            android:layout_width="300dp"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/divider"
+            class="com.dnd.aac.ListFragment" >
+
+            <!-- Preview: layout=@layout/listitem_group -->
         </fragment>
-        
-        </LinearLayout>
 
-    <fragment
-        android:id="@+id/detailFragment"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        class="com.dnd.aac.DetailFragment" >
-        <!-- Preview: layout=@layout/details -->
-    </fragment>
+        <fragment
+            android:layout_below="@+id/divider" 
+            android:layout_toRightOf="@+id/listFragment"
+            android:id="@+id/detailFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            class="com.dnd.aac.DetailFragment" >
 
-    </LinearLayout>
+            <!-- Preview: layout=@layout/details -->
+        </fragment>
+
 
 </RelativeLayout>

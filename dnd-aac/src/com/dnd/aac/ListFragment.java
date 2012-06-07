@@ -93,7 +93,7 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 		subcat = getActivity().getContentResolver().query(aacProvider.SUBCATEGORYS_URI, subcategoryProj, null, null, null);
 		
 		ExpandableListAdapter ela = new MyExpandableListAdapter(
-				getActivity().getApplicationContext(), R.layout.listitem_group_glow,R.layout.listitem_child,cat,subcat,values,ints,values,ints, 0);
+				getActivity().getApplicationContext(), R.layout.listitem_group,R.layout.listitem_child,cat,subcat,values,ints,values,ints, 0);
 		setListAdapter(ela);
 				
 		// Create a Drawable object with states

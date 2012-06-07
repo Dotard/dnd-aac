@@ -181,6 +181,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     	View row = ( (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(parentlayout, null);
     	
     		TextView textView = (TextView) row.findViewById(R.id.data_item);
+    		ImageView iv = (ImageView) row.findViewById(R.id.groupIndicator);
     		
     		if (textView == null) {Log.d("Checker", "textView is null..");}
             textView.setText(((HashMap<String,String>) getGroup(groupPosition)).get("categoryName"));
@@ -189,36 +190,21 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
             {
             	row.setBackgroundResource(R.color.gray_40);
             	textView.setTextColor(cl);
-            	;
             }
-            
-            //ImageView groupIcon = (ImageView) row.findViewById(R.id.groupIcon);
-            
-//	        try {
-//				Log.d("ImageURI", "picto/" + m.get("imageUri"));
-//				InputStream fileStream = MainActivity.mExpansionFile.getInputStream("picto/" + m.get("imageUri"));
-//				
-//				BufferedInputStream buf = new BufferedInputStream(fileStream);
-//				Bitmap bitmap = BitmapFactory.decodeStream(buf);
-//				groupIcon.setImageBitmap(bitmap);
-//				buf.close();
-//				
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				//e.printStackTrace();
-//			}
-	        
-            ImageView iv = (ImageView) row.findViewById(R.id.groupIndicator);
-            
-            if (groupPosition == 0) {
-            	//get_ninepatch(R.raw.btn_rating_star_off_normal, 35, 35, context);       	
+                       
+            if (groupPosition == 0) {    	
             	iv.setImageResource(R.drawable.btn_rating_star_off_normal);
             } else if (isExpanded){           
             	iv.setImageBitmap(ninePatchExpanded);
             } else {
             	iv.setImageBitmap(ninePatchCollapsed);
             }		   
-    		    
+            
+            
+            /*
+             * TODO: Implement category pictures
+             */
+            //ImageView groupIcon = (ImageView) row.findViewById(R.id.groupIcon);
 
         return row;
     }

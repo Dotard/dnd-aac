@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <drawable name="item_normal">#96FFFFFF</drawable>
-    <drawable name="item_active">#66000000</drawable>
-    <drawable name="item_pressed">#CA000000</drawable>
+
 </resources>

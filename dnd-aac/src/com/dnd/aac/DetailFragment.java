@@ -1,22 +1,14 @@
 package com.dnd.aac;
 
 import android.database.Cursor;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.dnd.aac.cache.ImageCache;
 import com.dnd.aac.cache.ImageCache.ImageCacheParams;
 import com.dnd.aac.cache.ImageFetcher;
@@ -24,7 +16,6 @@ import com.dnd.aac.cache.ImageResizer;
 import com.dnd.aac.cache.Images;
 import com.dnd.aac.cache.Utils;
 import com.dnd.aac.data.aacProvider;
-import com.dnd.aac.BuildConfig;
 import com.dnd.aac.MyPictoAdapter.ViewHolder;
 
 

@@ -59,6 +59,7 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 	private OnItemClickListener mOnItemClicked;
 	private OnItemLongClickListener mOnItemLongClicked;
 	private boolean mDataChanged = false;
+	private Runnable mRunnable;
 	
 
 	public HorizontalListView(Context context, AttributeSet attrs) {
@@ -75,6 +76,11 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 		mMaxX = Integer.MAX_VALUE;
 		mScroller = new Scroller(getContext());
 		mGesture = new GestureDetector(getContext(), mOnGesture);
+		mRunnable = new Runnable(){
+			@Override
+			public void run() {
+				requestLayout();
+			}};
 	}
 	
 	@Override
@@ -196,12 +202,8 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 		mCurrentX = mNextX;
 		
 		if(!mScroller.isFinished()){
-			post(new Runnable(){
-				@Override
-				public void run() {
-					requestLayout();
-				}
-			});
+			
+			post(mRunnable);
 			
 		}
 	}
