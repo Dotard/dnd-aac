@@ -78,7 +78,8 @@
             android:layout_width="300dp"
             android:layout_height="fill_parent"
             android:layout_below="@+id/divider"
-            class="com.dnd.aac.ListFragment" >
+            class="com.dnd.aac.ListFragment"
+            android:layout_marginLeft="10dp" >
 
             <!-- Preview: layout=@layout/listitem_group -->
         </fragment>
@@ -89,7 +90,8 @@
             android:id="@+id/detailFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            class="com.dnd.aac.DetailFragment" >
+            class="com.dnd.aac.DetailFragment"
+            android:layout_marginRight="10dp" >
 
             <!-- Preview: layout=@layout/details -->
         </fragment>

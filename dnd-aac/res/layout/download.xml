@@ -28,7 +28,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1" >
 
                 <TextView
@@ -80,11 +80,11 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/downloaderDashboard"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
-
+				<!-- android:id="@+id/downloaderDashboard" -->
+				
                 <Button
                     android:id="@+id/pauseButton"
                     android:layout_width="wrap_content"
