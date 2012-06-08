@@ -21,9 +21,11 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AnimationSet;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -135,7 +137,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
     public Object getChild(int groupPosition, int childPosition)
     { return subcategories.get(groupPosition).get(childPosition);}// membersGroupedByCriteria.get(groupPosition).get(childPosition); }
 
-    public long getChildId(int groupPosition, int childPosition)
+    @SuppressWarnings("unchecked")
+	public long getChildId(int groupPosition, int childPosition)
     { 
     	HashMap<String,String> m = (HashMap<String,String>) getChild(groupPosition, childPosition);
     	return Long.parseLong(m.get("subcategoryID")); 
@@ -153,7 +156,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
             
             if (lastSelectedGroup == groupPosition && lastSelectedChild == childPosition) 
             {	
-            	row.setBackgroundResource(R.color.gray_40);
+            	row.setBackgroundResource(android.R.color.darker_gray);
             	//row.setBackgroundResource(cl);
             	textView.setTextColor(cl2);
             }
@@ -170,9 +173,10 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 	@SuppressWarnings("unchecked")
     public long getGroupId(int groupPosition)
     { 
-
     	return Long.parseLong(((HashMap<String,String>) getGroup(groupPosition)).get("categoryID"));
     }
+	
+
 
     
     @SuppressWarnings("unchecked")
@@ -188,17 +192,45 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 
             if (lastSelectedGroup == groupPosition && lastSelectedChild == -1 ) 
             {
-            	row.setBackgroundResource(R.color.gray_40);
+            	row.setBackgroundResource(android.R.color.darker_gray);
             	textView.setTextColor(cl);
             }
+
+            ImageHolder imageHolder = new ImageHolder();
+            imageHolder.mListView = parent;
+            imageHolder.mPosition = groupPosition;
+            
+            iv.setTag(imageHolder);
+           
+            
+        	OnClickListener isClosed = new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                	  ((ExpandableListView) ((ImageHolder) v.getTag()).mListView).expandGroup(((ImageHolder) v.getTag()).mPosition);
+                }
+            };
+            OnClickListener isOpened = new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                	((ExpandableListView) ((ImageHolder) v.getTag()).mListView).collapseGroup(((ImageHolder) v.getTag()).mPosition);
+                }
+            };
                        
             if (groupPosition == 0) {    	
             	iv.setImageResource(R.drawable.btn_rating_star_off_normal);
             } else if (isExpanded){           
             	iv.setImageBitmap(ninePatchExpanded);
+            	iv.setOnClickListener(isOpened);
             } else {
             	iv.setImageBitmap(ninePatchCollapsed);
-            }		   
+            	iv.setOnClickListener(isClosed);
+            }		
+            
+            
+
+           
+            
+
             
             
             /*
@@ -282,5 +314,11 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
         np_drawable.draw(canvas);
         
         return output_bitmap;
+    }
+    
+    
+    class ImageHolder {
+    	public int mPosition;
+    	public ViewGroup mListView;
     }
 }

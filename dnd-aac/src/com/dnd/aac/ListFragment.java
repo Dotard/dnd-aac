@@ -10,10 +10,11 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.ImageView;
 
 import com.dnd.aac.data.aacProvider;
 
-public class ListFragment extends android.support.v4.app.ExpandableListFragment{
+public class ListFragment extends android.support.v4.app.ExpandableListFragment {
 	
 	Cursor cat;
 	Cursor subcat;
@@ -80,6 +81,16 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 	     for (int i = 0; i <count ; i++)
 	    	 this.getExpandableListView().expandGroup(i);
 	}
+	
+	public void toggleExpandCollapse(ImageView view) {
+		int i = (Integer) view.getTag();
+		if (getExpandableListView().isGroupExpanded(i)){
+			this.getExpandableListView().collapseGroup(i);  
+		} else {
+			this.getExpandableListView().expandGroup(i);  
+		}
+		
+	};
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -126,9 +137,7 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View v,
 					int groupPosition, long id) {
-				if(!parent.isGroupExpanded(groupPosition))
-				{
-					
+
 					DetailFragment fragment = (DetailFragment) getFragmentManager()
 							.findFragmentById(R.id.detailFragment);
 					if (fragment != null && fragment.isInLayout()) {
@@ -137,20 +146,25 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment{
 					MyExpandableListAdapter adapter = (MyExpandableListAdapter) getExpandableListAdapter();
 					adapter.setSelectedItem( groupPosition);
 					adapter.notifyDataSetChanged();
-				}
-				
-				if (isGlowing){
-					isGlowing = false;
-				View brackets =  getActivity().findViewById(R.id.listFragment);
-				brackets.clearAnimation();
-				MyExpandableListAdapter adapter = (MyExpandableListAdapter) getExpandableListAdapter();
-				adapter.parentlayout = R.layout.listitem_group;
+					
+					//Returns true to prevent collapse
+					return 	parent.isGroupExpanded(groupPosition);				
+					
+								
+//				//No longer using glowing
+//				 if (isGlowing){
+//				 	isGlowing = false;
+//					
+//				View brackets =  getActivity().findViewById(R.id.listFragment);
+//				brackets.clearAnimation();
+//				MyExpandableListAdapter adapter = (MyExpandableListAdapter) getExpandableListAdapter();
+//				adapter.parentlayout = R.layout.listitem_group; }
 
-				}
-				return false;
 			}	
 			
-		});	
+		});
+		
+		
 		
 		//startAnimation();
 	}

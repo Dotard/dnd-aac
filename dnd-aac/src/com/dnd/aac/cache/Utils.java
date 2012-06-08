@@ -52,9 +52,9 @@ public class Utils {
      */
     @SuppressLint("NewApi")
     public static int getBitmapSize(Bitmap bitmap) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
             return bitmap.getByteCount();
-        }
+        }*/
         // Pre HC-MR1
         return bitmap.getRowBytes() * bitmap.getHeight();
     }

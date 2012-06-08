@@ -1,11 +1,10 @@
 package com.dnd.aac;
 
-import com.actionbarsherlock.app.SherlockActivity;
-
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-public class DetailActivity extends SherlockActivity {
+public class DetailActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -20,7 +19,7 @@ public class DetailActivity extends SherlockActivity {
 		setContentView(R.layout.details_activity_layout);
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			String s = extras.getString("value");
+			//String s = extras.getString("value");
 		}
 	}
 }

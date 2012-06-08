@@ -93,7 +93,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 				}
 				*/
 				
-				((MainActivity) getActivity()).addPicto(new Picto((int) id, ((ViewHolder) v.getTag()).text.getText()+"", getActivity()));
+				((MainActivity) getActivity()).editHelper.addPicto(new Picto((int) id, ((ViewHolder) v.getTag()).text.getText()+"", getActivity()));
 				//EditText et = (EditText) getActivity().findViewById(R.id.enter);
 				//if (et.length() > 0) {et.append(" "+ tv.getText());} else {et.append( tv.getText());}
 			}
