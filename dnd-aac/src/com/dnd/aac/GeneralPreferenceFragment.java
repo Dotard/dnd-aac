@@ -1,5 +1,7 @@
 package com.dnd.aac;
 
+import com.dnd.aac.util.MyPreferences;
+
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceFragment;

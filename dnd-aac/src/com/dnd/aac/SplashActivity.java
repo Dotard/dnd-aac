@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class SplashScreen extends Activity {
+public class SplashActivity extends Activity {
 	private static final int SPLASH_DISPLAY_TIME = 0;  /*set to 0 while testing ;2 seconds */
 	 
     /** Called when the activity is first created. */
@@ -32,12 +32,12 @@ public class SplashScreen extends Activity {
                     public void run() {
                            
                             /* Create an intent that will start the main activity. */
-                            Intent mainIntent = new Intent(SplashScreen.this,
+                            Intent mainIntent = new Intent(SplashActivity.this,
                                     DownloaderActivity.class);
-                            SplashScreen.this.startActivity(mainIntent);
+                            SplashActivity.this.startActivity(mainIntent);
                            
                             /* Finish splash activity so user cant go back to it. */
-                            SplashScreen.this.finish();
+                            SplashActivity.this.finish();
                            
                             /* Apply our splash exit (fade out) and main
                                entry (fade in) animation transitions. */

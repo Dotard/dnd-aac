@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+
+import com.dnd.aac.adapter.MyPictoAdapter;
+import com.dnd.aac.adapter.MyPictoAdapter.PictoViewHolder;
 import com.dnd.aac.cache.ImageCache;
 import com.dnd.aac.cache.ImageCache.ImageCacheParams;
 import com.dnd.aac.cache.ImageFetcher;
@@ -16,7 +19,6 @@ import com.dnd.aac.cache.ImageResizer;
 import com.dnd.aac.cache.Images;
 import com.dnd.aac.cache.Utils;
 import com.dnd.aac.data.aacProvider;
-import com.dnd.aac.MyPictoAdapter.ViewHolder;
 
 
 public class DetailFragment extends android.support.v4.app.Fragment {
@@ -93,7 +95,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 				}
 				*/
 				
-				((MainActivity) getActivity()).editHelper.addPicto(new Picto((int) id, ((ViewHolder) v.getTag()).text.getText()+"", getActivity()));
+				((MainActivity) getActivity()).editHelper.addPicto(new Picto((int) id, ((PictoViewHolder) v.getTag()).text.getText()+"", getActivity()));
 				//EditText et = (EditText) getActivity().findViewById(R.id.enter);
 				//if (et.length() > 0) {et.append(" "+ tv.getText());} else {et.append( tv.getText());}
 			}

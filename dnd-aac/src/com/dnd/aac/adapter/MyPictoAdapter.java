@@ -1,4 +1,4 @@
-package com.dnd.aac;
+package com.dnd.aac.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,7 +11,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dnd.aac.R;
+import com.dnd.aac.R.id;
+import com.dnd.aac.R.string;
 import com.dnd.aac.cache.ImageResizer;
+import com.dnd.aac.util.MyPreferences;
 
 public class MyPictoAdapter extends BaseAdapter{
 	  private Context mContext;
@@ -76,19 +80,19 @@ public class MyPictoAdapter extends BaseAdapter{
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	        mCursor.moveToPosition(position);
 	        
-	        ViewHolder holder;     
+	        PictoViewHolder holder;     
 	        if (convertView == null) {  
 	        	convertView = ( (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(layout,null);	            	 	        	    
 	        	convertView.setLayoutParams(new GridView.LayoutParams(mPictoSize,mPictoSize));
 	        		        		        	
-	        	holder = new ViewHolder();
+	        	holder = new PictoViewHolder();
 	        	holder.text = (TextView)convertView.findViewById(R.id.text);
 	        	holder.image = (ImageView)convertView.findViewById(R.id.image);
 	        	holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 	        	holder.imageUri = mCursor.getString(mCursor.getColumnIndex("imageUri"));
 	        	convertView.setTag(holder);
 	        } else {
-	        	holder = (ViewHolder) convertView.getTag();
+	        	holder = (PictoViewHolder) convertView.getTag();
 	        	
 	        	if(convertView.getLayoutParams().height != mPictoSize){
 	        		convertView.setLayoutParams(new GridView.LayoutParams(mPictoSize,mPictoSize));
@@ -106,7 +110,7 @@ public class MyPictoAdapter extends BaseAdapter{
 	    	mPictoSize = MyPreferences.getPictoSize(mContext, mContext.getString(R.string.pref_pictosize));	    			
 	    }
 	    
-		class ViewHolder{
+		public class PictoViewHolder{
 			public TextView text;
 			public ImageView image;
 			public String imageUri;

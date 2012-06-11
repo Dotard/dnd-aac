@@ -1,4 +1,4 @@
-package com.dnd.aac;
+package com.dnd.aac.util;
 /*
  * Copyright (C) 2012 The Android Open Source Project
  *
@@ -14,6 +14,7 @@ package com.dnd.aac;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.dnd.aac.MyDownloaderService;
 import com.google.android.vending.expansion.downloader.DownloaderClientMarshaller;
 
 import android.content.BroadcastReceiver;

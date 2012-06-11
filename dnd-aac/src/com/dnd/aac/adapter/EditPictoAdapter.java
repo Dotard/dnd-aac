@@ -1,6 +1,11 @@
-package com.dnd.aac;
+package com.dnd.aac.adapter;
 
 import java.util.ArrayList;
+
+import com.dnd.aac.MainActivity;
+import com.dnd.aac.Picto;
+import com.dnd.aac.R;
+import com.dnd.aac.R.id;
 
 import android.content.Context;
 import android.view.View;

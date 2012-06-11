@@ -1,4 +1,4 @@
-package com.dnd.aac;
+package com.dnd.aac.adapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,9 @@ import java.util.Map;
 
 import com.android.vending.expansion.zipfile.ZipResourceFile;
 import com.dnd.aac.R;
+import com.dnd.aac.R.drawable;
+import com.dnd.aac.R.id;
+import com.dnd.aac.R.raw;
 
 import android.content.Context;
 import android.content.res.ColorStateList;

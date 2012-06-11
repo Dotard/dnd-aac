@@ -12,6 +12,7 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageView;
 
+import com.dnd.aac.adapter.MyExpandableListAdapter;
 import com.dnd.aac.data.aacProvider;
 
 public class ListFragment extends android.support.v4.app.ExpandableListFragment {

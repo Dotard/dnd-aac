@@ -1,6 +1,10 @@
-package com.dnd.aac;
+package com.dnd.aac.util;
 
 import java.util.ArrayList;
+
+import com.dnd.aac.R;
+import com.dnd.aac.R.array;
+import com.dnd.aac.R.dimen;
 
 import android.content.Context;
 import android.content.SharedPreferences;
