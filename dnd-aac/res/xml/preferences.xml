@@ -7,9 +7,17 @@
 	        android:title="Picto size"
 	        android:summary="Set picto size"/> <!-- PictoSizePrefs sets default programmatically -->
 	</PreferenceCategory>
-	    
-    
-    
-    
+	<!-- <PreferenceCategory
+        android:summary="Adjust TTS settings"
+        android:title="Text to Speech" >
+        <Preference
+            android:key="ttsSettings"
+            android:summary="Text to Speech settings"
+            android:title="Text to Speech" >
+            <intent android:action="android.settings.SOUND_SETTINGS" />
+        </Preference>
+    </PreferenceCategory>
+     -->
+   
 </PreferenceScreen>
     

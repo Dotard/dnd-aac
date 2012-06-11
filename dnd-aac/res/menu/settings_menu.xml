@@ -11,7 +11,7 @@
 			<group android:id="@+id/menu_size_group"
 				android:checkableBehavior="single">
 				
-				<item android:id="@+id/menu_size_xs" android:title="XS" android:checked="true" />
+				<item android:id="@+id/menu_size_xs" android:title="XS"/>
 
 				<item android:id="@+id/menu_size_s" android:title="S" />
 

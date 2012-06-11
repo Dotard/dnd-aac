@@ -4,10 +4,16 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
 public class MyPreferences{
 
+	public static void registerOnSharedPreferenceChangeListener(Context c,OnSharedPreferenceChangeListener listener){
+		SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(c);
+		sPref.registerOnSharedPreferenceChangeListener(listener);
+	}
+	
 	public static void saveString(Context c, String key, String value){
 		SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(c);
 		SharedPreferences.Editor editor = sPref.edit();
@@ -31,6 +37,12 @@ public class MyPreferences{
 		prefs.add((int)c.getResources().getDimension(R.dimen.picto_xxl));
 					
 		return prefs;
+	}
+	
+	public static String[] getPictoSizeNames(Context c){
+		String[] sizeNames = c.getResources().getStringArray(R.array.pictosize_array);
+		
+		return sizeNames;
 	}
 	
 	public static String getString(Context c, String key){

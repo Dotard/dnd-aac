@@ -12,7 +12,9 @@ public class PictoSizePrefs extends ListPreference {
 		super(context,attrs);
 
 		ArrayList<Integer> prefs = MyPreferences.getPictoSizePrefs(context);
-		CharSequence[] entries = new CharSequence[prefs.size()-1];
+		String[] sizeNames = MyPreferences.getPictoSizeNames(context);
+		
+		CharSequence[] entries = new CharSequence[sizeNames.length];
 		CharSequence[] entryValues = new CharSequence[prefs.size()-1];
 		
 		for(int i = 1; i < prefs.size(); i++){
@@ -20,10 +22,10 @@ public class PictoSizePrefs extends ListPreference {
 			entryValues[i - 1] = prefs.get(i).toString();
 		}
 		
-		setEntries(entries);
+		setEntries(sizeNames);
 		setEntryValues(entryValues);
 		
-		setDefaultValue(prefs.get(0).toString()); //always set default programatically
+		setDefaultValue(prefs.get(0).toString()); //always set default programatically	
 	}
 	
 	public PictoSizePrefs(Context context) {

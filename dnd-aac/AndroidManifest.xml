@@ -33,7 +33,8 @@
             android:screenOrientation="landscape" ></activity>
         <activity android:name=".DetailActivty" ></activity>
         <activity android:name=".DownloaderActivity" ></activity>
-        
+        <activity android:name=".MyPreferenceActivity"></activity>
+        <activity android:name=".MyPreferenceHCActivity"></activity>       
         <provider
         	android:name=".data.aacProvider"
             android:authorities="com.dnd.aac.data.aacProvider"

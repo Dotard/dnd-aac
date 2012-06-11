@@ -9,6 +9,9 @@ import com.dnd.aac.util.SuggestHelper;
 import com.dnd.aac.util.TTSHelper;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -17,7 +20,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements
+OnSharedPreferenceChangeListener{
 	static public ZipResourceFile mExpansionFile;
 	private int MY_DATA_CHECK_CODE = 0;
 
@@ -25,6 +29,7 @@ public class MainActivity extends FragmentActivity {
 	public SuggestHelper suggestHelper;
 	public TTSHelper ttsHelper;
 	public EditHelper editHelper;
+	private Menu optMenu;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -40,6 +45,7 @@ public class MainActivity extends FragmentActivity {
 		
 		//Load defaults; first time ONLY
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		MyPreferences.registerOnSharedPreferenceChangeListener(this, this);
 		
         try {
 			mExpansionFile = APKExpansionSupport.getAPKExpansionZipFile(this, 1, 0);
@@ -54,7 +60,7 @@ public class MainActivity extends FragmentActivity {
         
         Menu sizesMenu = menu.findItem(R.id.menu_size).getSubMenu(); //get menu for picto sizes 
         //SearchView searchView = (SearchView)menu.findItem(R.id.menu_search).getActionView();
-        
+        this.optMenu = menu;
         
         ArrayList<Integer> sizePrefs = MyPreferences.getPictoSizePrefs(this);
         sizePrefs.remove(0);//remove default entry
@@ -78,7 +84,13 @@ public class MainActivity extends FragmentActivity {
 		DetailFragment detailsFragment;
 		int dimRes = -1;
 	    switch (item.getItemId()) {
-   
+	        case R.id.menu_settings:
+	        	if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB){
+	        		startActivity(new Intent(this,MyPreferenceActivity.class));
+	        	}else{
+	        		startActivity(new Intent(this,MyPreferenceHCActivity.class));
+	        	}	        		
+	        	return true;
 	        case R.id.menu_size_xs:
 	        	dimRes =  R.dimen.picto_xs; break;
 	        case R.id.menu_size_s:
@@ -93,7 +105,6 @@ public class MainActivity extends FragmentActivity {
 	        	dimRes =  R.dimen.picto_xxl; break;
 	        case R.id.menu_exit:
 	        	finish();
-	        case R.id.menu_settings:
 	        	return true;       
 	    }
 	    
@@ -128,6 +139,28 @@ public class MainActivity extends FragmentActivity {
 	protected void onDestroy() {
 		ttsHelper.destroy();
 		super.onDestroy();
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key) {
+		if(key.equals(getString(R.string.pref_pictosize))){
+			Menu sizesMenu = optMenu.findItem(R.id.menu_size).getSubMenu(); //get menu for picto sizes 
+	       	               
+	        ArrayList<Integer> sizePrefs = MyPreferences.getPictoSizePrefs(this);
+	        sizePrefs.remove(0);//remove default entry
+	        int selectedSize = MyPreferences.getPictoSize(this, getString(R.string.pref_pictosize));
+	            
+	        for(int i = 0; i < sizePrefs.size(); i++){
+	        	if(selectedSize == sizePrefs.get(i)){
+	        		sizesMenu.getItem(i).setChecked(true); 
+	        		DetailFragment detailsFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
+	        		if(detailsFragment != null){
+	        			detailsFragment.refreshGridView();
+	        		}
+	        		break;
+	        	}
+	        }
+		}	
 	}
 
 }
