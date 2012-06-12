@@ -17,10 +17,10 @@ public class DetailActivity extends Activity {
 		}
 
 		setContentView(R.layout.details_activity_layout);
-		Bundle extras = getIntent().getExtras();
+		/*Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			//String s = extras.getString("value");
-		}
+		}*/
 	}
 }
 

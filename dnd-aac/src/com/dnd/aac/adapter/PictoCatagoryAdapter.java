@@ -32,7 +32,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MyExpandableListAdapter extends BaseExpandableListAdapter
+public class PictoCatagoryAdapter extends BaseExpandableListAdapter
 {
 	public ArrayList<HashMap<String,String>> categories = new ArrayList<HashMap<String,String>>();
 	public ArrayList<ArrayList<HashMap<String,String>>> subcategories = new ArrayList<ArrayList<HashMap<String,String>>>();
@@ -57,7 +57,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter
 		private ZipResourceFile mExpansionFile;
 	   
 
-	public MyExpandableListAdapter(Context context, int parentlayout, int childlayout, Cursor parentcursor, Cursor childcursor, String[] from, String[] to, String[] from2, String[] to2, int flags){
+	public PictoCatagoryAdapter(Context context, int parentlayout, int childlayout, Cursor parentcursor, Cursor childcursor, String[] from, String[] to, String[] from2, String[] to2, int flags){
 		this.context = context;
 		this.parentlayout = parentlayout;
 		this.childlayout = childlayout;

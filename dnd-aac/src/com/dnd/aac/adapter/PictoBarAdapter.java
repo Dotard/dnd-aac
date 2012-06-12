@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-public class EditPictoAdapter extends BaseAdapter {
+public class PictoBarAdapter extends BaseAdapter {
 	
 	private Context mContext;
 	private ArrayList<Picto> arrayOfPictos;
 
-	public EditPictoAdapter (ArrayList<Picto> arrayOfPictos,Context context) {
+	public PictoBarAdapter (ArrayList<Picto> arrayOfPictos,Context context) {
 		this.arrayOfPictos = arrayOfPictos;
 		mContext = context;		
 	}

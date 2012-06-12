@@ -15,7 +15,7 @@ import com.dnd.aac.MainActivity;
 import com.dnd.aac.Picto;
 import com.dnd.aac.R;
 import com.dnd.aac.R.id;
-import com.dnd.aac.adapter.EditPictoAdapter;
+import com.dnd.aac.adapter.PictoBarAdapter;
 
 public class EditHelper {
 	
@@ -29,7 +29,7 @@ public class EditHelper {
 		// pictoView Setup
 		HorizontalListView pictoView = (HorizontalListView) ((MainActivity) mContext).findViewById(R.id.listview);
 		pictoView.setOnItemClickListener(pictoClicked);
-		pictoView.setAdapter(new EditPictoAdapter (arrayOfPictos, mContext));
+		pictoView.setAdapter(new PictoBarAdapter (arrayOfPictos, mContext));
 	}
 	
 

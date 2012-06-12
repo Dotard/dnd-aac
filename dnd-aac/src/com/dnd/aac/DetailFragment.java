@@ -10,8 +10,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
-import com.dnd.aac.adapter.MyPictoAdapter;
-import com.dnd.aac.adapter.MyPictoAdapter.PictoViewHolder;
+import com.dnd.aac.adapter.PictoGridAdapter;
+import com.dnd.aac.adapter.PictoGridAdapter.PictoViewHolder;
 import com.dnd.aac.cache.ImageCache;
 import com.dnd.aac.cache.ImageCache.ImageCacheParams;
 import com.dnd.aac.cache.ImageFetcher;
@@ -32,7 +32,7 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	
     private int mImageThumbSize;
     private int mImageThumbSpacing;
-    private MyPictoAdapter mAdapter;
+    private PictoGridAdapter mAdapter;
     protected static ImageResizer mImageWorker;
 	private Cursor mCursor;
 	GridView mGridView = null;
@@ -74,31 +74,18 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 		projection = new String[]{ "PICTOS.pictoID as _id","Pictos.pictoPhrase", "Images.imageUri" };
 		if (mCursor == null)
 		mCursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI ,"2/1") , projection, null, null, null);
-		mAdapter = new MyPictoAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker);
+		mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker,new String[]{},new int[]{});
 		   		
 		final View view = inflater.inflate(R.layout.details, container, false);
         mGridView = (GridView) view.findViewById(R.id.gridview);
         mGridView.setAdapter(mAdapter);
+        
         mGridView.setOnItemClickListener(new OnItemClickListener() {
+        	
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-						
-				/*BitmapDrawable bd;
-
-				Cursor pictoCursor = getActivity().getContentResolver().query(aacProvider.PICTOS_URI, projection, "imageID = " + id, null, null);
-				mImageWorker.loadImage(pictoCursor.getString(pictoCursor.getColumnIndex("imageUri")), image);
-				pictoCursor.close();*/
-				
-				/*try {
-					bd = (BitmapDrawable) image.getDrawable();
-				} catch (Exception e){
-					bd = (BitmapDrawable) ((TransitionDrawable)image.getDrawable()).getDrawable(1);
-				}
-				*/
-				
-				((MainActivity) getActivity()).editHelper.addPicto(new Picto((int) id, ((PictoViewHolder) v.getTag()).text.getText()+"", getActivity()));
-				//EditText et = (EditText) getActivity().findViewById(R.id.enter);
-				//if (et.length() > 0) {et.append(" "+ tv.getText());} else {et.append( tv.getText());}
+					((MainActivity) getActivity()).editHelper.addPicto(new Picto((int) id, ((PictoViewHolder) v.getTag()).text.getText()+"", getActivity()));
 			}
+			
 		});
 		
 
@@ -133,32 +120,20 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
-		/*mGridView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				ImageView image = (ImageView) v.findViewById(R.id.image);
-				TextView tv = (TextView) v.findViewById(R.id.text);
-
-				((MainActivity) getActivity()).addPicto(new Picto((int) id, tv.getText()+"", ((BitmapDrawable)image.getDrawable()).getBitmap()));
-				
-				//EditText et = (EditText) getActivity().findViewById(R.id.enter);
-				//if (et.length() > 0) {et.append(" "+ tv.getText());} else {et.append( tv.getText());}
-			}
-		});;*/
 	}
 	
 
 	public void setSubcategory(long subcategoryID)
 	{
 		mCursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI ,"1/" + String.valueOf(subcategoryID)), projection, null, null, null);
-		mAdapter = new MyPictoAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker);
+		mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker,new String[]{},new int[]{});
 		mGridView.setAdapter(mAdapter);
 	}
 	
 	public void setCategory(long categoryID)
 	{
 		mCursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI,"2/" + String.valueOf(categoryID)), projection, null, null, null);
-		mAdapter = new MyPictoAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker);
+		mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker,new String[]{},new int[]{});
 		mGridView.setAdapter(mAdapter);
 	}
 	
