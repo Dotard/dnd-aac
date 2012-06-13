@@ -37,17 +37,17 @@ public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
       private GridView parentView;
       
       public PictoGridAdapter(Context context,int layout,Cursor cursor, ImageResizer mImageWorker, String[] from, int[] to ,GridView parent) {
-	    	super(context, layout, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-	    	 mContext = context;
-		        this.layout = layout;
-		        mBaseCursor = cursor;
-		        uriIndex = mBaseCursor.getColumnIndex("imageUri");
-		        phraseIndex = mBaseCursor.getColumnIndex("pictoPhrase");	
-		        this.mImageWorker = mImageWorker;
-		        this.parentView = parent;
-		        
-	        	refreshPictoSize();
-		    }
+    	  super(context, layout, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+    	  mContext = context;
+    	  this.layout = layout;
+    	  mBaseCursor = cursor;
+    	  uriIndex = mBaseCursor.getColumnIndex("imageUri");
+    	  phraseIndex = mBaseCursor.getColumnIndex("pictoPhrase");	
+    	  this.mImageWorker = mImageWorker;
+    	  this.parentView = parent;
+
+    	  refreshPictoSize();
+      }
 
 		public int getCount() {
 	        return mBaseCursor.getCount();
@@ -182,7 +182,7 @@ public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
         	}
         	 holder.text.setText(cursor.getString(phraseIndex));	        	
  	        
- 	        mImageWorker.loadImage(cursor.getString(cursor.getColumnIndex("imageUri")), holder.image);
+ 	        mImageWorker.loadImage(cursor.getString(uriIndex), holder.image);
 		}
 
 		@Override

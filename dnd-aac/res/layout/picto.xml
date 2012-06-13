@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@drawable/btn_default_small_normal"
-    android:layout_margin="0dp"
-    android:padding="5dp"
-     >    
-    <ImageView
+    android:layout_height="fill_parent">
+
+    <ImageView  
         android:id="@+id/image"
-        android:layout_width="fill_parent"
-    	android:layout_height="0dp"
-		android:layout_weight="3"
-	    android:contentDescription="PictoImage"
-        />
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent"     
+        android:scaleType="center" />
     
-    <TextView
+    <com.dnd.aac.AutoResizeTextView
         android:id="@+id/text"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:textSize="15sp"
-        android:layout_weight="1"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:layout_marginBottom="0dip"
+        android:layout_gravity="center_horizontal|bottom"
         android:gravity="center"
-        android:textColor="#000"
+	
+        android:padding="8dip"
+        android:maxLines="2"
+        android:textSize="18dp"
+
+
+   
+        android:background="#AA000000"
+        android:textColor="#ffffffff"
+        
         android:text="@string/hello" />
-</LinearLayout>
+</FrameLayout>
