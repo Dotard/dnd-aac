@@ -80,12 +80,12 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 		final View view = inflater.inflate(R.layout.details, container, false);
         mGridView = (GridView) view.findViewById(R.id.gridview);
         
-        mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker,new String[]{},new int[]{},mGridView);
+        mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto_grid,mCursor, mImageWorker,new String[]{},new int[]{},mGridView);
         mGridView.setAdapter(mAdapter);
         mGridView.setOnItemClickListener(new OnItemClickListener() {
         	
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-					((MainActivity) getActivity()).editHelper.addPicto(new Picto((int) id, ((PictoViewHolder) v.getTag()).text.getText()+"", getActivity()));
+					((MainActivity) getActivity()).barHelper.addPicto(new Picto((int) id, ((PictoViewHolder) v.getTag()).text.getText()+"", getActivity()));
 			}
 		});
 		
@@ -127,14 +127,14 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	public void setSubcategory(long subcategoryID)
 	{
 		mCursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI ,"1/" + String.valueOf(subcategoryID)), projection, null, null, null);
-		mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker,new String[]{},new int[]{},mGridView);
+		mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto_grid,mCursor, mImageWorker,new String[]{},new int[]{},mGridView);
 		mGridView.setAdapter(mAdapter);
 	}
 	
 	public void setCategory(long categoryID)
 	{
 		mCursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI,"2/" + String.valueOf(categoryID)), projection, null, null, null);
-		mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker,new String[]{},new int[]{},mGridView);
+		mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto_grid,mCursor, mImageWorker,new String[]{},new int[]{},mGridView);
 		mGridView.setAdapter(mAdapter);
 	}
 	

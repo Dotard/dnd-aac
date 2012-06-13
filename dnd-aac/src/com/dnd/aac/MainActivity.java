@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import com.android.vending.expansion.zipfile.APKExpansionSupport;
 import com.android.vending.expansion.zipfile.ZipResourceFile;
-import com.dnd.aac.util.EditHelper;
+import com.dnd.aac.util.BarHelper;
 import com.dnd.aac.util.MyPreferences;
 import com.dnd.aac.util.SuggestHelper;
 import com.dnd.aac.util.TTSHelper;
@@ -35,7 +35,7 @@ OnSharedPreferenceChangeListener{
 	private ArrayList<Picto> arrayOfPictos = new ArrayList<Picto>();
 	public SuggestHelper suggestHelper;
 	public TTSHelper ttsHelper;
-	public EditHelper editHelper;
+	public BarHelper barHelper;
 	private Menu optMenu;
 
 	/** Called when the activity is first created. */
@@ -47,7 +47,7 @@ OnSharedPreferenceChangeListener{
 		
 		suggestHelper = new SuggestHelper(arrayOfPictos, this);
 		ttsHelper = new TTSHelper(arrayOfPictos, this);
-		editHelper = new EditHelper(arrayOfPictos, this);
+		barHelper = new BarHelper(arrayOfPictos, this);
 		
 		
 		//Load defaults; first time ONLY
@@ -170,7 +170,7 @@ OnSharedPreferenceChangeListener{
 	}
 	
 	public void deletePictos(View view) {
-		editHelper.deletePictos(view);
+		barHelper.deletePictos(view);
 	}
 		
 	@Override

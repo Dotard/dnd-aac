@@ -28,7 +28,7 @@ public class Picto {
 		this.id = id;
 		this.name= name;
 		
-		pictoView = ( (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(R.layout.editpicto,null);
+		pictoView = ( (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(R.layout.picto_bar,null);
 		
 		String [] projection = new String[]{ "PICTOS.pictoID as _id","Pictos.pictoPhrase", "Images.imageUri" };
 		Cursor pictoCursor = context.getContentResolver().query(Uri.parse(aacProvider.PICTOS_URI + "/pictos"), projection, "PICTOS.pictoID = " + id, null, null);

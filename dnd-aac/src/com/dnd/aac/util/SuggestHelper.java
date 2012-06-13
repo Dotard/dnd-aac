@@ -196,7 +196,7 @@ public class SuggestHelper {
 				TextView tv = (TextView) view.findViewById(R.id.text);
 				int id = (Integer) ((LinearLayout) view).getTag();
 				
-				((MainActivity) mContext).editHelper.addPicto(new Picto((int) id, tv.getText()+"", mContext));
+				((MainActivity) mContext).barHelper.addPicto(new Picto((int) id, tv.getText()+"", mContext));
 			}
 		};
 }
