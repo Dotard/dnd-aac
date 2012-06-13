@@ -8,6 +8,7 @@ import com.dnd.aac.util.EditHelper;
 import com.dnd.aac.util.MyPreferences;
 import com.dnd.aac.util.SuggestHelper;
 import com.dnd.aac.util.TTSHelper;
+import com.dnd.aac.adapter.PictoCatagoryAdapter;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,10 +17,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
 OnSharedPreferenceChangeListener{
@@ -60,7 +66,7 @@ OnSharedPreferenceChangeListener{
         menuInflater.inflate(R.menu.settings_menu, menu);
         
         Menu sizesMenu = menu.findItem(R.id.menu_size).getSubMenu(); //get menu for picto sizes 
-        //SearchView searchView = (SearchView)menu.findItem(R.id.menu_search).getActionView();
+        final SearchView searchView = (SearchView)menu.findItem(R.id.menu_search).getActionView();
         this.optMenu = menu;
         
         ArrayList<Integer> sizePrefs = MyPreferences.getPictoSizePrefs(this);
@@ -74,6 +80,37 @@ OnSharedPreferenceChangeListener{
         	}
         }
         
+        searchView.setSubmitButtonEnabled(true);
+        searchView.setOnQueryTextListener(new OnQueryTextListener() {
+            
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+            	DetailFragment detailsFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.detailFragment);
+            	ListFragment listFragment = (ListFragment) getSupportFragmentManager().findFragmentById(R.id.listFragment);
+        		if(detailsFragment != null){
+        			Log.d("Calling filterList",query);
+        			detailsFragment.filterList(query);
+        			
+        			//Revert view to icon, and hide keyboard.
+        			searchView.setQuery("", false);
+        			searchView.setIconified(true); 
+        			if(listFragment != null){
+        				PictoCatagoryAdapter pca = ((PictoCatagoryAdapter) listFragment.getExpandableListAdapter());
+        						pca.setSelectedItem(-1);
+        						pca.notifyDataSetChanged();
+        			}
+        			return true;
+        		}
+        		
+                    return false;
+            }
+            
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                    return false;
+            }
+    });
         //do stuff for searchView
         
         return true;

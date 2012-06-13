@@ -23,8 +23,6 @@ import com.dnd.aac.util.MyPreferences;
 public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
 	  private Context mContext;
 	  private int layout;
-	  private Cursor mBaseCursor;
-	  private Cursor mFilterCursor;
 	  private int uriIndex;
 	  private int phraseIndex;
 	  
@@ -37,20 +35,19 @@ public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
       private GridView parentView;
       
       public PictoGridAdapter(Context context,int layout,Cursor cursor, ImageResizer mImageWorker, String[] from, int[] to ,GridView parent) {
-    	  super(context, layout, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-    	  mContext = context;
-    	  this.layout = layout;
-    	  mBaseCursor = cursor;
-    	  uriIndex = mBaseCursor.getColumnIndex("imageUri");
-    	  phraseIndex = mBaseCursor.getColumnIndex("pictoPhrase");	
-    	  this.mImageWorker = mImageWorker;
-    	  this.parentView = parent;
-
-    	  refreshPictoSize();
+	    	super(context, layout, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+	    	mContext = context;
+	        this.layout = layout;
+	        uriIndex = cursor.getColumnIndex("imageUri");
+	        phraseIndex = cursor.getColumnIndex("pictoPhrase");	
+	        this.mImageWorker = mImageWorker;
+	        this.parentView = parent;
+	        
+        	refreshPictoSize();
       }
 
 		public int getCount() {
-	        return mBaseCursor.getCount();
+	        return getCursor().getCount();
 	    }
 
 	    public Object getItem(int position) {
@@ -58,9 +55,9 @@ public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
 	    }
 
 	    public long getItemId(int position) {
-	        mBaseCursor.moveToPosition(position);
-	        if (mBaseCursor.getColumnIndex("_id") == -1) return 0;
-	        return mBaseCursor.getLong(mBaseCursor.getColumnIndex("_id"));
+	    	getCursor().moveToPosition(position);
+	        if (getCursor().getColumnIndex("_id") == -1) return 0;
+	        return getCursor().getLong(getCursor().getColumnIndex("_id"));
 	    }
 	    
 	    public void setNumColumns(int numColumns) {
@@ -84,7 +81,7 @@ public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
 
 	    // create a new ImageView for each item referenced by the Adapter
 	    public View getView(int position, View convertView, ViewGroup parent) {
-	        mBaseCursor.moveToPosition(position);
+	    	getCursor().moveToPosition(position);
 	        
 	        PictoViewHolder holder;     
 	        if (convertView == null) {  
@@ -95,7 +92,7 @@ public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
 	        	holder.text = (TextView)convertView.findViewById(R.id.text);
 	        	holder.image = (ImageView)convertView.findViewById(R.id.image);
 	        	holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-	        	holder.imageUri = mBaseCursor.getString(uriIndex);
+	        	holder.imageUri = getCursor().getString(uriIndex);
 	        	convertView.setTag(holder);
 	        } else {
 	        	holder = (PictoViewHolder) convertView.getTag();
@@ -104,10 +101,9 @@ public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
 	        		convertView.setLayoutParams(new GridView.LayoutParams(mPictoSize,mPictoSize));
 	        	}
 	        }
-	        	
-	        holder.text.setText(mBaseCursor.getString(phraseIndex));	        	
-	        
-	        mImageWorker.loadImage(mBaseCursor.getString(uriIndex), holder.image);
+
+	        holder.text.setText(getCursor().getString(phraseIndex));	        	
+	        mImageWorker.loadImage(getCursor().getString(uriIndex), holder.image);
 		        
 	        return convertView;
 	    }
@@ -122,56 +118,6 @@ public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
 			public ImageView image;
 			public String imageUri;
 		}
-
-		@Override
-	    public Filter getFilter() {
-
-	    /*    Filter filter = new Filter() {
-
-	            @SuppressWarnings("unchecked")
-	            @Override
-	            protected void publishResults(CharSequence constraint, FilterResults results) {
-
-	                arrayListNames = (List<String>) results.values;
-	                notifyDataSetChanged();
-	            }
-
-	            @Override
-	            protected FilterResults performFiltering(CharSequence constraint) {
-
-	                FilterResults results = new FilterResults();
-	                ArrayList<String> FilteredArrayNames = new ArrayList<String>();
-
-	                if (mOriginalNames == null && mOriginalPictures == null)    {
-	                    mOriginalNames = new ArrayList<String>(arrayListNames);
-	                    mOriginalPictures = new ArrayList<String>(arrayPictures);
-	                }
-	                if (constraint == null || constraint.length() == 0) {
-	                    results.count = mOriginalNames.size();
-	                    results.values = mOriginalNames;
-	                } else {
-	                    constraint = constraint.toString().toLowerCase();
-	                    for (int i = 0; i < mOriginalNames.size(); i++) {
-	                        String dataNames = mOriginalNames.get(i);
-	                        if (dataNames.toLowerCase().startsWith(constraint.toString()))  {
-	                            FilteredArrayNames.add(dataNames);
-	                        }
-	                    }
-
-	                    results.count = FilteredArrayNames.size();
-	                    System.out.println(results.count);
-
-	                    results.values = FilteredArrayNames;
-	                    Log.e("VALUES", results.values.toString());
-	                }
-
-	                return results;
-	            }
-	        };
-
-	        return filter; */
-			return null;
-	    }
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
@@ -195,11 +141,11 @@ public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
         	holder.text = (TextView)view.findViewById(R.id.text);
         	holder.image = (ImageView)view.findViewById(R.id.image);
         	holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        	holder.imageUri = mBaseCursor.getString(uriIndex);
+        	holder.imageUri = getCursor().getString(uriIndex);
         	view.setTag(holder);
-        	holder.text.setText(mBaseCursor.getString(phraseIndex));	        	
+        	holder.text.setText(getCursor().getString(phraseIndex));	        	
  	        
- 	        mImageWorker.loadImage(mBaseCursor.getString(uriIndex), holder.image);
+ 	        mImageWorker.loadImage(getCursor().getString(uriIndex), holder.image);
  		        
  	        return view;
 		}

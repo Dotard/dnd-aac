@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Filter.FilterListener;
+import android.widget.FilterQueryProvider;
 import android.widget.GridView;
 
 import com.dnd.aac.adapter.PictoGridAdapter;
@@ -125,7 +127,6 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	public void setSubcategory(long subcategoryID)
 	{
 		mCursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI ,"1/" + String.valueOf(subcategoryID)), projection, null, null, null);
-		//mAdapter = new MyPictoAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker,mGridView);
 		mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker,new String[]{},new int[]{},mGridView);
 		mGridView.setAdapter(mAdapter);
 	}
@@ -133,7 +134,6 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	public void setCategory(long categoryID)
 	{
 		mCursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI,"2/" + String.valueOf(categoryID)), projection, null, null, null);
-		//mAdapter = new MyPictoAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker,mGridView);
 		mAdapter = new PictoGridAdapter(getActivity(),R.layout.picto,mCursor, mImageWorker,new String[]{},new int[]{},mGridView);
 		mGridView.setAdapter(mAdapter);
 	}
@@ -156,5 +156,33 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         super.onPause();
         //mImageWorker.setExitTasksEarly(true);
     }
+    
+    public void filterList(CharSequence constraint) {
+        final PictoGridAdapter adapter = 
+            (PictoGridAdapter) mGridView.getAdapter();
+        final Cursor oldCursor = adapter.getCursor();
+        adapter.setFilterQueryProvider(filterQueryProvider);
+        adapter.getFilter().filter(constraint, new FilterListener() {
+            public void onFilterComplete(int count) {
+                // assuming your activity manages the Cursor 
+                // (which is a recommended way)
+            	getActivity().stopManagingCursor(oldCursor);
+                final Cursor newCursor = adapter.getCursor();
+                getActivity().startManagingCursor(newCursor);
+                // safely close the oldCursor
+                if (oldCursor != null && !oldCursor.isClosed()) {
+                    oldCursor.close();
+                }
+            }
+        });
+    }
+
+    private FilterQueryProvider filterQueryProvider = new FilterQueryProvider() {
+        public Cursor runQuery(CharSequence constraint) {
+            // assuming you have your custom DBHelper instance 
+            // ready to execute the DB request
+            return getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI,"pictos"), projection, "PICTOS.pictoPhrase LIKE '%"+constraint+"%'", null, "lower(PICTOS.pictoPhrase) ASC");
+        }
+    };
 	
 }

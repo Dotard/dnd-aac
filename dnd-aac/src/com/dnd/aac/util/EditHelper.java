@@ -3,6 +3,7 @@ package com.dnd.aac.util;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -36,8 +37,9 @@ public class EditHelper {
 	public void addPicto(Picto picto) {
 		
 		((LinearLayout) ((MainActivity) mContext).findViewById(R.id.suggestbox)).setVisibility(View.INVISIBLE);
-		arrayOfPictos.add(picto);	
+		arrayOfPictos.add(picto);
 		((BaseAdapter) ((HorizontalListView) ((MainActivity) mContext).findViewById(R.id.listview)).getAdapter()).notifyDataSetChanged();
+		((MainActivity) mContext).suggestHelper.updateTrieValues(arrayOfPictos.size());
 		((MainActivity) mContext).suggestHelper.getSuggestion(); 
 	
 	}
@@ -45,9 +47,7 @@ public class EditHelper {
 	public void deletePictos(View view) {
 	
 		LinearLayout suggestbox = (LinearLayout) ((MainActivity) mContext).findViewById(R.id.suggestbox);
-		suggestbox.setVisibility(View.INVISIBLE);
-		
-		
+		suggestbox.setVisibility(View.INVISIBLE);		
 		arrayOfPictos.clear();
 		HorizontalListView listview = (HorizontalListView) ((MainActivity) mContext).findViewById(R.id.listview);
 		((BaseAdapter) listview.getAdapter()).notifyDataSetChanged();
@@ -63,10 +63,12 @@ public class EditHelper {
 			
 			LinearLayout suggestbox = (LinearLayout) ((MainActivity) mContext).findViewById(R.id.suggestbox);
 			suggestbox.setVisibility(View.INVISIBLE);
-			
 			arrayOfPictos.remove(position);
-			((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
+			//If any picto but the last was deleted, then the trie path is now invalid
+			if (position != arrayOfPictos.size()-2)
+			((MainActivity) mContext).suggestHelper.updateTrieValues(position);
 			
+			((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
 			((MainActivity) mContext).suggestHelper.getSuggestion();
 		}
 	};

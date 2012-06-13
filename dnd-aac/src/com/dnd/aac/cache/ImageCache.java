@@ -171,7 +171,7 @@ public class ImageCache {
             final Bitmap memBitmap = mMemoryCache.get(data);
             if (memBitmap != null) {
                 if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Memory cache hit");
+                    //Log.d(TAG, "Memory cache hit");
                 }
                 return memBitmap;
             }

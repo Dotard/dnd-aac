@@ -31,7 +31,6 @@ import com.dnd.aac.data.aacProvider;
 public class SuggestHelper {
 
 	private ArrayList<Picto> arrayOfPictos;
-	private boolean mIsValid;
 	private Context mContext;
 	private ContentResolver mCR;
 	private final int SUGGESTION_BOX_START_X = 20;
@@ -42,47 +41,44 @@ public class SuggestHelper {
 		mCR = mContext.getContentResolver();
 	}
 	
-	public boolean isValidated()
-	{return mIsValid;}
-	
-	public void updateTrieValues() {
-		int parentTrieID = 0;
-		String[] trieProj = new String[] {"trieID as _id","pictoID", "parentTrieID" , "hits"};
-		Cursor node = null;
-		if (arrayOfPictos.size() != 0) {
-							
-			int i = 0;
-			for (; i < arrayOfPictos.size(); i++)
-			{
-				node = mCR.query(Uri.parse(aacProvider.TRIE_PICTOID_URI + "/" + arrayOfPictos.get(i).getId()), trieProj,
-						"parentTrieID = " + parentTrieID, null, null);
-				if (!node.moveToFirst())
-				{
-					//Path doesn't fully exists add next node and go again.
-
-						ContentValues values = new ContentValues (3);
-						values.put("pictoID", arrayOfPictos.get(i).getId());
-						int parent = (i == 0) ? 0 : arrayOfPictos.get(i-1).trieID;
-						values.put("parentTrieID", parent);
-						values.put("hits", 0 );
-						Log.d("Node Created",parent+","+arrayOfPictos.get(i).getId() );
-						mCR.insert(Uri.parse(aacProvider.TRIE_INSERT_URI + "/" + arrayOfPictos.get(i).getId()) , values);
-
-						node = mCR.query(Uri.parse(aacProvider.TRIE_PICTOID_URI + "/" + arrayOfPictos.get(i).getId()), trieProj,
-								"parentTrieID = " + parentTrieID, null, null);
-						node.moveToFirst();
-						
-				} 
-				
-				arrayOfPictos.get(i).trieID = node.getInt(node.getColumnIndex("_id"));
-				
-				parentTrieID = node.getInt(node.getColumnIndex("_id"));
-			}
+	//Update trie values in arrayOfPictos from picto@position and onwards
+	public void updateTrieValues(int position) {
+			String[] trieProj = new String[] {"trieID as _id","pictoID", "parentTrieID" , "hits"};
+			Cursor node = null;
 			
-		
-			node.close();
-		}
-		
+			int parentTrieID = 0;
+			if (position > 1) {	parentTrieID = arrayOfPictos.get(position-2).trieID; } 
+			
+			if (arrayOfPictos.size() != 0 ) { 
+				int i = position - 1;
+				for (; i < arrayOfPictos.size(); i++)
+				{
+					node = mCR.query(Uri.parse(aacProvider.TRIE_PICTOID_URI + "/" + arrayOfPictos.get(i).getId()), trieProj,
+							"parentTrieID = " + parentTrieID, null, null);
+					if (!node.moveToFirst())
+					{
+						//Path doesn't fully exists add next node and go again.
+	
+							ContentValues values = new ContentValues (3);
+							values.put("pictoID", arrayOfPictos.get(i).getId());
+							int parent = (i == 0) ? 0 : arrayOfPictos.get(i-1).trieID;
+							values.put("parentTrieID", parent);
+							values.put("hits", 0 );
+							mCR.insert(Uri.parse(aacProvider.TRIE_INSERT_URI + "/" + arrayOfPictos.get(i).getId()) , values);
+	
+							node = mCR.query(Uri.parse(aacProvider.TRIE_PICTOID_URI + "/" + arrayOfPictos.get(i).getId()), trieProj,
+									"parentTrieID = " + parentTrieID, null, null);
+							node.moveToFirst();
+							
+					} 
+					
+					
+					arrayOfPictos.get(i).trieID = node.getInt(node.getColumnIndex("_id"));
+					parentTrieID = node.getInt(node.getColumnIndex("_id"));
+				}
+				node.close();
+					
+			}
 	}
 	
 	public boolean hitTriePath() {
@@ -91,8 +87,6 @@ public class SuggestHelper {
 		Cursor triehit = null;
 		Cursor pictohit = null;
 		ContentValues values;
-		
-		updateTrieValues();
 		
 		if (arrayOfPictos.size() != 0) {
 							
@@ -123,9 +117,7 @@ public class SuggestHelper {
 		}
 
 		public int[] getSuggestion() {
-			
-			updateTrieValues();
-			
+						
 			int [] pictoIDs = new int[3];
 			if (arrayOfPictos.size() == 0)  {
 				Log.d("Suggestions", "Exit early at 1");
