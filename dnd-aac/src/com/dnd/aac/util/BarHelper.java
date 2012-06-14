@@ -3,6 +3,7 @@ package com.dnd.aac.util;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -37,6 +38,9 @@ public class BarHelper {
 		
 		((LinearLayout) ((MainActivity) mContext).findViewById(R.id.suggestbox)).setVisibility(View.INVISIBLE);
 		arrayOfPictos.add(picto);	
+		
+		((MainActivity) mContext).suggestHelper.updateTrieValues(arrayOfPictos.size());
+		
 		((BaseAdapter) ((HorizontalListView) ((MainActivity) mContext).findViewById(R.id.listview)).getAdapter()).notifyDataSetChanged();
 		((MainActivity) mContext).suggestHelper.getSuggestion(); 
 	
@@ -65,6 +69,9 @@ public class BarHelper {
 			suggestbox.setVisibility(View.INVISIBLE);
 			
 			arrayOfPictos.remove(position);
+			Log.d("TrieUpdate","Position = " + position + " , size before = " + (arrayOfPictos.size() + 1) + " , size after = " + arrayOfPictos.size() );
+			if (position != arrayOfPictos.size()-1)
+			((MainActivity) mContext).suggestHelper.updateTrieValues(position);
 			((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
 			
 			((MainActivity) mContext).suggestHelper.getSuggestion();
