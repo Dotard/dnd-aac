@@ -12,6 +12,6 @@
     
     <TextView
         android:id="@+id/text"
-        style="@style/textview_picto_bar"
+        style="@style/textview_picto_grid"
         android:text="@string/hello" />
 </LinearLayout>
