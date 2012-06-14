@@ -26,6 +26,9 @@ import com.dnd.aac.Picto;
 import com.dnd.aac.R;
 import com.dnd.aac.R.id;
 import com.dnd.aac.R.layout;
+import com.dnd.aac.data.ImagesTbl;
+import com.dnd.aac.data.PictoTreeTbl;
+import com.dnd.aac.data.PictosTbl;
 import com.dnd.aac.data.aacProvider;
 
 public class SuggestHelper {
@@ -43,7 +46,7 @@ public class SuggestHelper {
 	
 	//Update trie values in arrayOfPictos from picto@position and onwards
 	public void updateTrieValues(int position) {
-			String[] trieProj = new String[] {"trieID as _id","pictoID", "parentTrieID" , "hits"};
+			String[] trieProj = new String[] {PictoTreeTbl.trieID + " as _id",PictoTreeTbl.pictoID, PictoTreeTbl.parentTrieID , PictoTreeTbl.hits};
 			Cursor node = null;
 			
 			int parentTrieID = 0;
@@ -54,20 +57,20 @@ public class SuggestHelper {
 				for (; i < arrayOfPictos.size(); i++)
 				{
 					node = mCR.query(Uri.parse(aacProvider.TRIE_PICTOID_URI + "/" + arrayOfPictos.get(i).getId()), trieProj,
-							"parentTrieID = " + parentTrieID, null, null);
+							PictoTreeTbl.parentTrieID + " = " + parentTrieID, null, null);
 					if (!node.moveToFirst())
 					{
 						//Path doesn't fully exists add next node and go again.
 	
 							ContentValues values = new ContentValues (3);
-							values.put("pictoID", arrayOfPictos.get(i).getId());
+							values.put(PictoTreeTbl.pictoID, arrayOfPictos.get(i).getId());
 							int parent = (i == 0) ? 0 : arrayOfPictos.get(i-1).trieID;
-							values.put("parentTrieID", parent);
-							values.put("hits", 0 );
+							values.put(PictoTreeTbl.parentTrieID, parent);
+							values.put(PictoTreeTbl.hits, 0 );
 							mCR.insert(Uri.parse(aacProvider.TRIE_INSERT_URI + "/" + arrayOfPictos.get(i).getId()) , values);
 	
 							node = mCR.query(Uri.parse(aacProvider.TRIE_PICTOID_URI + "/" + arrayOfPictos.get(i).getId()), trieProj,
-									"parentTrieID = " + parentTrieID, null, null);
+									PictoTreeTbl.parentTrieID + " = " + parentTrieID, null, null);
 							node.moveToFirst();
 							
 					} 
@@ -82,8 +85,8 @@ public class SuggestHelper {
 	}
 	
 	public boolean hitTriePath() {
-		String[] trieProj = new String[] {"trieID as _id", "hits"};
-		String[] favProj = new String[] {"pictoID as _id","playCount"};
+		String[] trieProj = new String[] {PictoTreeTbl.trieID + " as _id", PictoTreeTbl.hits};
+		String[] favProj = new String[] {PictosTbl.pictoID + " as _id",PictosTbl.playCount};
 		Cursor triehit = null;
 		Cursor pictohit = null;
 		ContentValues values;
@@ -96,13 +99,13 @@ public class SuggestHelper {
 				triehit = mCR.query(Uri.parse(aacProvider.TRIE_HIT_URI + "/" + arrayOfPictos.get(i).trieID), trieProj, null, null, null);
 				if (!triehit.moveToFirst()) return false; 
 				values = new ContentValues (1);
-				values.put("hits", Integer.parseInt(triehit.getString(triehit.getColumnIndex("hits"))) + 1);
+				values.put(PictoTreeTbl.hits, Integer.parseInt(triehit.getString(triehit.getColumnIndex(PictoTreeTbl.hits))) + 1);
 				mCR.update(Uri.parse(aacProvider.TRIE_HIT_URI + "/" + arrayOfPictos.get(i).trieID) , values, null, null);
 				
 				pictohit = mCR.query(Uri.parse(aacProvider.PICTO_HIT_URI + "/" + arrayOfPictos.get(i).getId()), favProj, null, null, null);
 				if (!pictohit.moveToFirst()) return false; 
 				values = new ContentValues (1);
-				values.put("playCount", Integer.parseInt(pictohit.getString(pictohit.getColumnIndex("playCount"))) + 1);
+				values.put(PictosTbl.playCount, Integer.parseInt(pictohit.getString(pictohit.getColumnIndex(PictosTbl.playCount))) + 1);
 				mCR.update(Uri.parse(aacProvider.PICTO_HIT_URI + "/" + arrayOfPictos.get(i).getId()) , values, null, null);
 				
 			}
@@ -123,8 +126,9 @@ public class SuggestHelper {
 				Log.d("Suggestions", "Exit early at 1");
 				return pictoIDs;
 			}
-			String [] projection = new String[]{ "PICTOS.pictoID as _id","Pictos.pictoPhrase", "Images.imageUri" };
-			String[] trieProj = new String[] {"trieID as _id","pictoID", "parentTrieID" , "hits"};
+			String [] projection = new String[]{ PictosTbl.table + "." + PictosTbl.pictoID + " as _id", 
+					PictosTbl.table + "." + PictosTbl.pictoPhrase, ImagesTbl.table + "." + ImagesTbl.imageUri };
+			String[] trieProj = new String[] {PictoTreeTbl.trieID + " as _id",PictoTreeTbl.pictoID, PictoTreeTbl.parentTrieID , PictoTreeTbl.hits};
 			LinearLayout suggestbox = (LinearLayout) ((MainActivity) mContext).findViewById(R.id.suggestbox);
 			suggestbox.setVisibility(View.INVISIBLE);
 			suggestbox.setX(SUGGESTION_BOX_START_X + arrayOfPictos.size() * 125);
@@ -133,9 +137,9 @@ public class SuggestHelper {
 			+ arrayOfPictos.get(arrayOfPictos.size()-1).trieID).buildUpon().appendQueryParameter(
 			        aacProvider.QUERY_PARAMETER_LIMIT,
 			        "3").build(), trieProj,
-					"hits > 0", null, "hits DESC");
+					PictoTreeTbl.hits + " > 0", null, PictoTreeTbl.hits + " DESC");
 			int i = 0;
-			if (suggestions.moveToFirst()){	do { pictoIDs [i++] = Integer.parseInt(suggestions.getString(suggestions.getColumnIndex("pictoID"))); } while (suggestions.moveToNext());}
+			if (suggestions.moveToFirst()){	do { pictoIDs [i++] = Integer.parseInt(suggestions.getString(suggestions.getColumnIndex(PictoTreeTbl.pictoID))); } while (suggestions.moveToNext());}
 
 			int numFound = i;
 			while (i < 3) {	pictoIDs [i++] = 0;	};
@@ -149,7 +153,7 @@ public class SuggestHelper {
 			
 			for (int j = 0 ; j < numFound ; j++) { 
 				
-				String searchString = "PICTOS.pictoID = " + pictoIDs[j]; 
+				String searchString = PictosTbl.table + "." + PictosTbl.pictoID + " = " + pictoIDs[j]; 
 				
 				Cursor pictoCursor = mCR.query(aacProvider.PICTO_SEARCH_URI, projection,
 						searchString, null, null);
@@ -164,7 +168,7 @@ public class SuggestHelper {
 						
 	        try {
 				
-				InputStream fileStream = MainActivity.mExpansionFile.getInputStream("picto/" + pictoCursor.getString(pictoCursor.getColumnIndex("imageUri")));
+				InputStream fileStream = MainActivity.mExpansionFile.getInputStream("picto/" + pictoCursor.getString(pictoCursor.getColumnIndex(ImagesTbl.imageUri)));
 				
 				BufferedInputStream buf = new BufferedInputStream(fileStream);
 				Bitmap bitmap = BitmapFactory.decodeStream(buf);
@@ -177,7 +181,7 @@ public class SuggestHelper {
 			}
 			
 			suggestpicto1.setTag(pictoIDs[j]);
-			textView1.setText(pictoCursor.getString(pictoCursor.getColumnIndex("pictoPhrase")));			
+			textView1.setText(pictoCursor.getString(pictoCursor.getColumnIndex(PictosTbl.pictoPhrase)));			
 			suggestpicto1.setOnClickListener(suggestionClicked);
 			suggestbox.addView(suggestpicto1);
 			

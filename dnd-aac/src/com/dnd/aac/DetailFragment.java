@@ -20,6 +20,8 @@ import com.dnd.aac.cache.ImageFetcher;
 import com.dnd.aac.cache.ImageResizer;
 import com.dnd.aac.cache.Images;
 import com.dnd.aac.cache.Utils;
+import com.dnd.aac.data.ImagesTbl;
+import com.dnd.aac.data.PictosTbl;
 import com.dnd.aac.data.aacProvider;
 
 
@@ -73,7 +75,9 @@ public class DetailFragment extends android.support.v4.app.Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		projection = new String[]{ "PICTOS.pictoID as _id","Pictos.pictoPhrase", "Images.imageUri" };
+		projection = new String[]{ PictosTbl.table + "." + PictosTbl.pictoID + " as _id", PictosTbl.table + "." + PictosTbl.pictoPhrase
+				, ImagesTbl.table + "." + ImagesTbl.imageUri 
+		};
 		if (mCursor == null)
 		mCursor = getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI ,"2/1") , projection, null, null, null);		
 		   		
@@ -181,7 +185,8 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         public Cursor runQuery(CharSequence constraint) {
             // assuming you have your custom DBHelper instance 
             // ready to execute the DB request
-            return getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI,"pictos"), projection, "PICTOS.pictoPhrase LIKE '%"+constraint+"%'", null, "lower(PICTOS.pictoPhrase) ASC");
+            return getActivity().getContentResolver().query(Uri.withAppendedPath(aacProvider.PICTOS_URI,"pictos"), projection,
+            		PictosTbl.table + "." + PictosTbl.pictoPhrase + " LIKE '%"+constraint+"%'", null, "lower(" + PictosTbl.table + "." + PictosTbl.pictoPhrase + ") ASC");
         }
     };
 	

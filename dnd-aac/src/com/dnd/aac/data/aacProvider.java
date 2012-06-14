@@ -71,11 +71,11 @@ public class aacProvider extends ContentProvider {
 	public static final int PICTO_HIT = 800;
 	public static final int TRIE_HIT = 801;
 
-	private static final String CATEGORYS_BASE_PATH = "Categorys";
-	private static final String IMAGES_BASE_PATH = "Images";
-	private static final String PICTOS_BASE_PATH = "Pictos";
-	private static final String SUBCATEGORYS_BASE_PATH = "Subcategorys";
-	private static final String PICTOTREE_BASE_PATH = "PictoTree";
+	private static final String CATEGORYS_BASE_PATH = CategorysTbl.table;
+	private static final String IMAGES_BASE_PATH = ImagesTbl.table;
+	private static final String PICTOS_BASE_PATH = PictosTbl.table;
+	private static final String SUBCATEGORYS_BASE_PATH = SubcategorysTbl.table;
+	private static final String PICTOTREE_BASE_PATH = PictoTreeTbl.table;
 
 	public static final Uri CATEGORYS_URI = Uri.parse("content://" + AUTHORITY
 			+ "/" + CATEGORYS_BASE_PATH);
@@ -170,38 +170,47 @@ public class aacProvider extends ContentProvider {
 		case TRIE_SEARCH_BY_TRIEID:
 		case TRIE_SUGGEST_BY_TRIEID:
 		case TRIE_HIT:
-			queryBuilder.setTables("PictoTree");
+			queryBuilder.setTables(PictoTreeTbl.table);
 			break;
 		case PICTO_HIT:
-			queryBuilder.setTables("Pictos");
+			queryBuilder.setTables(PictosTbl.table);
 			break;
 		case CATEGORYS_ID:
 		case CATEGORYS:
-			queryBuilder.setTables("Categorys"
-					+ " INNER JOIN Images ON CATEGORYS.imageID = IMAGES.imageID");
+			queryBuilder.setTables(CategorysTbl.table
+					+ " INNER JOIN " + ImagesTbl.table +" ON " 
+						+ CategorysTbl.table + "." + CategorysTbl.imageID + 
+						" = " + ImagesTbl.table + "." + ImagesTbl.imageID);
 			break;
 		case IMAGES:
 		case IMAGES_ID:
-			queryBuilder.setTables("Images");
+			queryBuilder.setTables(ImagesTbl.table);
 			break;		
 		case FAVOURITES:
-			queryBuilder.setTables("Pictos "
-					+ " INNER JOIN Images ON PICTOS.imageID = IMAGES.imageID");
-			sortOrder = "PICTOS.playCount DESC";
+			queryBuilder.setTables(PictosTbl.table
+					+ " INNER JOIN " + ImagesTbl.table + " ON " 
+						+ PictosTbl.table + "." + PictosTbl.imageID + 
+						" = " + ImagesTbl.table + "." + ImagesTbl.imageID);
+			sortOrder = PictosTbl.table + "." + PictosTbl.playCount + " DESC";
 			limit = "0 , 70";
 			break;
 		case PICTOS_INCATEGORY:
 		case PICTOS_INSUBCATEGORY:
 		case PICTOS:
 			queryBuilder
-					.setTables("Pictos "
-							+ " INNER JOIN Images ON PICTOS.imageID = IMAGES.imageID"
-							+ " INNER JOIN Subcategorys_Pictos ON PICTOS.pictoID = Subcategorys_Pictos.pictoID");
+					.setTables(PictosTbl.table
+							+ " INNER JOIN " + ImagesTbl.table + " ON " 
+								+ PictosTbl.table + "." + PictosTbl.imageID + 
+								" = " + ImagesTbl.table + "." + ImagesTbl.imageID
+							+ " INNER JOIN " + SubcategorysPictosTbl.table + " ON " 
+								+ PictosTbl.table + "." + PictosTbl.pictoID + 
+								" = " + SubcategorysPictosTbl.table + "." + SubcategorysPictosTbl.pictoID);
 			break;
 		case SUBCATEGORYS_ID:
 		case SUBCATEGORYS:
-			queryBuilder.setTables("Subcategorys"
-					+ " INNER JOIN Images ON SUBCATEGORYS.imageID = IMAGES.imageID");
+			queryBuilder.setTables(SubcategorysTbl.table
+					+ " INNER JOIN " + ImagesTbl.table + " ON " 
+					+ SubcategorysTbl.table + "." + SubcategorysTbl.imageID + " = " + ImagesTbl.table + "." + ImagesTbl.imageID);
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI");
@@ -217,34 +226,34 @@ public class aacProvider extends ContentProvider {
 		case SUBCATEGORYS:
 					break;
 		case CATEGORYS_ID:
-			queryBuilder.appendWhere("categoryID" + "=" + uri.getLastPathSegment());
+			queryBuilder.appendWhere(CategorysTbl.categoryID + "=" + uri.getLastPathSegment());
 			break;
 		case TRIE_SUGGEST_BY_TRIEID:
-			queryBuilder.appendWhere("parentTrieID" + "="+ uri.getLastPathSegment());
+			queryBuilder.appendWhere(PictoTreeTbl.parentTrieID + "="+ uri.getLastPathSegment());
 			break;
 		case IMAGES_ID:
-			queryBuilder.appendWhere("imageID" + "=" + uri.getLastPathSegment());
+			queryBuilder.appendWhere(ImagesTbl.imageID + "=" + uri.getLastPathSegment());
 			break;
 		case TRIE_SEARCH_BY_PICTOID:
 		case PICTO_HIT:
-			queryBuilder.appendWhere("pictoID" + "=" + uri.getLastPathSegment());
+			queryBuilder.appendWhere(PictosTbl.pictoID + "=" + uri.getLastPathSegment());
 			break;
 		case TRIE_SEARCH_BY_TRIEID:
 		case TRIE_HIT:
-			queryBuilder.appendWhere("trieID" + "=" + uri.getLastPathSegment());
+			queryBuilder.appendWhere(PictoTreeTbl.trieID + "=" + uri.getLastPathSegment());
 			break;
 		
 		case PICTOS_INCATEGORY:
-			queryBuilder.appendWhere("Subcategorys_Pictos.subcategoryID IN "
-					+ "(SELECT Subcategorys.subcategoryID"
-					+ " from Subcategorys WHERE Subcategorys.categoryID = "
+			queryBuilder.appendWhere(SubcategorysPictosTbl.table + "." + SubcategorysPictosTbl.subcategoryID + " IN "
+					+ "(SELECT " + SubcategorysTbl.table + "." + SubcategorysTbl.subcategoryID
+					+ " from " + SubcategorysTbl.table + " WHERE " + SubcategorysTbl.table + "." + SubcategorysTbl.categoryID + " = "
 					+ uri.getLastPathSegment() + ")");
 			break;
 		case PICTOS_INSUBCATEGORY:
-			queryBuilder.appendWhere("Subcategorys_Pictos.subcategoryID" + "=" + uri.getLastPathSegment());
+			queryBuilder.appendWhere(SubcategorysPictosTbl.table + "." + SubcategorysPictosTbl.subcategoryID + "=" + uri.getLastPathSegment());
 			break;
 		case SUBCATEGORYS_ID:
-			queryBuilder.appendWhere("subcategoryID = "	+ uri.getLastPathSegment());
+			queryBuilder.appendWhere(SubcategorysTbl.subcategoryID + " = "	+ uri.getLastPathSegment());
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown URI");
@@ -264,16 +273,16 @@ public class aacProvider extends ContentProvider {
 		int rowsAffected = 0;
 		switch (uriType) {
 		case CATEGORYS:
-			rowsAffected = sqlDB.delete("Categorys", selection, selectionArgs);
+			rowsAffected = sqlDB.delete(CategorysTbl.table, selection, selectionArgs);
 			break;
 		case CATEGORYS_ID:
 			String id = uri.getLastPathSegment();
 			if (TextUtils.isEmpty(selection)) {
-				rowsAffected = sqlDB.delete("Categorys", "categoryID" + "="
+				rowsAffected = sqlDB.delete(CategorysTbl.table, CategorysTbl.categoryID + "="
 						+ id, null);
 			} else {
-				rowsAffected = sqlDB.delete("Categorys", selection + " and "
-						+ "categoryID" + "=" + id, selectionArgs);
+				rowsAffected = sqlDB.delete(CategorysTbl.table, selection + " and "
+						+ CategorysTbl.categoryID + "=" + id, selectionArgs);
 			}
 			break;
 		default:
@@ -303,13 +312,13 @@ public class aacProvider extends ContentProvider {
 		String tableName = "";
 		switch (uriType) {
 		case TRIE_INSERT:
-			tableName = "PictoTree";
+			tableName = PictoTreeTbl.table;
 			break;
 		case CATEGORYS:
-			tableName = "Categorys";
+			tableName = CategorysTbl.table;
 			break;
 		case CATEGORYS_ID:
-			tableName = "Categorys";
+			tableName = CategorysTbl.table;
 			break;
 		default:
 			throw new IllegalArgumentException("Invalid URI for insert");
@@ -343,39 +352,39 @@ public class aacProvider extends ContentProvider {
 		switch (uriType) {
 		case PICTO_HIT:
 			id = uri.getLastPathSegment();
-			modSelection = new StringBuilder("pictoID" + "=" + id);
+			modSelection = new StringBuilder(PictosTbl.pictoID + "=" + id);
 
 			if (!TextUtils.isEmpty(selection)) {
 				modSelection.append(" AND " + selection);
 			}
 
-			rowsAffected = sqlDB.update("Pictos", values,
+			rowsAffected = sqlDB.update(PictosTbl.table, values,
 					modSelection.toString(), null);
 			break;
 		case TRIE_HIT:
 			id = uri.getLastPathSegment();
-			modSelection = new StringBuilder("trieID" + "=" + id);
+			modSelection = new StringBuilder(PictoTreeTbl.trieID + "=" + id);
 
 			if (!TextUtils.isEmpty(selection)) {
 				modSelection.append(" AND " + selection);
 			}
 
-			rowsAffected = sqlDB.update("PictoTree", values,
+			rowsAffected = sqlDB.update(PictoTreeTbl.table, values,
 					modSelection.toString(), null);
 			break;
 		case CATEGORYS_ID:
 			id = uri.getLastPathSegment();
-			modSelection = new StringBuilder("categoryID" + "=" + id);
+			modSelection = new StringBuilder(CategorysTbl.categoryID + "=" + id);
 
 			if (!TextUtils.isEmpty(selection)) {
 				modSelection.append(" AND " + selection);
 			}
 
-			rowsAffected = sqlDB.update("Categorys", values,
+			rowsAffected = sqlDB.update(CategorysTbl.table, values,
 					modSelection.toString(), null);
 			break;
 		case CATEGORYS:
-			rowsAffected = sqlDB.update("Categorys", values, selection,
+			rowsAffected = sqlDB.update(CategorysTbl.table, values, selection,
 					selectionArgs);
 			break;
 		default:

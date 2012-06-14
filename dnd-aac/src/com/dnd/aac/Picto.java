@@ -5,6 +5,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.dnd.aac.data.ImagesTbl;
+import com.dnd.aac.data.PictosTbl;
 import com.dnd.aac.data.aacProvider;
 
 import android.content.Context;
@@ -30,8 +32,10 @@ public class Picto {
 		
 		pictoView = ( (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(R.layout.picto_bar,null);
 		
-		String [] projection = new String[]{ "PICTOS.pictoID as _id","Pictos.pictoPhrase", "Images.imageUri" };
-		Cursor pictoCursor = context.getContentResolver().query(Uri.parse(aacProvider.PICTOS_URI + "/pictos"), projection, "PICTOS.pictoID = " + id, null, null);
+		String [] projection = new String[]{ PictosTbl.table + "." + PictosTbl.pictoID + " as _id",
+				PictosTbl.table + "." + PictosTbl.pictoPhrase, ImagesTbl.table + "." + ImagesTbl.imageUri};
+		Cursor pictoCursor = context.getContentResolver().query(Uri.parse(aacProvider.PICTOS_URI + "/pictos"), 
+				projection,PictosTbl.table + "." + PictosTbl.pictoID + " = " + id, null, null);
     	
 		if(pictoCursor.moveToFirst()){
 		
@@ -40,14 +44,15 @@ public class Picto {
     	holder.text = (TextView)pictoView.findViewById(R.id.text);
     	holder.image = (ImageView)pictoView.findViewById(R.id.image);
     	//holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-    	holder.imageUri = pictoCursor.getString(pictoCursor.getColumnIndex("imageUri"));
+    	holder.imageUri = pictoCursor.getString(pictoCursor.getColumnIndex(ImagesTbl.imageUri));
     	pictoView.setTag(holder);
     	
     	holder.text.setText(name);
     	
     	
         try {
-    	InputStream fileStream = MainActivity.mExpansionFile.getInputStream("picto/" + pictoCursor.getString(pictoCursor.getColumnIndex("imageUri")));
+    	InputStream fileStream = MainActivity.mExpansionFile.getInputStream("picto/" 
+    			+ pictoCursor.getString(pictoCursor.getColumnIndex(ImagesTbl.imageUri)));
     	
     	BufferedInputStream buf = new BufferedInputStream(fileStream);
     	Bitmap bitmap = BitmapFactory.decodeStream(buf);

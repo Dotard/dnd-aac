@@ -13,6 +13,9 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ImageView;
 
 import com.dnd.aac.adapter.PictoCatagoryAdapter;
+import com.dnd.aac.data.CategorysTbl;
+import com.dnd.aac.data.ImagesTbl;
+import com.dnd.aac.data.SubcategorysTbl;
 import com.dnd.aac.data.aacProvider;
 
 public class ListFragment extends android.support.v4.app.ExpandableListFragment {
@@ -29,9 +32,10 @@ public class ListFragment extends android.support.v4.app.ExpandableListFragment 
 		super.onActivityCreated(savedInstanceState);
 		String[] values = new String[] { "Android" };
 		String[] ints = new String[] { "android.R.id.text1"};
-		
-		String[] categoryProj = new String[] {"categoryID", "categoryName" , "imageUri"};
-		String[] subcategoryProj = new String[] {"subcategoryID","categoryID", "subcategoryName", "imageUri"};
+
+		String[] categoryProj = new String[] {CategorysTbl.categoryID, CategorysTbl.categoryName , ImagesTbl.imageUri};
+		String[] subcategoryProj = new String[] {SubcategorysTbl.subcategoryID, SubcategorysTbl.categoryID, 
+				SubcategorysTbl.subcategoryName, ImagesTbl.imageUri};
 		cat = getActivity().getContentResolver().query(aacProvider.CATEGORYS_URI, categoryProj, null, null, null);
 		subcat = getActivity().getContentResolver().query(aacProvider.SUBCATEGORYS_URI, subcategoryProj, null, null, null);
 

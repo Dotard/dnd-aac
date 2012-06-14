@@ -18,6 +18,8 @@ import com.dnd.aac.R;
 import com.dnd.aac.R.id;
 import com.dnd.aac.R.string;
 import com.dnd.aac.cache.ImageResizer;
+import com.dnd.aac.data.ImagesTbl;
+import com.dnd.aac.data.PictosTbl;
 import com.dnd.aac.util.MyPreferences;
 
 public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
@@ -38,8 +40,8 @@ public class PictoGridAdapter extends SimpleCursorAdapter implements Filterable{
 	    	super(context, layout, cursor, from, to, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 	    	mContext = context;
 	        this.layout = layout;
-	        uriIndex = cursor.getColumnIndex("imageUri");
-	        phraseIndex = cursor.getColumnIndex("pictoPhrase");	
+	        uriIndex = cursor.getColumnIndex(ImagesTbl.imageUri);
+	        phraseIndex = cursor.getColumnIndex(PictosTbl.pictoPhrase);	
 	        this.mImageWorker = mImageWorker;
 	        this.parentView = parent;
 	        

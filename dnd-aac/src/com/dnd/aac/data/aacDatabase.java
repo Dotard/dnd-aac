@@ -43,55 +43,10 @@ import android.util.Log;
 
 public class aacDatabase extends SQLiteOpenHelper {
 	private static final String DEBUG_TAG = "aacDatabase";
-	private static final int DB_VERSION = 6;
+	private static final int DB_VERSION = 1;
 	private static final String DB_NAME = "aac_data";
 	private static final String DB_PATH = "/data/data/com.dnd.aac/databases/";
 	private Context mContext;
-
-	//add table names column names here
-	
-	private static final String CREATE_TABLE_CATEGORYS = "CREATE TABLE Categorys"  + " ( "
-			+ "categoryID INTEGER PRIMARY KEY AUTOINCREMENT, "
-			+ "imageID INTEGER REFERENCES Images (imageID), "
-			+ "categoryName TEXT, "
-			+ "categoryDesc TEXT "
-			+ ");";
-	
-	private static final String CREATE_TABLE_SUBCATEGORYS = "CREATE TABLE Subcategorys" + " ( "
-			+ "subcategoryID INTEGER PRIMARY KEY AUTOINCREMENT, "
-			+ "categoryID INTEGER REFERENCES Categorys (categoryID), "
-			+ "imageID INTEGER REFERENCES Images (imageID), "
-			+ "subcategoryName TEXT, "
-			+ "subcategoryDesc TEXT "
-			+ ");";
-	
-	private static final String CREATE_TABLE_PICTOS = "CREATE TABLE Pictos" + " ( "
-			+ "pictoID INTEGER PRIMARY KEY AUTOINCREMENT, "			
-			+ "imageID INTEGER REFERENCES Images (imageID), "
-			+ "pictoPhrase TEXT, "
-			+ "playCount INTEGER"
-			+ ");";
-	
-	private static final String CREATE_TABLE_RECENTPICTOS = "CREATE TABLE RecentPictos" + " ( "
-			+ "recentPictoID INTEGER PRIMARY KEY AUTOINCREMENT, "			
-			+ "imageID INTEGER REFERENCES Images (imageID), "
-			+ "pictoID INTEGER REFERENCES Pictos (pictoID), "
-			+ "recentPictoPhrase TEXT, "
-			+ "recentPictoOutdated INTEGER "
-			+ ");";
-			
-	private static final String CREATE_TABLE_IMAGES = "CREATE TABLE Images" + " ( "
-			+ "imageID INTEGER PRIMARY KEY AUTOINCREMENT, "						
-			+ "imageDesc TEXT, "
-			+ "imageUri TEXT "
-			+ ");";
-	
-	private static final String CREATE_TABLE_SUBCATEGORYS_PICTOS = "CREATE TABLE Subcategorys_Pictos"  + " ( "
-			+ "subcategorys_PictosID INTEGER PRIMARY KEY AUTOINCREMENT, "						
-			+ "subcategoryID INTEGER REFERENCES Subcategorys (subcategoryID), "
-			+ "pictoID INTEGER REFERENCES Pictos (pictoID) "
-			+ ");";
-
 
 	public aacDatabase(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);
@@ -128,7 +83,7 @@ public class aacDatabase extends SQLiteOpenHelper {
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.d("tag","ONUPGRADE ATTEMPING UPGRADE " + oldVersion + " to " + newVersion);
+		//Log.d("aac","ONUPGRADE ATTEMPING UPGRADE " + oldVersion + " to " + newVersion);
 		if( mContext.deleteDatabase(DB_NAME)){
 			try {
 				copyDataBase();

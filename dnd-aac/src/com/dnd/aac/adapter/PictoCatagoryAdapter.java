@@ -10,6 +10,9 @@ import com.dnd.aac.R;
 import com.dnd.aac.R.drawable;
 import com.dnd.aac.R.id;
 import com.dnd.aac.R.raw;
+import com.dnd.aac.data.CategorysTbl;
+import com.dnd.aac.data.ImagesTbl;
+import com.dnd.aac.data.SubcategorysTbl;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -82,14 +85,14 @@ public class PictoCatagoryAdapter extends BaseExpandableListAdapter
 		ninePatchExpanded = get_ninepatch(R.raw.expander_ic_maximized, 33, 35, context);
 		ninePatchCollapsed = get_ninepatch(R.raw.expander_ic_minimized, 33, 35, context);
 		
-		int COL_CHILD_SUBID = childcursor.getColumnIndexOrThrow("subcategoryID");
-		int COL_CHILD_CATID = childcursor.getColumnIndexOrThrow("categoryID");
-		int COL_CHILD_CATNAME = childcursor.getColumnIndexOrThrow("subcategoryName");
-		int COL_CHILD_IMG = childcursor.getColumnIndexOrThrow("imageUri");
+		int COL_CHILD_SUBID = childcursor.getColumnIndexOrThrow(SubcategorysTbl.subcategoryID);
+		int COL_CHILD_CATID = childcursor.getColumnIndexOrThrow(CategorysTbl.categoryID);
+		int COL_CHILD_CATNAME = childcursor.getColumnIndexOrThrow(SubcategorysTbl.subcategoryName);
+		int COL_CHILD_IMG = childcursor.getColumnIndexOrThrow(ImagesTbl.imageUri);
 		
-		int COL_PARENT_CATNAME= parentcursor.getColumnIndexOrThrow("categoryName");
-		int COL_PARENT_CATID = parentcursor.getColumnIndexOrThrow("categoryID");
-		int COL_PARENT_IMG = parentcursor.getColumnIndexOrThrow("imageUri");
+		int COL_PARENT_CATNAME= parentcursor.getColumnIndexOrThrow(CategorysTbl.categoryName);
+		int COL_PARENT_CATID = parentcursor.getColumnIndexOrThrow(CategorysTbl.categoryID);
+		int COL_PARENT_IMG = parentcursor.getColumnIndexOrThrow(ImagesTbl.imageUri);
 		
 		HashMap<String,String> childMap;    
 		HashMap<String,String> parentMap;
@@ -100,9 +103,9 @@ public class PictoCatagoryAdapter extends BaseExpandableListAdapter
 			for(int i = 0; i < parentcursor.getCount(); i++){
 				String catID = parentcursor.getString(COL_PARENT_CATID);
 				parentMap = new HashMap<String,String>();
-				parentMap.put("categoryID", catID);
-				parentMap.put("categoryName", parentcursor.getString(COL_PARENT_CATNAME));
-				parentMap.put("imageUri", parentcursor.getString(COL_PARENT_IMG));
+				parentMap.put(CategorysTbl.categoryID, catID);
+				parentMap.put(CategorysTbl.categoryName, parentcursor.getString(COL_PARENT_CATNAME));
+				parentMap.put(ImagesTbl.imageUri, parentcursor.getString(COL_PARENT_IMG));
 				categories.add(parentMap); //add Category
 				
 				childList = new ArrayList<HashMap<String,String>> ();
@@ -120,9 +123,9 @@ public class PictoCatagoryAdapter extends BaseExpandableListAdapter
 				childList = subcategories.get(lookupMap.get(parentID));
 				
 				childMap = new HashMap<String,String>();
-		        childMap.put("subcategoryID", childcursor.getString(COL_CHILD_SUBID));
-		        childMap.put("subcategoryName", childcursor.getString(COL_CHILD_CATNAME));
-		        childMap.put("imageUri", childcursor.getString(COL_CHILD_IMG));
+		        childMap.put(SubcategorysTbl.subcategoryID, childcursor.getString(COL_CHILD_SUBID));
+		        childMap.put(SubcategorysTbl.subcategoryName, childcursor.getString(COL_CHILD_CATNAME));
+		        childMap.put(ImagesTbl.imageUri, childcursor.getString(COL_CHILD_IMG));
 		        childList.add(childMap);
 		        
 		        childcursor.moveToNext();
@@ -144,7 +147,7 @@ public class PictoCatagoryAdapter extends BaseExpandableListAdapter
 	public long getChildId(int groupPosition, int childPosition)
     { 
     	HashMap<String,String> m = (HashMap<String,String>) getChild(groupPosition, childPosition);
-    	return Long.parseLong(m.get("subcategoryID")); 
+    	return Long.parseLong(m.get(SubcategorysTbl.subcategoryID)); 
     }
 
     public int getChildrenCount(int groupPosition)
@@ -155,7 +158,7 @@ public class PictoCatagoryAdapter extends BaseExpandableListAdapter
     {
     	View row = ( (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ).inflate(childlayout,null);
     		TextView textView = (TextView) row.findViewById( R.id.data_item);
-            textView.setText(((HashMap<String,String>) getChild(groupPosition, childPosition)).get("subcategoryName"));
+            textView.setText(((HashMap<String,String>) getChild(groupPosition, childPosition)).get(SubcategorysTbl.subcategoryName));
             
             if (lastSelectedGroup == groupPosition && lastSelectedChild == childPosition) 
             {	
@@ -176,7 +179,7 @@ public class PictoCatagoryAdapter extends BaseExpandableListAdapter
 	@SuppressWarnings("unchecked")
     public long getGroupId(int groupPosition)
     { 
-    	return Long.parseLong(((HashMap<String,String>) getGroup(groupPosition)).get("categoryID"));
+    	return Long.parseLong(((HashMap<String,String>) getGroup(groupPosition)).get(CategorysTbl.categoryID));
     }
 	
 
@@ -191,7 +194,7 @@ public class PictoCatagoryAdapter extends BaseExpandableListAdapter
     		ImageView iv = (ImageView) row.findViewById(R.id.groupIndicator);
     		
     		if (textView == null) {Log.d("Checker", "textView is null..");}
-            textView.setText(((HashMap<String,String>) getGroup(groupPosition)).get("categoryName"));
+            textView.setText(((HashMap<String,String>) getGroup(groupPosition)).get(CategorysTbl.categoryName));
 
             if (lastSelectedGroup == groupPosition && lastSelectedChild == -1 ) 
             {
