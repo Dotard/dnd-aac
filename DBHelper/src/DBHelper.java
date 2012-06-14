@@ -3,6 +3,7 @@ import java.sql.*;
 import java.util.HashMap;
 public class DBHelper {
 
+	public static String PATH_TO_PICTOS = "/Users/c2lieu/Desktop/picto"; //ex: "/Users/c2lieu/Desktop/picto"
 	/**
 	 * @param args
 	 */
@@ -61,7 +62,7 @@ public class DBHelper {
 			
 			conn.setAutoCommit(false); //Transaction
 			
-			File[] files = new File("/Users/djly/Desktop/picto").listFiles();
+			File[] files = new File(PATH_TO_PICTOS).listFiles();
 		   			
 			prep = conn.prepareStatement("insert into Categorys (categoryName, categoryDesc, imageID) values(?, ?, 1)",Statement.RETURN_GENERATED_KEYS);
 		    //Insert Categories
@@ -100,7 +101,7 @@ public class DBHelper {
 		    				keys = prep.getGeneratedKeys();
 
 		    				if(keys.next()){
-		    					subMap.put(f2.getName(), keys.getLong(1));
+		    					subMap.put(cat+f2.getName(), keys.getLong(1));
 		    				}
 
 		    				conn.commit();
@@ -144,7 +145,7 @@ public class DBHelper {
 		    						Long pictoID = (long) 0;
 		    						if(keys.next()) pictoID = keys.getLong(1);
 		    						
-		    						prepPictoSub.setLong(1, subMap.get(sub));
+		    						prepPictoSub.setLong(1, subMap.get(cat+sub));
 		    						prepPictoSub.setLong(2, pictoID);
 		    						prepPictoSub.executeUpdate();
 		    						
@@ -170,6 +171,9 @@ public class DBHelper {
 			try {
 				if(conn != null)
 					conn.close();
+				
+				System.out.println("*****DBHelper*******");
+				System.out.println("Completed database");
 			} catch(SQLException e)	{
 				// connection close failed.
 				System.err.println(e);
