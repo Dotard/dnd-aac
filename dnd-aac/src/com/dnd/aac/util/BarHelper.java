@@ -69,7 +69,6 @@ public class BarHelper {
 			suggestbox.setVisibility(View.INVISIBLE);
 			
 			arrayOfPictos.remove(position);
-			Log.d("TrieUpdate","Position = " + position + " , size before = " + (arrayOfPictos.size() + 1) + " , size after = " + arrayOfPictos.size() );
 			if (position != arrayOfPictos.size()-1)
 			((MainActivity) mContext).suggestHelper.updateTrieValues(position);
 			((BaseAdapter) parent.getAdapter()).notifyDataSetChanged();
