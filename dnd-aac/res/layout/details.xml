@@ -6,14 +6,6 @@
 
      <GridView
 	    android:id="@+id/gridview"
-	    android:layout_width="wrap_content" 
-	    android:layout_height="fill_parent"
-	    android:columnWidth="115dp"
-	    android:numColumns="auto_fit"
-	    android:verticalSpacing="10dp"
-	    android:horizontalSpacing="10dp"
-	    android:stretchMode="spacingWidthUniform"
-	    android:gravity="center"
-	    android:background="@android:color/darker_gray"
-	    	/> 
+	    style="@style/gridview"
+	 	/> 
 </LinearLayout>

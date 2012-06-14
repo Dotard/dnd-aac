@@ -1,31 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    style="@style/ff">
 
     <ImageView  
         android:id="@+id/image"
-        android:layout_width="fill_parent" 
-        android:layout_height="fill_parent"     
-        android:scaleType="center" />
+        style="@style/imageview_picto_grid"
+        android:contentDescription="picto_image" />
     
     <TextView
         android:id="@+id/text"
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content" 
-        android:layout_marginBottom="0dip"
-        android:layout_gravity="center_horizontal|bottom"
-        android:gravity="center"
-	
-        android:padding="8dip"
-       
-        android:textSize="16sp"
-        android:maxLines="2"
-
-
-   
-        android:background="#AA000000"
-        android:textColor="#ffffffff"
-        
-        android:text="@string/hello" />
+	   	style="@style/textview_picto_grid"/>
 </FrameLayout>

@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="120dp"
-    android:layout_height="100dp"
     android:orientation="vertical"
-    android:padding="10dp"
-
-    android:id="@+id/picto">
+    android:id="@+id/picto"
+    style="@style/layout_picto_bar"
+    >
     <ImageView
         android:id="@+id/image"
-        android:layout_width="100dp"
-		android:layout_weight="1"
-    	android:layout_height="0dp"
+		style="@style/imageview_picto_bar"
 		android:contentDescription="image"
         />
     
     <TextView
         android:id="@+id/text"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:textSize="15sp"
-        android:textColor="#000000"
+        style="@style/textview_picto_bar"
         android:text="@string/hello" />
 </LinearLayout>

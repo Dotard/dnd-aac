@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="12sp">
-
-          
+    style="@style/layout_listitem">
+       
         <TextView android:id="@+id/data_item"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="50dp"/>    
-            
-        <View
-        android:layout_width="5dp"
-        android:layout_height="fill_parent"
-        android:background="@color/android_blue"
-        />
-        
+            style="@style/textview_listitem_child"
+            />    
 </LinearLayout>
