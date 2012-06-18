@@ -130,6 +130,7 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 	 *            The open database
 	 */
 	private void seedData(SQLiteDatabase db) {
+		db.execSQL("insert into tutorials (title, url) values ('Local Page', 'html/DemoPage.html');");
 		db.execSQL("insert into tutorials (title, url) values ('Best of Tuts+ in February 2011', 'http://mobile.tutsplus.com/articles/news/best-of-tuts-in-february-2011/');");
 		db.execSQL("insert into tutorials (title, url) values ('Design & Build a 1980s iOS Phone App: Design Comp Slicing', 'http://mobile.tutsplus.com/tutorials/mobile-design-tutorials/80s-phone-app-slicing/');");
 		db.execSQL("insert into tutorials (title, url) values ('Create a Brick Breaker Game with the Corona SDK: Game Controls', 'http://mobile.tutsplus.com/tutorials/corona/create-a-brick-breaker-game-with-the-corona-sdk-game-controls/');");

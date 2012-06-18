@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="horizontal" android:layout_height="46dip"
+	android:orientation="horizontal" android:layout_height="71dip"
 	android:layout_width="fill_parent" android:gravity="center_vertical|left"
 	android:paddingBottom="2dip" android:paddingLeft="4dip" style="@style/ListItemStyle">
  
@@ -9,6 +9,13 @@
 		android:textAppearance="@style/ListItemTextStyle"
 		android:layout_width="fill_parent" 
 		android:id="@+id/title" />
+	
+	<TextView android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:textAppearance="@style/ListItemTextStyle"
+		android:layout_width="fill_parent" 
+		android:textSize="20dp"
+		android:id="@+id/desc" />
  
 	<ImageView android:src="@drawable/list_item_arrow"
 		android:layout_weight="0" 

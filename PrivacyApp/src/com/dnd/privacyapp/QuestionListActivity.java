@@ -53,7 +53,7 @@ public class QuestionListActivity extends ListActivity {
         int[] uiBindTo = { R.id.title, R.id.desc }; 
 
         adapter = new SimpleCursorAdapter(
-                this, R.layout.list_item,
+                this, R.layout.list_item_with_description,
                 tutorialCursor, uiBindFrom, uiBindTo,
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
@@ -75,7 +75,7 @@ public class QuestionListActivity extends ListActivity {
         String[] uiBindFrom = { "sectionName", "sectionDesc" }; 
         int[] uiBindTo = { R.id.title, R.id.desc }; 
         adapter = new SimpleCursorAdapter(
-                this, R.layout.list_item,
+                this, R.layout.list_item_with_description,
                 tutorialCursor, uiBindFrom, uiBindTo,
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 

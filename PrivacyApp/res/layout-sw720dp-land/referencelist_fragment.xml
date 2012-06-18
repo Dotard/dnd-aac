@@ -3,23 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
     android:orientation="horizontal">
     <fragment
         android:name="com.dnd.privacyapp.ReferenceListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/referencelist_fragment"
-        android:background="#000000"
         android:layout_weight="38">
     </fragment>
-    <!-- <fragment
+    <fragment
         android:name="com.dnd.privacyapp.ReferenceViewFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:id="@+id/referenceview_fragment"
-        android:background="#000000"
         android:layout_weight="62">
-    </fragment> -->
+    </fragment>
     
 </LinearLayout>

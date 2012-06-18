@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+     <ListView 
+  	    android:id="@android:id/list"
+  	    android:orientation="vertical"
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="0dip"
+  	    android:layout_weight="1.0"
+  	    />
+  	    
+  	<TextView
+  	    android:id="@android:id/empty"
+  	    android:layout_width="wrap_content"
+  	    android:layout_height="0dip"
+  	    android:layout_weight="1.0"
+  	    android:text="No List Data"
+  	    />
+  	
+  	<RelativeLayout
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="30dip"
+  	    android:padding="0dip"
+  	    >
+  	<ProgressBar 
+  	    android:id="@+id/progess_bar"
+  	    android:layout_width="fill_parent"
+  	    android:layout_height="wrap_content"
+  	    android:layout_centerInParent="true"
+  	    android:indeterminateOnly="false"
+  	    style="@android:style/Widget.ProgressBar.Horizontal"
+  	    />
+  	<TextView 
+  	    android:id="@+id/progresstext" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:layout_centerInParent="true" 
+		android:textColor="#000000" 
+		android:textStyle="bold" 
+		android:visibility="gone"
+		android:text="Completed Procedure"
+  	    />
+  	</RelativeLayout>
+</LinearLayout>

@@ -9,6 +9,13 @@
 		android:textAppearance="@style/ListItemTextStyle"
 		android:layout_width="fill_parent" 
 		android:id="@+id/title" />
+	
+	<TextView android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:textAppearance="@style/ListItemTextStyle"
+		android:layout_width="fill_parent" 
+		android:textSize="20dp"
+		android:id="@+id/desc" />
  
 	<ImageView android:src="@drawable/list_item_arrow"
 		android:layout_weight="0" 
