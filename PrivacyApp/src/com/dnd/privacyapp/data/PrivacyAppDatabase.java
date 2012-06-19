@@ -142,13 +142,13 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 		db.execSQL("insert into tutorials (title, url) values ('Build a Titanium Mobile Pizza Ordering App: Topping Selection', 'http://mobile.tutsplus.com/tutorials/appcelerator/pizza-ordering-app-part-2/');");
 		db.execSQL("insert into tutorials (title, url) values ('Design & Build a 1980s iOS Phone App: Interface Builder Setup', 'http://mobile.tutsplus.com/tutorials/iphone/1980s-phone-app_interface-builder-setup/');");
 		
-		db.execSQL("insert into Chapters (chapterName, chapterDesc) values ('Chapter 1', 'Introduction to Privacy');");
+		db.execSQL("insert into Chapters (chapterName, chapterDesc) values ('Ch. 1', 'Introduction to Privacy');");
 		
-		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID ) values ('Section 1', 'Section 1', 1);");
-		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID ) values ('Section 2', 'Section 2', 1);");
-		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID, parentID ) values ('Section 1.1', 'Section 1.1', 1, 1);");
-		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID, parentID ) values ('Section 2.1', 'Section 2.1', 1, 2);");
-		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID, parentID ) values ('Section 1.2', 'Section 1.2', 1, 1);");
+		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID ) values ('¤ 1', 'Section 1', 1);");
+		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID ) values ('¤ 2', 'Section 2', 1);");
+		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID, parentID ) values ('¤ 1.1', 'Section 1.1', 1, 1);");
+		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID, parentID ) values ('¤ 2.1', 'Section 2.1', 1, 2);");
+		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID, parentID ) values ('¤ 1.2', 'Section 1.2', 1, 1);");
 		
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
 				+"('Question 1 Blah Blah?', 1, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Option 5',1, 1);");

@@ -18,19 +18,16 @@ public class MainMenuActivity extends Activity {
 
     public void openReferences(View view)  
     {  
-        Toast.makeText(this, "Button 1 clicked!", 500).show();
         Intent myIntent = new Intent(this, ReferenceListActivity.class );
         startActivity(myIntent);
     }
     public void openProcedures(View view)  
     {  
-        Toast.makeText(this, "Button 2 clicked!", 200).show();  
         Intent myIntent = new Intent(this, ProcedureListActivity.class );
         startActivity(myIntent);
     }     
     public void openQuizzes(View view)  
     {  
-        Toast.makeText(this, "Button 3 clicked!", 100).show(); 
         Intent myIntent = new Intent(this, QuestionListActivity.class );
         myIntent.putExtra("chapterID", 0);
         myIntent.putExtra("parentID", 0);
