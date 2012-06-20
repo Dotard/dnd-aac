@@ -35,6 +35,11 @@
         <activity
             android:name=".ReferenceViewActivity"
             android:label="Tutorial Viewer" />
+        <activity android:name=".QuestionViewActivity" />
+        <activity android:name=".QuestionViewFragment" />
+        <activity
+            android:name=".ReferenceViewActivity"
+            android:label="Tutorial Viewer" />
         <activity android:name=".ReferenceListPreferencesActivity" />
         <activity android:name=".QuestionListActivity" />
         <activity android:name=".QuestionActivity" />

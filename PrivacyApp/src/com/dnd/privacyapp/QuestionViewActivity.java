@@ -32,32 +32,32 @@ package com.dnd.privacyapp;
 
 import com.dnd.privacyapp.R;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
 
-public class ReferenceViewFragment extends Fragment {
-    private WebView viewer = null;
-
+public class QuestionViewActivity extends FragmentActivity {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        viewer = (WebView) inflater
-                .inflate(R.layout.web_view, container, false);
-        viewer.setBackgroundColor(0x00000000);
-   
-        return viewer;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.question_view_fragment);
+        
+        Intent launchingIntent = getIntent();
+        long content = launchingIntent.getLongExtra("SectionID", 0);
+
+        QuestionViewFragment viewer = (QuestionViewFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.question_view_fragment);
+         
+        viewer.loadSection(content);
+        
+    }
+    
+    public void onButtonClick(View v)
+    {
+    	QuestionViewFragment viewer = (QuestionViewFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.question_view_fragment);
+    	viewer.onButtonClick(v);
     }
 
-    public void loadArticle(String newUrl) {
-        if (viewer != null) {
-        	if (newUrl.startsWith("http"))
-            viewer.loadUrl(newUrl);
-        	else
-        	viewer.loadUrl("file:///android_asset/" + newUrl);
-        }
-    }
 }

@@ -68,36 +68,7 @@ public class ReferenceListFragment extends ListFragment implements
                         String.valueOf(id)), projection, null, null, null);
         if (tutorialCursor.moveToFirst()) {
             String tutorialUrl = tutorialCursor.getString(0);
-            
-                    /*File file = new File("cartecannotpdf.pdf");
-
-                    if (file.exists()) {
-                        Uri path = Uri.fromFile(file);
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setDataAndType(path, "application/pdf");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                        try {
-                            startActivity(intent);
-                            Context context = getActivity().getApplicationContext();
-                            Toast.makeText( context, 
-                                "No Application Available to View PDF", 
-                                Toast.LENGTH_SHORT).show();
-                        } 
-                        catch (ActivityNotFoundException e) {
-                        	Context context = getActivity().getApplicationContext();
-                            Toast.makeText( context, 
-                                "No Application Available to View PDF", 
-                                Toast.LENGTH_SHORT).show();
-                        }
-                
-                    } else {
-                    	Context context = getActivity().getApplicationContext();
-                        Toast.makeText( context, 
-                            "File doesn't exists", 
-                            Toast.LENGTH_SHORT).show();                    	
-                    }*/
-                    	
+                                	
                     tutSelectedListener.onTutSelected(tutorialUrl);
                 
         }

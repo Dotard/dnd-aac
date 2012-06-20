@@ -78,7 +78,7 @@ public class PrivacyAppProvider extends ContentProvider {
     		+ "/" + PROCEDURES_BASE_PATH);
     public static final Uri PROCEDUREITEMS_URI = Uri.parse("content://" + AUTHORITY
     		+ "/" + PROCEDUREITEMS_BASE_PATH);
-    
+
     public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
             + "/mt-tutorial";
     public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
@@ -166,7 +166,7 @@ public class PrivacyAppProvider extends ContentProvider {
                     + uri.getLastPathSegment());
         	break;
         case SECTIONS:
-        	queryBuilder.appendWhere("parentID" + " IS NULL");
+        	//queryBuilder.appendWhere("parentID" + " IS NULL");
         	break;
         case QUESTION_ID:
         	queryBuilder.appendWhere("sectionID" + "="
