@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ProcedureListActivity extends ListActivity{
 
@@ -118,9 +119,10 @@ public class ProcedureListActivity extends ListActivity{
     protected void onListItemClick(ListView l, View v, int position, long id)
     {
     	super.onListItemClick(l, v, position, id);
-    
+    	TextView tv = (TextView)v.findViewById(R.id.title);
     	Intent newActivity = new Intent(this, CheckListActivity.class);
     	newActivity.putExtra("ID", id);
+    	newActivity.putExtra("Title", tv.getText());
     	startActivity(newActivity);
     }
 }
