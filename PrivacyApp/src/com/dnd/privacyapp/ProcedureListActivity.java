@@ -108,7 +108,7 @@ public class ProcedureListActivity extends ListActivity{
         int[] uiBindTo = { R.id.title }; //And you can bind it to as many variables using ,
 
         adapter = new SimpleCursorAdapter(
-                this, R.layout.list_item_with_description,
+                this, R.layout.list_item2,
                 tutorialCursor, uiBindFrom, uiBindTo,
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 

@@ -10,6 +10,7 @@
   	    android:layout_width="fill_parent"
   	    android:layout_height="0dip"
   	    android:layout_weight="1.0"
+  	    android:cacheColorHint="#481a1a"
   	    />
   	    
   	<TextView
