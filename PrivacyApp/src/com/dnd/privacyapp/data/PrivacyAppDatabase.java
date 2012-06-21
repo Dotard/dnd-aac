@@ -130,7 +130,7 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 	 *            The open database
 	 */
 	private void seedData(SQLiteDatabase db) {
-		db.execSQL("insert into tutorials (title, url) values ('Local Page', 'html/DemoPage.html');");
+		db.execSQL("insert into tutorials (title, url) values ('On phone content', 'html/DemoPage.html');");
 		db.execSQL("insert into tutorials (title, url) values ('Best of Tuts+ in February 2011', 'http://mobile.tutsplus.com/articles/news/best-of-tuts-in-february-2011/');");
 		db.execSQL("insert into tutorials (title, url) values ('Design & Build a 1980s iOS Phone App: Design Comp Slicing', 'http://mobile.tutsplus.com/tutorials/mobile-design-tutorials/80s-phone-app-slicing/');");
 		db.execSQL("insert into tutorials (title, url) values ('Create a Brick Breaker Game with the Corona SDK: Game Controls', 'http://mobile.tutsplus.com/tutorials/corona/create-a-brick-breaker-game-with-the-corona-sdk-game-controls/');");
@@ -151,21 +151,22 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 		db.execSQL("insert into Sections (sectionName, sectionDesc, chapterID, parentID ) values ('¤ 1.2', 'Section 1.2', 1, 1);");
 		
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
-				+"('Question 1 Blah Blah?', 1, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Option 5',1, 1);");
+				+"('Question 1 What is the first option?', 1, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Option 5',1, 1);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
-				+"('Question 2 Trololol?', 2, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Option 5',2, 2);");
+				+"('Question 2 What comes after 1?', 2, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Option 5',2, 2);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
-				+"('Question 3 Slime Time?', 3, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Option 5',3, 3);");
+				+"('Question 3 What button is in the middle?', 3, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Option 5',3, 3);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption,sectionID ) values"
-				+"('Question 4 Too Slimey?', 4, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Option 5',4, 4);");
+				+"('Question 4 What question number is this?', 4, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Option 5',4, 4);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
-				+"('Question Where are we?', 3, 'Option 1','Option 2', 'Rye', 'Option 4', 'Option 5',3, 3);");
+				+"('Question 5 What Do you think about this app?', 3, 'Option 1','Option 2', 'It's good', 'Option 4', 'Option 5',3, 3);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
-				+"('Question Slime boss?', 3, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Fishing botter',5, 3);");
+				+"('Question 6 Which is the correct answer?', 3, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Correct Answer',5, 3);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
-				+"('Question Diablo 3 release date?', 3, 'Option 1','May 15', 'Option 3', 'Option 4', 'Option 5',2, 3);");
+				+"('Question 7 What Do you think about this app?', 3, 'Option 1','Option 2', 'It's good', 'Option 4', 'Option 5',3, 3);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
-				+"('Question Raj _____?', 3, 'Kutrapali','Option 2', 'Option 3', 'Option 4', 'Option 5',1, 3);");
+				+"('Question 8 Which is the correct answer?', 3, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Correct Answer',5, 3);");
+
 		
 		db.execSQL("insert into Procedures(procedureName, procedureDesc) values"
 				+ "('New license','Sign up for new license');");
