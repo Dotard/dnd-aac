@@ -9,7 +9,9 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.Editable;
@@ -23,10 +25,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ProcedureListActivity extends ListActivity{
+public class ProceduresActivity extends FragmentActivity implements
+ProceduresListFragment.OnProcSelectedListener {
 
-	private SimpleCursorAdapter adapter;
-	Cursor tutorialCursor;
+	
 	
 	  /** Called when the activity is first created. */
     @Override
@@ -34,11 +36,25 @@ public class ProcedureListActivity extends ListActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.procedures);
         
-        collectListData();
         
     }
     
     @Override
+    public void onProcedureSelected(long id, CharSequence title){
+    	ProceduresViewFragment viewer = (ProceduresViewFragment) getSupportFragmentManager()
+    			.findFragmentById(R.id.proceduresview_fragment);
+
+    	if (viewer == null || !viewer.isInLayout()) {
+    		Intent newActivity = new Intent(this, ProceduresViewActivity.class);
+    		newActivity.putExtra("ID", id);
+    		newActivity.putExtra("Title", title);
+    		startActivity(newActivity);
+    	} else {
+    		viewer.setupProcedure(id, title.toString());
+    	}
+    }
+/*
+	@Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
     	MenuInflater inflater = getMenuInflater();
@@ -82,7 +98,7 @@ public class ProcedureListActivity extends ListActivity{
     	        	 getContentResolver().insert(
     	                     PrivacyAppProvider.PROCEDURES_URI,
     	                     procData);
-    	        	 tutorialCursor.requery();
+    	        	 //tutorialCursor.requery();
     	        }
     	    });
     	    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -96,33 +112,5 @@ public class ProcedureListActivity extends ListActivity{
         	 
     	}
     	return false;
-    }
-    
-    private void collectListData()
-    {	
-    	String projection[] = {"procedureID as _id","procedureName" };
-        tutorialCursor = this.getContentResolver().query(
-                PrivacyAppProvider.PROCEDURES_URI, projection, null, null, null);
-        
-        String[] uiBindFrom = { "procedureName" }; //Add as many columns using ,
-        int[] uiBindTo = { R.id.title }; //And you can bind it to as many variables using ,
-
-        adapter = new SimpleCursorAdapter(
-                this, R.layout.list_item2,
-                tutorialCursor, uiBindFrom, uiBindTo,
-                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-
-        setListAdapter(adapter);
-    }
-    
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id)
-    {
-    	super.onListItemClick(l, v, position, id);
-    	TextView tv = (TextView)v.findViewById(R.id.title);
-    	Intent newActivity = new Intent(this, CheckListActivity.class);
-    	newActivity.putExtra("ID", id);
-    	newActivity.putExtra("Title", tv.getText());
-    	startActivity(newActivity);
-    }
+    }*/
 }

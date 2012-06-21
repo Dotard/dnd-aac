@@ -13,24 +13,27 @@
         android:background="@drawable/headerwithwood"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:text="Please select a procedure" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical" />
+        android:layout_weight="1"       
+        android:orientation="vertical" 
+        />
 
     <com.dnd.privacyapp.widgets.SaundProgressBar
         android:id="@+id/regularprogressbar"
         style="@style/Widget.ProgressBar.RegularProgressBar"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:paddingLeft="15dip"
         android:paddingRight="15dip"
         saund:offset="3dip"
-        saund:textSize="7sp" />
+        saund:textSize="7sp"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/buttonBack"

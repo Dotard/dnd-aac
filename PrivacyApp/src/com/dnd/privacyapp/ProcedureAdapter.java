@@ -14,7 +14,7 @@ import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class CheckBoxAdapter extends SimpleCursorAdapter implements OnClickListener{
+public class ProcedureAdapter extends SimpleCursorAdapter implements OnClickListener{
 
     private Context mContext;
     private int mLayout;
@@ -22,13 +22,14 @@ public class CheckBoxAdapter extends SimpleCursorAdapter implements OnClickListe
     private LayoutInflater mLayoutInflater;
     private ArrayList<Boolean> checkStates;
     private int textCol;
+    private ProceduresViewFragment fragment;
     
     private final class ViewHolder {
         public CheckBox checkBox;
         public int position;
     }
 
-    public CheckBoxAdapter(Context context, int layout, Cursor c, String[] from, int[] to,int a){
+    public ProcedureAdapter(Context context, int layout, Cursor c, String[] from, int[] to,int a,ProceduresViewFragment fragment){
         super(context, layout, c, from, to,a);
 
         this.mContext = context;
@@ -41,6 +42,8 @@ public class CheckBoxAdapter extends SimpleCursorAdapter implements OnClickListe
         }
         
         textCol = mCursor.getColumnIndexOrThrow("procedureItemsText");
+        
+        this.fragment = fragment;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -77,14 +80,13 @@ public class CheckBoxAdapter extends SimpleCursorAdapter implements OnClickListe
         
         ViewHolder viewHolder = (ViewHolder)((View)v.getParent()).getTag();
         int position = viewHolder.position;
-        CheckListActivity cla = (CheckListActivity) mContext;
  
         if (cBox.isChecked()) {
-        	cla.adjustProgress(1);
+        	fragment.adjustProgress(1);
         	checkStates.set(position, true);        	
         } else {
-        	cla.adjustProgress(-1);
-        	checkStates.set(position, true);
+        	fragment.adjustProgress(-1);
+        	checkStates.set(position, false);
         }
     }
 

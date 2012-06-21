@@ -37,14 +37,11 @@
             android:label="Tutorial Viewer" />
         <activity android:name=".QuestionViewActivity" />
         <activity android:name=".QuestionViewFragment" />
-        <activity
-            android:name=".ReferenceViewActivity"
-            android:label="Tutorial Viewer" />
         <activity android:name=".ReferenceListPreferencesActivity" />
         <activity android:name=".QuestionListActivity" />
         <activity android:name=".QuestionActivity" />
-        <activity android:name=".CheckListActivity" />
-        <activity android:name=".ProcedureListActivity" />
+        <activity android:name=".ProceduresActivity" />
+        <activity android:name=".ProceduresViewActivity" />
 
         <provider
         	android:name=".data.PrivacyAppProvider"

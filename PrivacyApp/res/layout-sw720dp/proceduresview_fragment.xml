@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:saund="http://schemas.android.com/apk/res/com.dnd.privacyapp"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/checkHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/headerwithwood"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textColor="#FFFFFF"
+        android:text="Please select a procedure" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"       
+        android:orientation="vertical" 
+        />
+
+    <com.dnd.privacyapp.widgets.SaundProgressBar
+        android:id="@+id/regularprogressbar"
+        style="@style/Widget.ProgressBar.RegularProgressBar"
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip"
+        saund:offset="3dip"
+        saund:textSize="7sp"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/button_previous"
+        android:onClick="onBackClick"
+        android:visibility="gone" />
+
+</LinearLayout>

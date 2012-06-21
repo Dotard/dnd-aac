@@ -3,22 +3,21 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    
-    	<ListView 
-  	    android:id="@android:id/list"
-  	    android:orientation="vertical"
-  	    android:layout_width="fill_parent"
-  	    android:layout_height="0dip"
-  	    android:layout_weight="1.0"
-  	    android:cacheColorHint="#481a1a"
-  	    />
-  	    
-  	<TextView
-  	    android:id="@android:id/empty"
-  	    android:layout_width="wrap_content"
-  	    android:layout_height="0dip"
-  	    android:layout_weight="1.0"
-  	    android:text="No List Data"
-  	    />
+
+    <TextView
+        android:id="@+id/checkHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/headerwithwood"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="Procedures"
+        android:textColor="#FFFFFF" />
+
+    <fragment
+        android:id="@+id/procedureslist_fragment"
+        android:name="com.dnd.privacyapp.ProceduresListFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 
 </LinearLayout>

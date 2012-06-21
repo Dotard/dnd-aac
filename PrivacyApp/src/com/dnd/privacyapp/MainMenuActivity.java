@@ -22,7 +22,7 @@ public class MainMenuActivity extends Activity {
     }
     public void openProcedures(View view)  
     {  
-        Intent myIntent = new Intent(this, ProcedureListActivity.class );
+        Intent myIntent = new Intent(this, ProceduresActivity.class );
         startActivity(myIntent);
     }     
     public void openQuizzes(View view)  

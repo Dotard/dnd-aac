@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
    android:layout_width="fill_parent"
    android:layout_height="fill_parent"
-   android:background="#FFFFFF"
-   android:screenOrientation="portrait"
+   android:background="@drawable/app_background"
+   android:gravity="center"
    >
     <ImageView
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="250dp"
+    android:layout_height="250dp"
     android:src="@drawable/splash"
-    android:contentDescription="Slash Logo"/>
+    android:contentDescription = "splash logo"
+    />
 </LinearLayout>
