@@ -91,8 +91,8 @@ LoaderManager.LoaderCallbacks<Cursor>  {
      // Set up our adapter
         mAdapter = new QuestionListAdapter(
                 getActivity(),
-                android.R.layout.simple_expandable_list_item_1,
-                android.R.layout.simple_expandable_list_item_1,
+                R.layout.simple_expandable_list_item_1,
+                R.layout.simple_expandable_list_item_1,
                 new String[] { "chapterName" }, // Name for group layouts
                 new int[] { android.R.id.text1 },
                 new String[] { "sectionName" }, // Number for child layouts

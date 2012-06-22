@@ -108,8 +108,10 @@ public class QuestionActivity extends Activity {
     	
     	questionCursor.moveToPosition(qIndex);
     	
-    	RadioGroup rg = (RadioGroup) findViewById(R.id.radiogroup);
-    	TextView tv = (TextView) findViewById(R.id.tv1);
+    	
+    	//**TEMPORARY** FIX REMOVE LATER
+    	RadioGroup rg = new RadioGroup(this);//(RadioGroup) findViewById(R.id.radiogroup);
+    	TextView tv = (TextView) findViewById(R.id.tvQuestion);
     	TextView tv2 = (TextView) findViewById(R.id.tvPage);
     	rg.removeAllViews();
     	
@@ -129,7 +131,8 @@ public class QuestionActivity extends Activity {
     
     private void checkAnswer()
     {
-    	RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radiogroup);
+    	//**TEMPORARY FIX REMOVE LATER
+    	RadioGroup radioGroup = new RadioGroup(this);//(RadioGroup)findViewById(R.id.radiogroup);
     	
     	int checkedRadioButton = radioGroup.getCheckedRadioButtonId();
        	

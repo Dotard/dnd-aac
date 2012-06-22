@@ -46,47 +46,60 @@
         android:text="&gt;&gt;" />
     
    	<TextView
-            android:id="@+id/tv1"
+            android:id="@+id/tvQuestion"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/buttonFirst"
             android:text="" />
         
-    <RadioGroup
-        android:id="@+id/radiogroup"
+<!--     <RadioGroup -->
+<!--         android:id="@+id/radiogroup" -->
+<!--         android:layout_width="fill_parent" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:orientation="vertical" -->
+<!--         android:layout_below="@+id/tvQuestion" > -->
+
+
+<!--         <RadioButton -->
+<!--             android:id="@+id/radioButton1" -->
+<!--             android:layout_width="fill_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:text="One" /> -->
+
+<!--         <RadioButton -->
+<!--             android:id="@+id/radioButton2" -->
+<!--             android:layout_width="fill_parent" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:text="Two" /> -->
+
+<!--         <RadioButton -->
+<!--             android:id="@+id/radioButton3" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:text="Four" /> -->
+
+<!--     </RadioGroup> -->
+	
+    <LinearLayout android:id="@+id/optionsLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/tv1" >
-
-
-        <RadioButton
-            android:id="@+id/radioButton1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="One" />
-
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Two" />
-
-        <RadioButton
-            android:id="@+id/radioButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Four" />
-
-    </RadioGroup>
-
+        android:layout_below="@id/tvQuestion" >        
+        
+    </LinearLayout>
+    <TextView android:id="@+id/label1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/optionsLayout" />
     <Button
         android:id="@+id/buttonCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onButtonClick"
-        android:layout_below="@+id/radiogroup"
+        android:layout_below="@+id/label1"
         android:text="Check Answer" 
+        android:visibility="gone"
         />
     
     <Button
@@ -94,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onButtonClick"
-        android:layout_below="@+id/radiogroup"
+        android:layout_below="@+id/label1"
         android:text="Next"
         android:visibility="gone" 
         />
@@ -103,7 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onButtonClick"
-        android:layout_below="@+id/radiogroup"
+        android:layout_below="@+id/label1"
         android:text="End"
         android:visibility="gone" 
         />

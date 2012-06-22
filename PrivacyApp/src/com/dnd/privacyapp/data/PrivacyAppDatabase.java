@@ -159,11 +159,11 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption,sectionID ) values"
 				+"('Question 4 What question number is this?', 4, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Option 5',4, 4);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
-				+"('Question 5 What Do you think about this app?', 3, 'Option 1','Option 2', 'It's good', 'Option 4', 'Option 5',3, 3);");
+				+"('Question 5 What Do you think about this app?', 3, 'Option 1','Option 2', 'Its good', 'Option 4', 'Option 5',3, 3);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
 				+"('Question 6 Which is the correct answer?', 3, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Correct Answer',5, 3);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
-				+"('Question 7 What Do you think about this app?', 3, 'Option 1','Option 2', 'It's good', 'Option 4', 'Option 5',3, 3);");
+				+"('Question 7 What Do you think about this app?', 3, 'Option 1','Option 2', 'Its good', 'Option 4', 'Option 5',3, 3);");
 		db.execSQL("insert into Questions (questionDesc, questionNumber, option1, option2, option3, option4, option5, correctOption, sectionID ) values"
 				+"('Question 8 Which is the correct answer?', 3, 'Option 1','Option 2', 'Option 3', 'Option 4', 'Correct Answer',5, 3);");
 

@@ -36,26 +36,31 @@ import com.dnd.privacyapp.data.PrivacyAppProvider;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class QuestionViewFragment extends Fragment {
+public class QuestionViewFragment extends Fragment implements OnClickListener{
     private RelativeLayout viewer = null;
     
     private int qIndex;
 	private int answer;
 	private long sectionID;
 	private Cursor questionCursor;
+	private TextView label;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,9 +70,10 @@ public class QuestionViewFragment extends Fragment {
         viewer.setBackgroundColor(0x00000000);
         
         qIndex = 0;
-        createQuestionSet();
-        loadQuestion(qIndex);
-                
+//        createQuestionSet();
+//        loadQuestion(qIndex);
+        label = (TextView)viewer.findViewById(R.id.label1);
+        
         return viewer;
     }
 
@@ -92,8 +98,9 @@ public class QuestionViewFragment extends Fragment {
     			qIndex = 0;
 	    		loadQuestion(qIndex);
 	    		viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
-	    		viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
+//	    		viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
 	    		viewer.findViewById(R.id.buttonEnd).setVisibility(View.GONE);
+	    		label.setText("");
     		}
     		break;
     	case R.id.buttonPrev:
@@ -102,21 +109,24 @@ public class QuestionViewFragment extends Fragment {
     			qIndex--;
     			loadQuestion(qIndex);
     			viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
-    			viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
+//    			viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
     			viewer.findViewById(R.id.buttonEnd).setVisibility(View.GONE);
+    			label.setText("");
     		}
     		
     		break;
     	case R.id.buttonCont:
     		viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
-    		viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
+//    		viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
     		viewer.findViewById(R.id.buttonEnd).setVisibility(View.GONE);
+    		
     		
     	case R.id.buttonNext:
     		if(qIndex < total - 1)
     		{
     			qIndex++;
     			loadQuestion(qIndex);
+    			label.setText("");
     		}
 
     		break;
@@ -126,8 +136,9 @@ public class QuestionViewFragment extends Fragment {
     			qIndex = total - 1;
         		loadQuestion(qIndex);
         		viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
-        		viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
+//        		viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
         		viewer.findViewById(R.id.buttonEnd).setVisibility(View.GONE);
+        		label.setText("");
     		}
     		
     		break;
@@ -162,7 +173,9 @@ public class QuestionViewFragment extends Fragment {
     	            .findFragmentById(R.id.question_list_fragment);
 
     			    if (listfragment == null || !listfragment.isInLayout()) {
-    			        //getActivity().finish();
+    			        if(getActivity() instanceof QuestionViewActivity){
+    			        	getActivity().finish();
+    			        }
     			    } else {
     			    	viewer.setVisibility(View.INVISIBLE);
     			    }
@@ -173,28 +186,42 @@ public class QuestionViewFragment extends Fragment {
     	
     	questionCursor.moveToPosition(qIndex);
     	
-    	RadioGroup rg = (RadioGroup) viewer.findViewById(R.id.radiogroup);
-    	TextView tv = (TextView) viewer.findViewById(R.id.tv1);
+//    	RadioGroup rg = (RadioGroup) viewer.findViewById(R.id.radiogroup);
+    	TextView tv = (TextView) viewer.findViewById(R.id.tvQuestion);
     	TextView tv2 = (TextView) viewer.findViewById(R.id.tvPage);
-    	rg.removeAllViews();
+//    	rg.removeAllViews();
     	
     	tv.setText(questionCursor.getString(1));
     	tv2.setText(String.format("%d of %d", qIndex+1, questionCursor.getCount()));
     	
     
-    	for(int j = 0; j < 5; j++)
-    	{
-	    	RadioButton button1 = new RadioButton(getActivity());
-	    	button1.setText(questionCursor.getString(3 + j));
-	    	rg.addView(button1);
-    	}
+//    	for(int j = 0; j < 5; j++)
+//    	{
+//	    	RadioButton button1 = new RadioButton(getActivity());
+//	    	button1.setText(questionCursor.getString(3 + j));
+//	    	rg.addView(button1);
+//    	}
     	
     	answer = questionCursor.getInt(8);
+    	
+    	
+    	LinearLayout questionlayout = (LinearLayout) viewer.findViewById(R.id.optionsLayout);
+    	questionlayout.setEnabled(true);
+    	questionlayout.removeAllViews();
+    	for(int j = 0; j < 5; j++)
+    	{
+	    	Button button1 = new Button(getActivity());
+	    	button1.setText(questionCursor.getString(3 + j));
+	    	button1.setOnClickListener(this);
+	    	button1.setTag(j+1);
+	    	questionlayout.addView(button1);
+    	}
     }
     
     private void checkAnswer()
     {
-    	RadioGroup radioGroup = (RadioGroup) viewer.findViewById(R.id.radiogroup);
+    	//**TEMPORARY*** FIX
+    	RadioGroup radioGroup = new RadioGroup(getActivity());//(RadioGroup) viewer.findViewById(R.id.radiogroup);
     	
     	int checkedRadioButton = radioGroup.getCheckedRadioButtonId();
        	
@@ -230,4 +257,47 @@ public class QuestionViewFragment extends Fragment {
 			Toast.makeText(getActivity(), "Wrong", Toast.LENGTH_SHORT).show();
 		}
     }
+
+	@Override
+	public void onClick(View v) {
+		int index = (Integer)(v.getTag());
+		
+		if(index == answer){
+			v.setBackgroundResource(R.drawable.btn_quiz_question_correct);
+			//v.setEnabled(false);
+			label.setBackgroundColor(Color.GREEN);
+			label.setTextColor(Color.WHITE);
+			
+			disableQuestions();
+			if(qIndex == questionCursor.getCount() - 1)
+    		{
+    			viewer.findViewById(R.id.buttonEnd).setVisibility(View.VISIBLE);
+    			viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
+    			viewer.findViewById(R.id.buttonCheck).setVisibility(View.GONE);
+    			label.setText("Thats correct! No more questions");
+    		}
+    		else
+    		{
+    			viewer.findViewById(R.id.buttonCont).setVisibility(View.VISIBLE);
+    			viewer.findViewById(R.id.buttonCheck).setVisibility(View.GONE);
+    			label.setText("Thats correct! Press continue");
+    		}
+		}
+		else
+		{
+			v.setBackgroundResource(R.drawable.btn_quiz_question_incorrect);
+			//v.setEnabled(false);
+			label.setBackgroundColor(Color.RED);
+			label.setTextColor(Color.WHITE);
+			label.setText("Oops, that was not the correct answer");
+			
+		}
+	}
+	
+	private void disableQuestions(){
+		LinearLayout questionlayout = (LinearLayout) viewer.findViewById(R.id.optionsLayout);
+		for(int i = 0; i < questionlayout.getChildCount(); i++){
+			questionlayout.getChildAt(i).setEnabled(false);
+		}
+	}
 }
