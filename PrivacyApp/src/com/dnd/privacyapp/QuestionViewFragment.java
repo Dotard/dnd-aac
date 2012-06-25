@@ -70,8 +70,7 @@ public class QuestionViewFragment extends Fragment implements OnClickListener{
         viewer.setBackgroundColor(0x00000000);
         
         qIndex = 0;
-//        createQuestionSet();
-//        loadQuestion(qIndex);
+
         label = (TextView)viewer.findViewById(R.id.label1);
         
         return viewer;
@@ -83,24 +82,18 @@ public class QuestionViewFragment extends Fragment implements OnClickListener{
         	 qIndex = 0;
         	createQuestionSet();
         	loadQuestion( qIndex);
+        	resetLayout();
         }
     }
         
     public void onButtonClick(View v) {
     	int total = questionCursor.getCount();
     	switch(v.getId()){
-    	case R.id.buttonCheck:
-    		checkAnswer();
-    		break;
     	case R.id.buttonFirst:
-    		if(qIndex != 0)
-    		{
+    		if(qIndex != 0) {
     			qIndex = 0;
 	    		loadQuestion(qIndex);
-	    		viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
-//	    		viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
-	    		viewer.findViewById(R.id.buttonEnd).setVisibility(View.GONE);
-	    		label.setText("");
+	    		resetLayout();
     		}
     		break;
     	case R.id.buttonPrev:
@@ -108,25 +101,17 @@ public class QuestionViewFragment extends Fragment implements OnClickListener{
     		{
     			qIndex--;
     			loadQuestion(qIndex);
-    			viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
-//    			viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
-    			viewer.findViewById(R.id.buttonEnd).setVisibility(View.GONE);
-    			label.setText("");
+    			resetLayout();
     		}
     		
     		break;
-    	case R.id.buttonCont:
-    		viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
-//    		viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
-    		viewer.findViewById(R.id.buttonEnd).setVisibility(View.GONE);
-    		
-    		
+    	case R.id.buttonCont:	
     	case R.id.buttonNext:
     		if(qIndex < total - 1)
     		{
     			qIndex++;
     			loadQuestion(qIndex);
-    			label.setText("");
+    			resetLayout();
     		}
 
     		break;
@@ -135,10 +120,7 @@ public class QuestionViewFragment extends Fragment implements OnClickListener{
     		{
     			qIndex = total - 1;
         		loadQuestion(qIndex);
-        		viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
-//        		viewer.findViewById(R.id.buttonCheck).setVisibility(View.VISIBLE);
-        		viewer.findViewById(R.id.buttonEnd).setVisibility(View.GONE);
-        		label.setText("");
+        		resetLayout();
     		}
     		
     		break;
@@ -152,6 +134,7 @@ public class QuestionViewFragment extends Fragment implements OnClickListener{
 		    } else {
 		    	viewer.setVisibility(View.INVISIBLE);
 		    }
+		    v.setVisibility(View.GONE);
     		break;
     	}
     	
@@ -186,23 +169,14 @@ public class QuestionViewFragment extends Fragment implements OnClickListener{
     	
     	questionCursor.moveToPosition(qIndex);
     	
-//    	RadioGroup rg = (RadioGroup) viewer.findViewById(R.id.radiogroup);
     	TextView tv = (TextView) viewer.findViewById(R.id.tvQuestion);
     	TextView tv2 = (TextView) viewer.findViewById(R.id.tvPage);
-//    	rg.removeAllViews();
     	
     	tv.setText(questionCursor.getString(1));
     	tv2.setText(String.format("%d of %d", qIndex+1, questionCursor.getCount()));
     	
-    
-//    	for(int j = 0; j < 5; j++)
-//    	{
-//	    	RadioButton button1 = new RadioButton(getActivity());
-//	    	button1.setText(questionCursor.getString(3 + j));
-//	    	rg.addView(button1);
-//    	}
-    	
-    	answer = questionCursor.getInt(8);
+    	int ansIndex = questionCursor.getColumnIndexOrThrow("correctOption");
+    	answer = questionCursor.getInt(ansIndex);
     	
     	
     	LinearLayout questionlayout = (LinearLayout) viewer.findViewById(R.id.optionsLayout);
@@ -218,53 +192,12 @@ public class QuestionViewFragment extends Fragment implements OnClickListener{
     	}
     }
     
-    private void checkAnswer()
-    {
-    	//**TEMPORARY*** FIX
-    	RadioGroup radioGroup = new RadioGroup(getActivity());//(RadioGroup) viewer.findViewById(R.id.radiogroup);
-    	
-    	int checkedRadioButton = radioGroup.getCheckedRadioButtonId();
-       	
-    	int indx = radioGroup.indexOfChild(radioGroup.findViewById(checkedRadioButton));
-    	
-    	
-    	if(indx == -1) return;
-    	
- 
-    	if(indx + 1 == answer)
-    	{
-    		Toast.makeText(getActivity(), "Yousa right", Toast.LENGTH_SHORT)
-			.show();
-
-    		
-    		ContentValues values = new ContentValues();
-    		values.put("selectedOption", indx + 1);  		
-    		getActivity().getContentResolver().update(Uri.withAppendedPath(PrivacyAppProvider.QUESTIONS_URI,String.valueOf(questionCursor.getInt(0))), values, null, null);
-    		
-    		if(qIndex == questionCursor.getCount() - 1)
-    		{
-    			viewer.findViewById(R.id.buttonEnd).setVisibility(View.VISIBLE);
-    			viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
-    			viewer.findViewById(R.id.buttonCheck).setVisibility(View.GONE);
-    		}
-    		else
-    		{
-    			viewer.findViewById(R.id.buttonCont).setVisibility(View.VISIBLE);
-    			viewer.findViewById(R.id.buttonCheck).setVisibility(View.GONE);
-    		}
-    	}
-    	else {
-			Toast.makeText(getActivity(), "Wrong", Toast.LENGTH_SHORT).show();
-		}
-    }
-
 	@Override
 	public void onClick(View v) {
 		int index = (Integer)(v.getTag());
 		
 		if(index == answer){
 			v.setBackgroundResource(R.drawable.btn_quiz_question_correct);
-			//v.setEnabled(false);
 			label.setBackgroundColor(Color.GREEN);
 			label.setTextColor(Color.WHITE);
 			
@@ -273,20 +206,17 @@ public class QuestionViewFragment extends Fragment implements OnClickListener{
     		{
     			viewer.findViewById(R.id.buttonEnd).setVisibility(View.VISIBLE);
     			viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
-    			viewer.findViewById(R.id.buttonCheck).setVisibility(View.GONE);
     			label.setText("Thats correct! No more questions");
     		}
     		else
     		{
     			viewer.findViewById(R.id.buttonCont).setVisibility(View.VISIBLE);
-    			viewer.findViewById(R.id.buttonCheck).setVisibility(View.GONE);
     			label.setText("Thats correct! Press continue");
     		}
 		}
 		else
 		{
 			v.setBackgroundResource(R.drawable.btn_quiz_question_incorrect);
-			//v.setEnabled(false);
 			label.setBackgroundColor(Color.RED);
 			label.setTextColor(Color.WHITE);
 			label.setText("Oops, that was not the correct answer");
@@ -299,5 +229,12 @@ public class QuestionViewFragment extends Fragment implements OnClickListener{
 		for(int i = 0; i < questionlayout.getChildCount(); i++){
 			questionlayout.getChildAt(i).setEnabled(false);
 		}
+	}
+	
+	private void resetLayout(){
+		viewer.findViewById(R.id.buttonCont).setVisibility(View.GONE);
+		viewer.findViewById(R.id.buttonEnd).setVisibility(View.GONE);
+		label.setText("");
+		label.setBackgroundColor(android.R.color.transparent);
 	}
 }

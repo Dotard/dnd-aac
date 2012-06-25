@@ -50,35 +50,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/buttonFirst"
-            android:text="" />
-        
-<!--     <RadioGroup -->
-<!--         android:id="@+id/radiogroup" -->
-<!--         android:layout_width="fill_parent" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:orientation="vertical" -->
-<!--         android:layout_below="@+id/tvQuestion" > -->
-
-
-<!--         <RadioButton -->
-<!--             android:id="@+id/radioButton1" -->
-<!--             android:layout_width="fill_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:text="One" /> -->
-
-<!--         <RadioButton -->
-<!--             android:id="@+id/radioButton2" -->
-<!--             android:layout_width="fill_parent" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:text="Two" /> -->
-
-<!--         <RadioButton -->
-<!--             android:id="@+id/radioButton3" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="wrap_content" -->
-<!--             android:text="Four" /> -->
-
-<!--     </RadioGroup> -->
+            android:text="" />    
 	
     <LinearLayout android:id="@+id/optionsLayout"
         android:layout_width="fill_parent"
@@ -92,32 +64,25 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_below="@id/optionsLayout" />
-    <Button
-        android:id="@+id/buttonCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onButtonClick"
-        android:layout_below="@+id/label1"
-        android:text="Check Answer" 
-        android:visibility="gone"
-        />
-    
+
     <Button
         android:id="@+id/buttonCont"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:onClick="onButtonClick"
         android:layout_below="@+id/label1"
         android:text="Next"
         android:visibility="gone" 
+        android:layout_centerHorizontal="true"
         />
     <Button
         android:id="@+id/buttonEnd"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:onClick="onButtonClick"
         android:layout_below="@+id/label1"
         android:text="End"
         android:visibility="gone" 
+        android:layout_centerHorizontal="true"
         />
 </RelativeLayout>
