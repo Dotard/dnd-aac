@@ -25,4 +25,5 @@
     <string name="references">Hand book</string>
     <string name="procedures">Check list</string>
     <string name="quizzes">Quizzes </string>
+    <string name="takequiz">Quiz Me</string>
 </resources>

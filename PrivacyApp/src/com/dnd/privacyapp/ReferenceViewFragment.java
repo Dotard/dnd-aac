@@ -30,34 +30,71 @@
  */
 package com.dnd.privacyapp;
 
-import com.dnd.privacyapp.R;
+import com.dnd.privacyapp.data.PrivacyAppDatabase;
+import com.dnd.privacyapp.data.PrivacyAppProvider;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.LinearLayout;
 
 public class ReferenceViewFragment extends Fragment {
-    private WebView viewer = null;
+	private WebView webView = null;
+	private LinearLayout layoutView = null;
+	private long sectionID;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        viewer = (WebView) inflater
-                .inflate(R.layout.web_view, container, false);
-        viewer.setBackgroundColor(0x00000000);
-   
-        return viewer;
-    }
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View v = inflater.inflate(R.layout.web_view, container, false);
+		layoutView = (LinearLayout)v;
+		webView = (WebView)v.findViewById(R.id.mwebview);
 
-    public void loadArticle(String newUrl) {
-        if (viewer != null) {
-        	if (newUrl.startsWith("http"))
-            viewer.loadUrl(newUrl);
-        	else
-        	viewer.loadUrl("file:///android_asset/" + newUrl);
-        }
-    }
+		webView.setBackgroundColor(0x00000000);
+		
+		sectionID = -1;
+
+		return v;
+	}
+
+	public void loadArticle(long id) {		  
+		if (webView != null) {
+			sectionID = id;
+			String uri;
+			String projection[] = { PrivacyAppDatabase.COL_SEC_URI };
+	        Cursor sections = getActivity().getContentResolver().query(
+	                Uri.withAppendedPath(PrivacyAppProvider.SECTION_URI,
+	                        String.valueOf(id)), projection, null, null, null);
+	        sections.moveToFirst();
+	        uri = sections.getString(0);	                                		                
+	        
+	        sections.close();
+	        
+			if (uri.startsWith("http"))
+				webView.loadUrl(uri);
+			else
+				webView.loadUrl("file:///android_asset/" + uri);
+
+			layoutView.findViewById(R.id.sectionlayout).setVisibility(View.VISIBLE);
+			
+		}
+	}
+
+	public void onButtonClick(View v)
+	{
+		Intent myIntent = new Intent(this.getActivity(), QuizViewActivity.class );
+		if(sectionID > 0)
+		{
+			myIntent.putExtra("SectionID", sectionID);        
+			startActivity(myIntent);
+		}
+	}
+
 }

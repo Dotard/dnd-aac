@@ -33,40 +33,31 @@ package com.dnd.privacyapp;
 import com.dnd.privacyapp.R;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-public class ReferenceListActivity extends FragmentActivity implements
-        ReferenceListFragment.OnSectSelectedListener {
-
+public class QuizViewActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.referencelist_fragment);
-    }
+        setContentView(R.layout.quizview);
+        
+        Intent launchingIntent = getIntent();
+        long sectionID = launchingIntent.getLongExtra("SectionID", -1);
 
-    @Override
-    public void onSectSelected(long id) {
-        ReferenceViewFragment viewer = (ReferenceViewFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.referenceview_fragment);
-
-        if (viewer == null || !viewer.isInLayout()) {
-            Intent viewIntent = new Intent(getApplicationContext(),
-                    ReferenceViewActivity.class);         
-            viewIntent.putExtra("sectionID", id);
-            
-            startActivity(viewIntent);
-        } else {
-            viewer.loadArticle(id);
-        }
+        QuizViewFragment viewer = (QuizViewFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.quizviewfragment);
+         
+        viewer.loadSection(sectionID);
+        
     }
     
     public void onButtonClick(View v)
     {
-    	ReferenceViewFragment viewer = (ReferenceViewFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.referenceview_fragment);
+    	QuizViewFragment viewer = (QuizViewFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.quizviewfragment);
     	viewer.onButtonClick(v);
     }
+
 }

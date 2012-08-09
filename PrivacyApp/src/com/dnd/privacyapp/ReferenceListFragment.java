@@ -55,35 +55,19 @@ import com.dnd.privacyapp.R;
 
 public class ReferenceListFragment extends ListFragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
-    private OnTutSelectedListener tutSelectedListener;
-    private static final int TUTORIAL_LIST_LOADER = 0x01;
+    private OnSectSelectedListener sectSelectedListener;
+    private static final int SECTION_LIST_LOADER = 0x01;
 
     private SimpleCursorAdapter adapter;
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        String projection[] = { PrivacyAppDatabase.COL_URL };
-        Cursor tutorialCursor = getActivity().getContentResolver().query(
-                Uri.withAppendedPath(PrivacyAppProvider.CONTENT_URI,
-                        String.valueOf(id)), projection, null, null, null);
-        if (tutorialCursor.moveToFirst()) {
-            String tutorialUrl = tutorialCursor.getString(0);
-                                	
-                    tutSelectedListener.onTutSelected(tutorialUrl);
-                
-        }
-        tutorialCursor.close();
-        l.setItemChecked(position, true);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String[] uiBindFrom = { PrivacyAppDatabase.COL_TITLE}; //Add as many columns using ,
+        String[] uiBindFrom = { PrivacyAppDatabase.COL_SEC_NAME}; //Add as many columns using ,
         int[] uiBindTo = { R.id.title}; //And you can bind it to as many variables using ,
 
-        getLoaderManager().initLoader(TUTORIAL_LIST_LOADER, null, this);
+        getLoaderManager().initLoader(SECTION_LIST_LOADER, null, this);
 
         adapter = new SimpleCursorAdapter(
                 getActivity().getApplicationContext(), R.layout.list_item,
@@ -93,10 +77,6 @@ public class ReferenceListFragment extends ListFragment implements
 
         setListAdapter(adapter);
         setHasOptionsMenu(true);
-    }
-
-    public interface OnTutSelectedListener {
-        public void onTutSelected(String tutUrl);
     }
 
     @Override
@@ -110,12 +90,18 @@ public class ReferenceListFragment extends ListFragment implements
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            tutSelectedListener = (OnTutSelectedListener) activity;
+        	sectSelectedListener = (OnSectSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnTutSelectedListener");
         }
     }
+    
+    public interface OnSectSelectedListener {
+        public void onSectSelected(long id);
+    }
+
+    
 
     // options menu
 
@@ -143,6 +129,13 @@ public class ReferenceListFragment extends ListFragment implements
     }
 
     @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {           	
+        sectSelectedListener.onSectSelected(id);
+
+        l.setItemChecked(position, true);
+    }
+    
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.refresh_option_item:
@@ -152,17 +145,17 @@ public class ReferenceListFragment extends ListFragment implements
             getActivity().startActivity(item.getIntent());
             break;
         }
-        return true;
+        return true;  
     }
 
     // LoaderManager.LoaderCallbacks<Cursor> methods
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = { PrivacyAppDatabase.ID, PrivacyAppDatabase.COL_TITLE };
+        String[] projection = { PrivacyAppDatabase.COL_SEC_ID + " as _id", PrivacyAppDatabase.COL_SEC_NAME };
 
         CursorLoader cursorLoader = new CursorLoader(getActivity(),
-                PrivacyAppProvider.CONTENT_URI, projection, null, null, null);
+                PrivacyAppProvider.SECTION_URI, projection, null, null, null);
         return cursorLoader;
     }
 

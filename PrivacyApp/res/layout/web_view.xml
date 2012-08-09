@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="invisible" >
+    
+ <Button
+        android:id="@+id/quizbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="@string/takequiz"
+        android:onClick="onButtonClick" />
+ 
 <WebView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mwebview"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent"/>
+		
+<Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="@string/takequiz"
+        android:onClick="onButtonClick" />
+		
+</LinearLayout>

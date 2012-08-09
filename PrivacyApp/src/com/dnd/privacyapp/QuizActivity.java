@@ -9,32 +9,32 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 
-public class QuestionListActivity extends FragmentActivity implements
-	QuestionListFragment.OnSectionSelectedListener {
+public class QuizActivity extends FragmentActivity implements
+	QuizListFragment.OnSectSelectedListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.question_list_fragment);
+        setContentView(R.layout.quiz);
         
         Intent i = getIntent(); //
 		long id = i.getLongExtra("sectionID", -1);
 		if(id > -1){
-			onSectionSelected(id);
+			onSectSelected(id);
 		}        
     }
 
     @Override
-    public void onSectionSelected(long id) {
+    public void onSectSelected(long id) {
     	
-    	QuestionViewFragment viewer = (QuestionViewFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.question_view_fragment);
+    	QuizViewFragment viewer = (QuizViewFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.quizviewfragment);
     	
     	Log.d("Log", "Section selected " + id);
 
         if (viewer == null || !viewer.isInLayout()) {
             Intent showContent = new Intent(getApplicationContext(),
-                    QuestionViewActivity.class);
+                    QuizViewActivity.class);
             showContent.putExtra("SectionID", id);
             startActivity(showContent);
         } else {
@@ -45,8 +45,8 @@ public class QuestionListActivity extends FragmentActivity implements
     
     public void onButtonClick(View v)
     {
-    	QuestionViewFragment viewer = (QuestionViewFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.question_view_fragment);
+    	QuizViewFragment viewer = (QuizViewFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.quizviewfragment);
     	viewer.onButtonClick(v);
     }
 }

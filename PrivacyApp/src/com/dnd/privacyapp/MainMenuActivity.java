@@ -27,9 +27,15 @@ public class MainMenuActivity extends Activity {
     }     
     public void openQuizzes(View view)  
     {  
-        Intent myIntent = new Intent(this, QuestionListActivity.class );
+//        Intent myIntent = new Intent(this, QuestionListActivity.class );
+//        myIntent.putExtra("chapterID", 0);
+//        myIntent.putExtra("parentID", 0);
+//        startActivity(myIntent);
+    	
+    	Intent myIntent = new Intent(this, QuizActivity.class );
         myIntent.putExtra("chapterID", 0);
         myIntent.putExtra("parentID", 0);
         startActivity(myIntent);
+        
     }     
 }

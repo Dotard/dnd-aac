@@ -35,6 +35,7 @@ import com.dnd.privacyapp.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 
 public class ReferenceViewActivity extends FragmentActivity {
     @Override
@@ -42,14 +43,22 @@ public class ReferenceViewActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.referenceview_fragment);
         
-        Intent launchingIntent = getIntent();
-        String content = launchingIntent.getData().toString();
+        Intent launchingIntent = getIntent();        
+      	long id = launchingIntent.getLongExtra("sectionID", -1);
+    
 
         ReferenceViewFragment viewer = (ReferenceViewFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.referenceview_fragment);
-         
-        viewer.loadArticle(content);
         
+        if(id > -1) viewer.loadArticle(id);
+        
+    }
+    
+    public void onButtonClick(View v)
+    {
+    	ReferenceViewFragment viewer = (ReferenceViewFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.referenceview_fragment);
+    	viewer.onButtonClick(v);
     }
 
 }

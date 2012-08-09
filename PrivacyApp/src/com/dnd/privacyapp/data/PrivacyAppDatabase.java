@@ -46,9 +46,14 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 	public static final String TABLE_QUESTIONS = "Questions";
 	public static final String TABLE_PROCEDURES = "Procedures";
 	public static final String TABLE_PROCEDUREITEMS = "ProcedureItems";
+	public static final String TABLE_SECTION = "Section";
+	public static final String TABLE_QUIZ = "Quiz";
 	public static final String ID = "_id";
 	public static final String COL_TITLE = "title";
 	public static final String COL_URL = "url";
+	public static final String COL_SEC_ID = "secID";
+	public static final String COL_SEC_NAME = "secName";	
+	public static final String COL_SEC_URI = "secURI";
 
 	private static final String CREATE_TABLE_TUTORIALS = "CREATE TABLE "
 			+ TABLE_TUTORIALS + " (" + ID
@@ -96,7 +101,27 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 			+ " procedureItemsOrder INTEGER"
 			+ ");";
 	
-
+	private static final String CREATE_TABLE_SECTION = "CREATE TABLE Section ( "
+			+ "secID INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ "secParentID INTEGER REFERENCES Section (secID), "
+			+ "secName TEXT NOT NULL, "
+			+ "secQuizComplete INTEGER DEFAULT 0 NOT NULL, "
+			+ "secURI TEXT NOT NULL"
+			+ ");";
+	
+	private static final String CREATE_TABLE_QUIZ = "CREATE TABLE QUIZ ( "
+			+ "quizID INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ "secID INTEGER REFERENCES Section (secID), "
+			+ "quizText TEXT NOT NULL, "
+			+ "quizOption1 TEXT, "
+			+ "quizOption2 TEXT, "
+			+ "quizOption3 TEXT, "
+			+ "quizOption4 TEXT, "
+			+ "quizOption5 TEXT, "
+			+ "quizCorrectOption INTEGER NOT NULL, "
+			+ "quizComplete INTEGER DEFAULT 0"
+			+ ");";
+			
 	private static final String DB_SCHEMA = CREATE_TABLE_TUTORIALS;
 
 	public PrivacyAppDatabase(Context context) {
@@ -111,6 +136,8 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_QUESTIONS);
 		db.execSQL(CREATE_TABLE_PROCEDURES);
 		db.execSQL(CREATE_TABLE_PROCEDUREITEMS);
+		db.execSQL(CREATE_TABLE_SECTION);
+		db.execSQL(CREATE_TABLE_QUIZ);
 		seedData(db);
 	}
 
@@ -119,7 +146,15 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 		Log.w(DEBUG_TAG,
 				"Upgrading database. Existing contents will be lost. ["
 						+ oldVersion + "]->[" + newVersion + "]");
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_TUTORIALS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_TUTORIALS);		
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHAPTERS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SECTIONS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUESTIONS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROCEDURES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PROCEDUREITEMS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SECTION);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUIZ);
+
 		onCreate(db);
 	}
 
@@ -199,5 +234,79 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 				+ "(3,'Get their address','Retrieve address from customer',1);");
 		db.execSQL("insert into ProcedureItems(procedureID,procedureItemsText,procedureItemsDesc,procedureItemsOrder) values"
 				+ "(4,'Get their postal','Retrieve postal from customer',1);");
+		
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 1', 'html/sec1.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 2', 'html/sec2.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 3', 'html/sec3.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 4', 'html/sec4.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 5', 'html/sec5.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 6', 'html/sec6.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 7', 'html/sec7.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 8', 'html/sec8.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 9', 'html/sec9.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 10', 'html/sec10.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 11', 'html/sec11.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 12', 'html/sec12.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 13', 'html/sec13.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 14', 'html/sec14.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 15', 'html/sec15.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 16', 'html/sec16.html');");
+		db.execSQL("INSERT into Section(secName, secURI) values"
+				+ "('Section 17', 'html/sec17.html');");
+		
+//		db.execSQL("INSERT into Section(secName, secParentID,secURI) values"
+//				+ "();");
+		
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(1,'5+3?','1','2','3','8','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(2,'10/2?','1','2','3','4','5',5);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(3,'8*2','16','2','3','4','5',1);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(4,'3+3+3','1','2','3','9','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(5,'1+3','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(6,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(7,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(8,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(9,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(10,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(11,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(12,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(13,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(14,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(15,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(16,'2*2','1','2','3','4','5',4);");
+		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
+				+ "(17,'2*2','1','2','3','4','5',4);");
+				
 	}
 }

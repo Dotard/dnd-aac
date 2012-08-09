@@ -54,12 +54,16 @@ public class PrivacyAppProvider extends ContentProvider {
     public static final int CHAPTERS = 200;
     public static final int CHAPTER_ID = 210;
     public static final int SECTIONS 	= 300;
-    public static final int SECTION_ID 	= 310;
+    public static final int SECTIONS_ID 	= 310;
     public static final int QUESTIONS 	= 400;
     public static final int QUESTION_ID = 410;
     public static final int PROCEDURES = 500;
     public static final int PROCEDURES_ID =510;
     public static final int PROCEDUREITEMS = 600;
+    public static final int SECTION = 700;
+    public static final int SECTION_ID = 710;
+    public static final int QUIZ = 800;
+    public static final int QUIZ_SECTION = 810;
 
     private static final String TUTORIALS_BASE_PATH = "tutorials";
     private static final String CHAPTERS_BASE_PATH = "Chapters";
@@ -67,6 +71,8 @@ public class PrivacyAppProvider extends ContentProvider {
     private static final String QUESTIONS_BASE_PATH	= "Questions";
     private static final String PROCEDURES_BASE_PATH = "Procedures";
     private static final String PROCEDUREITEMS_BASE_PATH = "ProcedureItems";
+    private static final String SECTION_BASE_PATH = "Section";
+    private static final String QUIZ_BASE_PATH = "Quiz";
     
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
             + "/" + TUTORIALS_BASE_PATH);
@@ -78,7 +84,12 @@ public class PrivacyAppProvider extends ContentProvider {
     		+ "/" + PROCEDURES_BASE_PATH);
     public static final Uri PROCEDUREITEMS_URI = Uri.parse("content://" + AUTHORITY
     		+ "/" + PROCEDUREITEMS_BASE_PATH);
-
+    public static final Uri SECTION_URI = Uri.parse("content://" + AUTHORITY
+    		+ "/" + SECTION_BASE_PATH);
+    public static final Uri QUIZ_URI = Uri.parse("content://" + AUTHORITY
+    		+ "/" + QUIZ_BASE_PATH);
+    
+    
     public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
             + "/mt-tutorial";
     public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
@@ -94,13 +105,17 @@ public class PrivacyAppProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, CHAPTERS_BASE_PATH, CHAPTERS);
         sURIMatcher.addURI(AUTHORITY, CHAPTERS_BASE_PATH + "/#", CHAPTER_ID);
         sURIMatcher.addURI(AUTHORITY, SECTIONS_BASE_PATH, SECTIONS);
-        sURIMatcher.addURI(AUTHORITY, SECTIONS_BASE_PATH + "/#", SECTION_ID);
+        sURIMatcher.addURI(AUTHORITY, SECTIONS_BASE_PATH + "/#", SECTIONS_ID);
         sURIMatcher.addURI(AUTHORITY, QUESTIONS_BASE_PATH, QUESTIONS);
         sURIMatcher.addURI(AUTHORITY, QUESTIONS_BASE_PATH + "/#", QUESTION_ID);
         sURIMatcher.addURI(AUTHORITY, PROCEDURES_BASE_PATH, PROCEDURES);
         sURIMatcher.addURI(AUTHORITY, PROCEDURES_BASE_PATH + "/#", PROCEDURES_ID);
         sURIMatcher.addURI(AUTHORITY, PROCEDUREITEMS_BASE_PATH, PROCEDUREITEMS);
         sURIMatcher.addURI(AUTHORITY, PROCEDUREITEMS_BASE_PATH + "/#", PROCEDUREITEMS);
+        sURIMatcher.addURI(AUTHORITY, SECTION_BASE_PATH, SECTION);
+        sURIMatcher.addURI(AUTHORITY, SECTION_BASE_PATH + "/#", SECTION_ID);
+        sURIMatcher.addURI(AUTHORITY, QUIZ_BASE_PATH, QUIZ);
+        sURIMatcher.addURI(AUTHORITY, QUIZ_BASE_PATH + "/SEC/#", QUIZ_SECTION);
         
     }
 
@@ -128,7 +143,7 @@ public class PrivacyAppProvider extends ContentProvider {
         case CHAPTERS:
         	queryBuilder.setTables(PrivacyAppDatabase.TABLE_CHAPTERS);
         	break;
-        case SECTION_ID:
+        case SECTIONS_ID:
         case SECTIONS:
         	queryBuilder.setTables(PrivacyAppDatabase.TABLE_SECTIONS);
         	break;
@@ -142,6 +157,14 @@ public class PrivacyAppProvider extends ContentProvider {
         	break;
         case PROCEDUREITEMS:
         	queryBuilder.setTables(PrivacyAppDatabase.TABLE_PROCEDUREITEMS);
+        	break;
+        case SECTION:
+        case SECTION_ID:
+        	queryBuilder.setTables(PrivacyAppDatabase.TABLE_SECTION);
+        	break;
+        case QUIZ:
+        case QUIZ_SECTION:
+        	queryBuilder.setTables(PrivacyAppDatabase.TABLE_QUIZ);
         	break;
         default:
             throw new IllegalArgumentException("Unknown URI");
@@ -161,7 +184,7 @@ public class PrivacyAppProvider extends ContentProvider {
             break;
         case CHAPTERS:
             break;
-        case SECTION_ID:
+        case SECTIONS_ID:
         	queryBuilder.appendWhere("parentID" + "="
                     + uri.getLastPathSegment());
         	break;
@@ -179,6 +202,18 @@ public class PrivacyAppProvider extends ContentProvider {
         	break;
         case PROCEDUREITEMS:
         	queryBuilder.appendWhere("procedureID" + "=" + uri.getLastPathSegment());
+        	break;
+        case SECTION:
+        	break;
+        case SECTION_ID:
+        	queryBuilder.appendWhere(PrivacyAppDatabase.COL_SEC_ID + "="
+                    + uri.getLastPathSegment());
+        	break;
+        case QUIZ:
+        	break;
+        case QUIZ_SECTION:
+        	queryBuilder.appendWhere("secID" + "="
+        			+ uri.getLastPathSegment());
         	break;
         default:
             throw new IllegalArgumentException("Unknown URI");

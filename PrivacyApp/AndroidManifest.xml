@@ -42,6 +42,8 @@
         <activity android:name=".QuestionActivity" />
         <activity android:name=".ProceduresActivity" />
         <activity android:name=".ProceduresViewActivity" />
+        <activity android:name=".QuizActivity" />
+        <activity android:name="QuizViewActivity" />
 
         <provider
         	android:name=".data.PrivacyAppProvider"
