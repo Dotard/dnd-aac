@@ -16,4 +16,12 @@
         style="@style/ButtonTextTablet" android:background="@drawable/btn_green_matte"
         android:text="@string/quizzes"
         android:onClick="openQuizzes" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Certificate"
+        android:onClick="openCertificate" />
+
 </LinearLayout>

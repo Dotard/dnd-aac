@@ -340,6 +340,16 @@ public class PrivacyAppProvider extends ContentProvider {
             }
             rowsAffected = sqlDB.update(PrivacyAppDatabase.TABLE_QUESTIONS, values, modSelection.toString(), selectionArgs);
         	break;
+        case SECTION_ID:
+        	id = uri.getLastPathSegment();
+        	modSelection = new StringBuilder("secID=" + id);
+        	
+        	if (!TextUtils.isEmpty(selection)) {
+                modSelection.append(" AND " + selection);
+            }
+        	
+        	rowsAffected = sqlDB.update(PrivacyAppDatabase.TABLE_SECTION, values, modSelection.toString(), selectionArgs);
+        	break;
         case QUIZ_ID:
         	id = uri.getLastPathSegment();
         	modSelection = new StringBuilder("quizID" + "=" + id);

@@ -33,13 +33,16 @@ package com.dnd.privacyapp;
 import com.dnd.privacyapp.R;
 import com.dnd.privacyapp.data.PrivacyAppProvider;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -218,6 +221,7 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 			
 			disableQuestions();
 			
+			//Mark Quiz complete in database
 			ContentValues quizValues = new ContentValues();
 			quizValues.put("quizComplete", true);
 			
@@ -225,6 +229,55 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 					, quizValues, null, null);
 
 			if(updated == 1) Toast.makeText(getActivity(), "1 Row updated",Toast.LENGTH_SHORT).show();
+			
+			//Check if all questions in Quiz completed
+			String projection[] = {"quizID as _id"};
+			String selectionArgs[] = {"0"};
+			Cursor c = getActivity().getContentResolver().query(Uri.withAppendedPath(PrivacyAppProvider.QUIZ_URI,"SEC/" + String.valueOf(sectionID)),
+					projection, "quizComplete=?", selectionArgs, null);
+			if(c.getCount() == 0){ 
+				Toast.makeText(getActivity(), "All questions in quiz completed",Toast.LENGTH_SHORT).show();
+				//Mark section complete in database
+				ContentValues sectionValues = new ContentValues();
+				sectionValues.put("secQuizComplete", true);
+				
+				int updateCount = getActivity().getContentResolver().update(Uri.withAppendedPath(PrivacyAppProvider.SECTION_URI, String.valueOf(sectionID))
+						, sectionValues, null, null);
+
+				if(updateCount == 1) Toast.makeText(getActivity(), "Section complete!",Toast.LENGTH_SHORT).show();
+			}
+			
+//			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//			builder.setMessage("You finished all quizes! Would you like to go to certificate page?")
+//			       .setCancelable(false)
+//			       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//			           public void onClick(DialogInterface dialog, int id) {
+//			        	   Intent myIntent = new Intent(getActivity(), CertificateActivity.class );
+//			               startActivity(myIntent);
+//			           }
+//			       })
+//			       .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//			           public void onClick(DialogInterface dialog, int id) {
+//			                dialog.cancel();
+//			           }
+//			       });
+//			AlertDialog alert = builder.create();
+//			getActivity().showDialog(id);
+			
+			FragmentManager fm = this.getFragmentManager();
+			ViewCertificateDialog vcd = new ViewCertificateDialog();
+			vcd.show(fm, "fragment");
+			
+			//Check if every Quiz is complete in app
+			projection = new String[]{"secID"};
+			selectionArgs = new String[]{"0"};
+			c = getActivity().getContentResolver().query(PrivacyAppProvider.SECTION_URI,
+					projection, "secQuizComplete=?", selectionArgs, null);
+			if(c.getCount() == 0){ 
+				Toast.makeText(getActivity(), "You completed every single quiz!",Toast.LENGTH_SHORT).show();
+				
+				
+			}
 			
 			if(qIndex == questionCursor.getCount() - 1)
     		{

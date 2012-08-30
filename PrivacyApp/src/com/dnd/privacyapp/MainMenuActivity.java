@@ -38,4 +38,10 @@ public class MainMenuActivity extends Activity {
         startActivity(myIntent);
         
     }     
+    
+    public void openCertificate(View view)
+    {
+    	Intent myIntent = new Intent(this, CertificateActivity.class );
+        startActivity(myIntent);
+    }
 }

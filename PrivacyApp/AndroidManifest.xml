@@ -44,6 +44,7 @@
         <activity android:name=".ProceduresViewActivity" />
         <activity android:name=".QuizActivity" />
         <activity android:name="QuizViewActivity" />
+        <activity android:name="CertificateActivity" />
 
         <provider
         	android:name=".data.PrivacyAppProvider"
