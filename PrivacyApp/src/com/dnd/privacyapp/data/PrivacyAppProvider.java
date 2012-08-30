@@ -63,6 +63,7 @@ public class PrivacyAppProvider extends ContentProvider {
     public static final int SECTION = 700;
     public static final int SECTION_ID = 710;
     public static final int QUIZ = 800;
+    public static final int QUIZ_ID = 820;
     public static final int QUIZ_SECTION = 810;
 
     private static final String TUTORIALS_BASE_PATH = "tutorials";
@@ -115,6 +116,7 @@ public class PrivacyAppProvider extends ContentProvider {
         sURIMatcher.addURI(AUTHORITY, SECTION_BASE_PATH, SECTION);
         sURIMatcher.addURI(AUTHORITY, SECTION_BASE_PATH + "/#", SECTION_ID);
         sURIMatcher.addURI(AUTHORITY, QUIZ_BASE_PATH, QUIZ);
+        sURIMatcher.addURI(AUTHORITY, QUIZ_BASE_PATH + "/#", QUIZ_ID);
         sURIMatcher.addURI(AUTHORITY, QUIZ_BASE_PATH + "/SEC/#", QUIZ_SECTION);
         
     }
@@ -338,6 +340,17 @@ public class PrivacyAppProvider extends ContentProvider {
             }
             rowsAffected = sqlDB.update(PrivacyAppDatabase.TABLE_QUESTIONS, values, modSelection.toString(), selectionArgs);
         	break;
+        case QUIZ_ID:
+        	id = uri.getLastPathSegment();
+        	modSelection = new StringBuilder("quizID" + "=" + id);
+        	
+        	if (!TextUtils.isEmpty(selection)) {
+                modSelection.append(" AND " + selection);
+            }
+        	
+        	rowsAffected = sqlDB.update(PrivacyAppDatabase.TABLE_QUIZ, values, modSelection.toString(), selectionArgs);
+        	break;
+        	
         default:
             throw new IllegalArgumentException("Unknown URI");
         }

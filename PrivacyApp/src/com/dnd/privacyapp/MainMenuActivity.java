@@ -20,11 +20,11 @@ public class MainMenuActivity extends Activity {
         Intent myIntent = new Intent(this, ReferenceListActivity.class );
         startActivity(myIntent);
     }
-    public void openProcedures(View view)  
-    {  
-        Intent myIntent = new Intent(this, ProceduresActivity.class );
-        startActivity(myIntent);
-    }     
+//    public void openProcedures(View view)  
+//    {  
+//        Intent myIntent = new Intent(this, ProceduresActivity.class );
+//        startActivity(myIntent);
+//    }     
     public void openQuizzes(View view)  
     {  
 //        Intent myIntent = new Intent(this, QuestionListActivity.class );

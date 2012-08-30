@@ -58,6 +58,7 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
     
     private int qIndex;
 	private int answer;
+	private long quizID;
 	private long sectionID;
 	private Cursor questionCursor;
 	private TextView label;
@@ -158,7 +159,7 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
     	            .findFragmentById(R.id.quizlistfragment);
 
     			    if (listfragment == null || !listfragment.isInLayout()) {
-    			        if(getActivity() instanceof QuestionViewActivity){
+    			        if(getActivity() instanceof QuizViewActivity){
     			        	getActivity().finish();
     			        }
     			    } else {
@@ -171,6 +172,8 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
     	
     	questionCursor.moveToPosition(qIndex);
     	
+    	quizID = questionCursor.getLong(questionCursor.getColumnIndexOrThrow("_id"));
+    			
     	TextView tv = (TextView) viewer.findViewById(R.id.tvQuestion);
     	TextView tv2 = (TextView) viewer.findViewById(R.id.tvPage);
     	
@@ -181,6 +184,7 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
     	int ansIndex = questionCursor.getColumnIndexOrThrow("quizCorrectOption");
     	answer = questionCursor.getInt(ansIndex);
     	
+    	int quizComplete = questionCursor.getInt(questionCursor.getColumnIndexOrThrow("quizComplete"));
     	
     	LinearLayout questionlayout = (LinearLayout) viewer.findViewById(R.id.optionsLayout);
     	questionlayout.setEnabled(true);
@@ -195,6 +199,12 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 	    	button1.setTag(j+1);
 	    	questionlayout.addView(button1);
     	}
+    	
+    	if(quizComplete == 1){
+    		disableQuestions();
+    		View v = questionlayout.findViewWithTag(answer);
+    		v.setBackgroundResource(R.drawable.btn_quiz_question_correct);
+    	}
     }
     
 	@Override
@@ -207,6 +217,15 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 			label.setTextColor(Color.WHITE);
 			
 			disableQuestions();
+			
+			ContentValues quizValues = new ContentValues();
+			quizValues.put("quizComplete", true);
+			
+			int updated = getActivity().getContentResolver().update(Uri.withAppendedPath(PrivacyAppProvider.QUIZ_URI, String.valueOf(quizID))
+					, quizValues, null, null);
+
+			if(updated == 1) Toast.makeText(getActivity(), "1 Row updated",Toast.LENGTH_SHORT).show();
+			
 			if(qIndex == questionCursor.getCount() - 1)
     		{
     			viewer.findViewById(R.id.buttonEnd).setVisibility(View.VISIBLE);

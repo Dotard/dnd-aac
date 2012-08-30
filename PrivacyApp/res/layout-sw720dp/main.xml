@@ -12,13 +12,6 @@
         android:onClick="openReferences" />
 
     <Button
-        android:id="@+id/button2"
-        style="@style/ButtonTextTablet" android:background="@drawable/btn_orange_matte"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="@string/procedures"
-        android:onClick="openProcedures" />
-
-    <Button
         android:id="@+id/button3"
         style="@style/ButtonTextTablet" android:background="@drawable/btn_green_matte"
         android:text="@string/quizzes"
