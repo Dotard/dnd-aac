@@ -1,5 +1,6 @@
 package com.dnd.privacyapp;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -27,13 +28,14 @@ public class ViewCertificateDialog extends DialogFragment{
 			}
 		});
 		
+		final Dialog d = this.getDialog();
 		button = (Button)view.findViewById(R.id.dismissDialogButton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v){
-				
+				d.dismiss();
 			}
 		});
 		
-		return view;
+		return view;               
 	}
 }

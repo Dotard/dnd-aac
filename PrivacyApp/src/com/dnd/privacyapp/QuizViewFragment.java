@@ -247,27 +247,6 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 				if(updateCount == 1) Toast.makeText(getActivity(), "Section complete!",Toast.LENGTH_SHORT).show();
 			}
 			
-//			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//			builder.setMessage("You finished all quizes! Would you like to go to certificate page?")
-//			       .setCancelable(false)
-//			       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//			           public void onClick(DialogInterface dialog, int id) {
-//			        	   Intent myIntent = new Intent(getActivity(), CertificateActivity.class );
-//			               startActivity(myIntent);
-//			           }
-//			       })
-//			       .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//			           public void onClick(DialogInterface dialog, int id) {
-//			                dialog.cancel();
-//			           }
-//			       });
-//			AlertDialog alert = builder.create();
-//			getActivity().showDialog(id);
-			
-			FragmentManager fm = this.getFragmentManager();
-			ViewCertificateDialog vcd = new ViewCertificateDialog();
-			vcd.show(fm, "fragment");
-			
 			//Check if every Quiz is complete in app
 			projection = new String[]{"secID"};
 			selectionArgs = new String[]{"0"};
@@ -276,7 +255,9 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 			if(c.getCount() == 0){ 
 				Toast.makeText(getActivity(), "You completed every single quiz!",Toast.LENGTH_SHORT).show();
 				
-				
+				FragmentManager fm = this.getFragmentManager();
+				ViewCertificateDialog vcd = new ViewCertificateDialog();
+				vcd.show(fm, "fragment");
 			}
 			
 			if(qIndex == questionCursor.getCount() - 1)
