@@ -61,12 +61,12 @@ import com.dnd.privacyapp.service.PrivacyAppDownloaderService;
 
 import android.support.v4.app.ListFragment;
 
-public class QuizListFragment extends android.support.v4.app.ListFragment implements
-LoaderManager.LoaderCallbacks<Cursor>  {
+public class QuizListFragment extends android.support.v4.app.ListFragment   {
 	private OnSectSelectedListener sectSelectedListener;
 	private static final int SECTION_LIST_LOADER = 0x01;
 
 	private SimpleCursorAdapter adapter;
+	private Cursor sections;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -75,15 +75,17 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 		String[] uiBindFrom = { "secName"}; //Add as many columns using ,
 		int[] uiBindTo = { R.id.title}; //And you can bind it to as many variables using ,
 
-		getLoaderManager().initLoader(SECTION_LIST_LOADER, null, this);
+		   String[] projection = { PrivacyAppDatabase.COL_SEC_ID + " as _id", PrivacyAppDatabase.COL_SEC_NAME, "secQuizComplete" };
+	        sections = getActivity().getContentResolver().query(PrivacyAppProvider.SECTION_URI, projection, null, null, null);
+	        adapter = new ReferenceAdapter(
+	                getActivity().getApplicationContext(), R.layout.list_item,
+	                sections, uiBindFrom, uiBindTo,
+	                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
-		adapter = new SimpleCursorAdapter(
-				getActivity().getApplicationContext(), R.layout.list_item,
-				null, uiBindFrom, uiBindTo,
-				CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
-
-		setListAdapter(adapter);		
+		setListAdapter(adapter);	
+		
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -117,27 +119,30 @@ LoaderManager.LoaderCallbacks<Cursor>  {
 		l.setItemChecked(position, true);
 	}
 
+	
+	  // options menu
 
-	// LoaderManager.LoaderCallbacks<Cursor> methods
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.options_menu, menu);
 
-	@Override
-	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		String[] projection = { "secID as _id", "secName" };
+        // pref menu item
+        Intent prefsIntent = new Intent(getActivity().getApplicationContext(),
+                ReferenceListPreferencesActivity.class);
 
-		CursorLoader cursorLoader = new CursorLoader(getActivity(),
-				PrivacyAppProvider.SECTION_URI, projection, null, null, null);
-		return cursorLoader;
-	}
-
-	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		adapter.swapCursor(cursor);
-	}
-
-	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
-		adapter.swapCursor(null);
-	}
+        MenuItem preferences = menu.findItem(R.id.settings_option_item);
+        preferences.setIntent(prefsIntent);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.settings_option_item:
+            getActivity().startActivity(item.getIntent());
+            break;
+        }
+        return true;  
+    }
 }
 
 

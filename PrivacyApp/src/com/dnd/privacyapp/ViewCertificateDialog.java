@@ -19,16 +19,17 @@ public class ViewCertificateDialog extends DialogFragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = inflater.inflate(R.layout.certificatedialog,container);
-		
+		final Dialog d = this.getDialog();
 		Button button = (Button)view.findViewById(R.id.viewVerticiateButton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v){
 				Intent myIntent = new Intent(getActivity(), CertificateActivity.class );
 	            startActivity(myIntent);
+	            d.dismiss();
 			}
 		});
 		
-		final Dialog d = this.getDialog();
+		
 		button = (Button)view.findViewById(R.id.dismissDialogButton);
 		button.setOnClickListener(new OnClickListener() {
 			public void onClick(View v){

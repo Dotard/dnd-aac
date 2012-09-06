@@ -47,18 +47,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.dnd.privacyapp.data.PrivacyAppDatabase;
 import com.dnd.privacyapp.data.PrivacyAppProvider;
 import com.dnd.privacyapp.service.PrivacyAppDownloaderService;
 import com.dnd.privacyapp.R;
 
-public class ReferenceListFragment extends ListFragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
-    private OnSectSelectedListener sectSelectedListener;
-    private static final int SECTION_LIST_LOADER = 0x01;
+public class ReferenceListFragment extends ListFragment  {
+   
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		adapter.notifyDataSetChanged();
+	}
+
+	private OnSectSelectedListener sectSelectedListener;
+
 
     private SimpleCursorAdapter adapter;
+    private Cursor sections;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,11 +78,11 @@ public class ReferenceListFragment extends ListFragment implements
         String[] uiBindFrom = { PrivacyAppDatabase.COL_SEC_NAME}; //Add as many columns using ,
         int[] uiBindTo = { R.id.title}; //And you can bind it to as many variables using ,
 
-        getLoaderManager().initLoader(SECTION_LIST_LOADER, null, this);
-
-        adapter = new SimpleCursorAdapter(
+        String[] projection = { PrivacyAppDatabase.COL_SEC_ID + " as _id", PrivacyAppDatabase.COL_SEC_NAME, "secQuizComplete" };
+        sections = getActivity().getContentResolver().query(PrivacyAppProvider.SECTION_URI, projection, null, null, null);
+        adapter = new ReferenceAdapter(
                 getActivity().getApplicationContext(), R.layout.list_item,
-                null, uiBindFrom, uiBindTo,
+                sections, uiBindFrom, uiBindTo,
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
 
@@ -100,25 +111,12 @@ public class ReferenceListFragment extends ListFragment implements
     public interface OnSectSelectedListener {
         public void onSectSelected(long id);
     }
-
-    
-
+ 
     // options menu
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.options_menu, menu);
-
-        // refresh menu item
-        Intent refreshIntent = new Intent(
-                getActivity().getApplicationContext(),
-                PrivacyAppDownloaderService.class);
-        refreshIntent
-                .setData(Uri
-                        .parse("http://feeds.feedburner.com/mobile-tuts-summary?format=xml"));
-
-        MenuItem refresh = menu.findItem(R.id.refresh_option_item);
-        refresh.setIntent(refreshIntent);
 
         // pref menu item
         Intent prefsIntent = new Intent(getActivity().getApplicationContext(),
@@ -138,34 +136,10 @@ public class ReferenceListFragment extends ListFragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.refresh_option_item:
-            getActivity().startService(item.getIntent());
-            break;
         case R.id.settings_option_item:
             getActivity().startActivity(item.getIntent());
             break;
         }
         return true;  
-    }
-
-    // LoaderManager.LoaderCallbacks<Cursor> methods
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = { PrivacyAppDatabase.COL_SEC_ID + " as _id", PrivacyAppDatabase.COL_SEC_NAME };
-
-        CursorLoader cursorLoader = new CursorLoader(getActivity(),
-                PrivacyAppProvider.SECTION_URI, projection, null, null, null);
-        return cursorLoader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        adapter.swapCursor(cursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        adapter.swapCursor(null);
     }
 }

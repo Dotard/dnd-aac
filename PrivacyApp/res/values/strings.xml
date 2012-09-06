@@ -3,7 +3,7 @@
     <string
         name="app_name">Privacy App</string>
     <string
-        name="pick_label">Pick a tut &#8230;</string>
+        name="pick_label">Pick a section …</string>
     <string
         name="pref_key_flag_background_update">background_update_flag</string>
     <string

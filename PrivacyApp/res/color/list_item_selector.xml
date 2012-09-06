@@ -8,6 +8,9 @@
 
 	<item android:state_focused="true"
 		android:drawable="@drawable/list_item_background_selected_repeat" />
+	
+	<item android:state_activated="true" 
+		android:drawable="@drawable/list_item_background_active_repeat" />
 
 	<item android:drawable="@drawable/list_item_background_repeat" />
 

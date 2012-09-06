@@ -340,6 +340,9 @@ public class PrivacyAppProvider extends ContentProvider {
             }
             rowsAffected = sqlDB.update(PrivacyAppDatabase.TABLE_QUESTIONS, values, modSelection.toString(), selectionArgs);
         	break;
+        case SECTION:
+        	rowsAffected = sqlDB.update(PrivacyAppDatabase.TABLE_SECTION, values, null, selectionArgs);
+        	break;
         case SECTION_ID:
         	id = uri.getLastPathSegment();
         	modSelection = new StringBuilder("secID=" + id);
@@ -349,6 +352,9 @@ public class PrivacyAppProvider extends ContentProvider {
             }
         	
         	rowsAffected = sqlDB.update(PrivacyAppDatabase.TABLE_SECTION, values, modSelection.toString(), selectionArgs);
+        	break;
+        case QUIZ:
+        	rowsAffected = sqlDB.update(PrivacyAppDatabase.TABLE_QUIZ, values, null, selectionArgs);
         	break;
         case QUIZ_ID:
         	id = uri.getLastPathSegment();
@@ -360,7 +366,8 @@ public class PrivacyAppProvider extends ContentProvider {
         	
         	rowsAffected = sqlDB.update(PrivacyAppDatabase.TABLE_QUIZ, values, modSelection.toString(), selectionArgs);
         	break;
-        	
+        
+        
         default:
             throw new IllegalArgumentException("Unknown URI");
         }

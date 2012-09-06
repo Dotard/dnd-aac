@@ -4,15 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <EditText
-        android:id="@+id/editText1"
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:text="Congratulations on completing all questions.  We would like to award you with the PBD certificate." >
+        android:text="Congratulations on completing all questions.  We would like to award you with the PBD certificate."
+         android:gravity="center_vertical|center">
 
-        <requestFocus />
-    </EditText>
+    </TextView>
 
 </LinearLayout>
