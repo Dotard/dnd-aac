@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 public class MainMenuActivity extends Activity {
 
-    @Override
+
+
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
@@ -30,6 +32,23 @@ public class MainMenuActivity extends Activity {
 		}
     }
 
+    @Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		String projection[] = {"secID"};
+		String selectionArgs[] = {"0"};
+		Cursor c = this.getContentResolver().query(PrivacyAppProvider.SECTION_URI,
+				projection, "secQuizComplete=?", selectionArgs, null);
+		if(c.getCount() > 0){ 
+			Button b = (Button)this.findViewById(R.id.btnCertificate);
+			b.setVisibility(View.GONE);
+		}else{
+			Button b = (Button)this.findViewById(R.id.btnCertificate);
+			b.setVisibility(View.VISIBLE);
+		}
+	}
+    
     public void openReferences(View view)  
     {  
         Intent myIntent = new Intent(this, ReferenceListActivity.class );

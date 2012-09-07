@@ -62,10 +62,12 @@ import com.dnd.privacyapp.service.PrivacyAppDownloaderService;
 import android.support.v4.app.ListFragment;
 
 public class QuizListFragment extends android.support.v4.app.ListFragment   {
+
+
 	private OnSectSelectedListener sectSelectedListener;
 	private static final int SECTION_LIST_LOADER = 0x01;
 
-	private SimpleCursorAdapter adapter;
+	private ReferenceAdapter adapter;
 	private Cursor sections;
 
 	@Override
@@ -88,6 +90,14 @@ public class QuizListFragment extends android.support.v4.app.ListFragment   {
 		setHasOptionsMenu(true);
 	}
 
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		adapter.notifyDataSetChanged();
+	}
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);

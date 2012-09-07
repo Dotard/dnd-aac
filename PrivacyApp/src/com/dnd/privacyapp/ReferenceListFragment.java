@@ -41,11 +41,13 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -55,22 +57,14 @@ import com.dnd.privacyapp.service.PrivacyAppDownloaderService;
 import com.dnd.privacyapp.R;
 
 public class ReferenceListFragment extends ListFragment  {
-   
-
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		
-		adapter.notifyDataSetChanged();
-	}
-
 	private OnSectSelectedListener sectSelectedListener;
-
-
-    private SimpleCursorAdapter adapter;
+    private ReferenceAdapter adapter;
     private Cursor sections;
+    private int currentPosition;
+    private long currentID;
+    private ImageView currentImg;
 
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +82,9 @@ public class ReferenceListFragment extends ListFragment  {
 
         setListAdapter(adapter);
         setHasOptionsMenu(true);
+        
+        currentPosition = 0;
+        currentID = 0;
     }
 
     @Override
@@ -107,6 +104,15 @@ public class ReferenceListFragment extends ListFragment  {
                     + " must implement OnTutSelectedListener");
         }
     }
+    
+    @Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+
+		adapter.notifyDataSetChanged();
+
+	}
     
     public interface OnSectSelectedListener {
         public void onSectSelected(long id);
@@ -128,9 +134,17 @@ public class ReferenceListFragment extends ListFragment  {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {           	
-        sectSelectedListener.onSectSelected(id);
-
+    	currentPosition = position;
+        currentID = id;
+    
+    	
+    	if(currentImg == null)Log.d("myapp","ITS NULL");
+		else Log.d("myapp","ITS NOT NULL");
+        
         l.setItemChecked(position, true);
+    	sectSelectedListener.onSectSelected(id);      
+    	
+    	currentPosition = l.getSelectedItemPosition();
     }
     
     @Override
