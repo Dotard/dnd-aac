@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string
-        name="app_name">Privacy App</string>
+        name="app_name">PbD Tutorial</string>
     <string
-        name="pick_label">Pick a section …</string>
+        name="pick_label">Tutorial Mode: Choose a Section</string>
     <string
         name="pref_key_flag_background_update">background_update_flag</string>
     <string
@@ -22,8 +22,11 @@
         name="notification_info_success">Tap to launch app</string>
     <string
         name="notification_info_fail">Updating failed</string>
-    <string name="references">Hand book</string>
+    <string name="references">Tutorial</string>
     <string name="procedures">Check list</string>
-    <string name="quizzes">Quizzes </string>
+    <string name="quizzes">Quiz Only</string>
     <string name="takequiz">Quiz Me</string>
+    <string name="provenance">Created for educational purposes by Ryerson University UPCL Team and the Office of the Information and Privacy Commissioner of Ontario, Canada.</string>
+    <string name="version">Version 1.0 (2012)</string>
+    <string name="htmllink">&lt;a href=&quot;http//www.google.com&quot;&gt;Google&lt;/a&gt;</string>
 </resources>

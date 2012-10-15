@@ -55,7 +55,7 @@
             android:layout_below="@+id/buttonFirst"
             android:textColor="#000"
             android:text=""
-            android:textSize="15sp" />
+            android:textSize="18sp" />
         
 	
     <LinearLayout android:id="@+id/optionsLayout"

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sectionlayout"
     android:layout_width="match_parent"
@@ -21,6 +24,13 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"/>
 
+<TextView
+    android:id="@+id/tutorialContent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#000"
+    />
+
 <Button
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -30,3 +40,4 @@
     android:text="@string/takequiz" />
 		
 </LinearLayout>
+</ScrollView>

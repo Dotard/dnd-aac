@@ -30,42 +30,73 @@
  */
 package com.dnd.privacyapp;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import com.dnd.privacyapp.data.PrivacyAppDatabase;
 import com.dnd.privacyapp.data.PrivacyAppProvider;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 public class ReferenceViewFragment extends Fragment {
 	private WebView webView = null;
-	private LinearLayout layoutView = null;
+	private TextView tutorialContent = null;
+	private ScrollView scrollView = null;
 	private long sectionID;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.web_view, container, false);
-		layoutView = (LinearLayout)v;
+		scrollView = (ScrollView)v;
 		webView = (WebView)v.findViewById(R.id.mwebview);
 
-		webView.setBackgroundColor(0x00000000);
-		
+//		webView.setBackgroundColor(0x00000000);
+		webView.setVisibility(View.GONE);
 		sectionID = -1;
-
+		
+		tutorialContent = (TextView)v.findViewById(R.id.tutorialContent);
+		
 		return v;
 	}
 
 	public void loadArticle(long id) {		  
-		if (webView != null) {
+//		if (webView != null) {
+//			sectionID = id;
+//			String uri;
+//			String projection[] = { PrivacyAppDatabase.COL_SEC_URI };
+//	        Cursor sections = getActivity().getContentResolver().query(
+//	                Uri.withAppendedPath(PrivacyAppProvider.SECTION_URI,
+//	                        String.valueOf(id)), projection, null, null, null);
+//	        sections.moveToFirst();
+//	        uri = sections.getString(0);	                                		                
+//	        
+//	        sections.close();
+//	        
+//			if (uri.startsWith("http"))
+//				webView.loadUrl(uri);
+//			else
+//				webView.loadUrl("file:///android_asset/" + uri);
+//
+//			layoutView.findViewById(R.id.sectionlayout).setVisibility(View.VISIBLE);
+//			
+//		}
+		
+		if(tutorialContent != null) {
 			sectionID = id;
 			String uri;
 			String projection[] = { PrivacyAppDatabase.COL_SEC_URI };
@@ -73,17 +104,32 @@ public class ReferenceViewFragment extends Fragment {
 	                Uri.withAppendedPath(PrivacyAppProvider.SECTION_URI,
 	                        String.valueOf(id)), projection, null, null, null);
 	        sections.moveToFirst();
-	        uri = sections.getString(0);	                                		                
+	        uri = sections.getString(0);	  
 	        
 	        sections.close();
 	        
-			if (uri.startsWith("http"))
-				webView.loadUrl(uri);
-			else
-				webView.loadUrl("file:///android_asset/" + uri);
-
-			layoutView.findViewById(R.id.sectionlayout).setVisibility(View.VISIBLE);
+	        AssetManager am = this.getActivity().getAssets();
 			
+			
+			try{
+				InputStream is = am.open(uri);
+				
+				int size = is.available();
+				byte[] buffer = new byte[size];
+				is.read(buffer);
+				is.close();
+				
+				//byte buffer into a string
+				String content = new String(buffer);
+				
+				tutorialContent.setText(Html.fromHtml(content), TextView.BufferType.SPANNABLE);
+				
+				scrollView.findViewById(R.id.sectionlayout).setVisibility(View.VISIBLE);
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+			
+	        
 		}
 	}
 

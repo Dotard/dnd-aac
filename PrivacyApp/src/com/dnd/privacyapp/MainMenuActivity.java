@@ -8,13 +8,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 public class MainMenuActivity extends Activity {
-
-
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,23 @@ public class MainMenuActivity extends Activity {
 			
 		}
     }
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = this.getMenuInflater();
+
+		inflater.inflate(R.menu.options_menu, menu);
+
+		// pref menu item
+		Intent prefsIntent = new Intent(getApplicationContext(),
+				ReferenceListPreferencesActivity.class);
+
+		MenuItem preferences = menu.findItem(R.id.settings_option_item);
+		preferences.setIntent(prefsIntent);
+
+		return true;
+	}
 
     @Override
 	protected void onResume() {

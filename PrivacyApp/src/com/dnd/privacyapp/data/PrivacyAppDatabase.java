@@ -256,13 +256,13 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 		db.execSQL("INSERT into Section(secName, secURI) values"
 				+ "('PbD Foundational Principle: Privacy Embedded into Design', 'html/sec10.html');");
 		db.execSQL("INSERT into Section(secName, secURI) values"
-				+ "('PbD Foundational Principle: Full Functionality Ð Positive-Sum, not Zero-Sum', 'html/sec11.html');");
+				+ "('PbD Foundational Principle: Full Functionality - Positive-Sum, not Zero-Sum', 'html/sec11.html');");
 		db.execSQL("INSERT into Section(secName, secURI) values"
-				+ "('PbD Foundational Principle: End-to-End Security Ð Full Lifecycle Protection', 'html/sec12.html');");
+				+ "('PbD Foundational Principle: End-to-End Security - Full Lifecycle Protection', 'html/sec12.html');");
 		db.execSQL("INSERT into Section(secName, secURI) values"
-				+ "('PbD Foundational Principle: Visibility and Transparency Ð Keep it Open', 'html/sec13.html');");
+				+ "('PbD Foundational Principle: Visibility and Transparency - Keep it Open', 'html/sec13.html');");
 		db.execSQL("INSERT into Section(secName, secURI) values"
-				+ "('PbD Foundational Principle: Respect for User Privacy Ð Keep it User-Centric', 'html/sec14.html');");
+				+ "('PbD Foundational Principle: Respect for User Privacy - Keep it User-Centric', 'html/sec14.html');");
 
 		
 //		db.execSQL("INSERT into Section(secName, secParentID,secURI) values"

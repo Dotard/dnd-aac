@@ -2,27 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/pbd_ambassadar_graphic">
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Congratulations you have completed all quizzes!  Would you like to view your certificate now?" >
+        android:text="Congratulations!  You have successfully completed all of the Quiz questions!  What would you like to do now?" >
     </TextView>
 
     <Button
-        android:id="@+id/viewVerticiateButton"
+        android:id="@+id/btnMainMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Yes"
+        android:text="Return to Main Menu"
         />
 
     <Button
-        android:id="@+id/dismissDialogButton"
+        android:id="@+id/btnResetQuizQuestions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No"
+        android:text="Reset Quiz Questions"
          />
+    
+    <TextView 
+        android:id="@+id/tvLink"
+        android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+     android:linksClickable="true"
+    ></TextView>
 
 </LinearLayout>

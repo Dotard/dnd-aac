@@ -53,11 +53,12 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuizViewFragment extends Fragment implements OnClickListener{
-    private RelativeLayout viewer = null;
+    private ScrollView viewer = null;
     
     private int qIndex;
 	private int answer;
@@ -65,17 +66,26 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 	private long sectionID;
 	private Cursor questionCursor;
 	private TextView label;
+	private Button btnFirst;
+	private Button btnPrev;
+	private Button btnNext;
+	private Button btnLast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        viewer = (RelativeLayout) inflater
+        viewer = (ScrollView) inflater
                 .inflate(R.layout.quizquestion, container, false);
         viewer.setBackgroundColor(0x00000000);
         
         qIndex = 0;
 
         label = (TextView)viewer.findViewById(R.id.label1);
+        btnFirst = (Button)viewer.findViewById(R.id.buttonFirst);
+        btnPrev = (Button)viewer.findViewById(R.id.buttonPrev);
+        btnNext = (Button)viewer.findViewById(R.id.buttonNext);
+        btnLast = (Button)viewer.findViewById(R.id.buttonLast);
+        
         
         viewer.setVisibility(View.INVISIBLE);
         
@@ -170,6 +180,8 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
     			    }
     		return;
     	}
+    	
+    	resetNavBtns();
     	
     	viewer.setVisibility(View.VISIBLE);
     	
@@ -294,5 +306,33 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 		viewer.findViewById(R.id.buttonEnd).setVisibility(View.GONE);
 		label.setText("");		
 		label.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+		resetNavBtns();
+	}
+	
+	private void resetNavBtns(){
+		int total = questionCursor.getCount();
+		
+		if(total <= 1){
+			btnFirst.setEnabled(false);
+			btnPrev.setEnabled(false);
+			btnNext.setEnabled(false);
+			btnLast.setEnabled(false);
+		}else{
+			if(qIndex == 0){ //First question disabled First/Prev
+				btnFirst.setEnabled(false);
+				btnPrev.setEnabled(false);
+			}else{
+				btnFirst.setEnabled(true);
+				btnPrev.setEnabled(true);
+			}
+			
+			if(qIndex == total -1){ //Last Q disable Next/Last
+				btnNext.setEnabled(false);
+				btnLast.setEnabled(false);
+			}else{
+				btnNext.setEnabled(true);
+				btnLast.setEnabled(true);
+			}
+		}
 	}
 }

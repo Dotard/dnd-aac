@@ -26,7 +26,7 @@
         </activity>
         <activity
             android:name=".MainMenuActivity"
-            android:label="Information and Privacy Commissioner of Ontario" >
+            android:label="Information and Privacy Commissioner of Ontario, Canada" >
         </activity>
         <activity
             android:name=".ReferenceListActivity"
@@ -34,7 +34,7 @@
         </activity>
         <activity
             android:name=".ReferenceViewActivity"
-            android:label="Tutorial Viewer" />
+            android:label="Tutorial Mode" />
         <activity android:name=".QuestionViewActivity" />
         <activity android:name=".QuestionViewFragment" />
         <activity android:name=".ReferenceListPreferencesActivity" />
@@ -42,8 +42,10 @@
         <activity android:name=".QuestionActivity" />
         <activity android:name=".ProceduresActivity" />
         <activity android:name=".ProceduresViewActivity" />
-        <activity android:name=".QuizActivity" />
-        <activity android:name="QuizViewActivity" />
+        <activity android:name=".QuizActivity"
+            android:label="Quiz Mode: Choose a Question..." />
+        <activity android:name="QuizViewActivity"
+            android:label="Quiz Mode" />
         <activity android:name="CertificateActivity" />
 
         <provider

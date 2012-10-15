@@ -5,6 +5,12 @@
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical" >
 
+          <ImageView
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:src="@drawable/splash"
+    />
+          
     <Button
         android:id="@+id/button1"
         style="@style/ButtonText" android:background="@drawable/btn_blue_matte"
@@ -16,4 +22,28 @@
         style="@style/ButtonText" android:background="@drawable/btn_green_matte"
         android:text="@string/quizzes"
         android:onClick="openQuizzes" />
+    
+        <Button
+        android:id="@+id/btnCertificate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Certificate"
+        android:onClick="openCertificate" />
+    
+         <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/version"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000" 
+        android:paddingTop="350px"
+        android:textSize="12sp"/>
+     
+          <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/provenance"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000" 
+        android:textSize="10sp"/>
 </LinearLayout>

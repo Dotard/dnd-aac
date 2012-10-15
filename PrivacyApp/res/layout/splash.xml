@@ -5,12 +5,30 @@
    android:background="@drawable/app_background"
    android:gravity="center"
    android:screenOrientation="portrait"
+   android:orientation="vertical"
    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:text="Privacy By Design"
+        android:textColor="#000"
+        android:textStyle="italic"
+        android:textSize="24sp" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="Splash Logo"
+        android:padding="10px"
         android:src="@drawable/splash"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tutorial and Quiz"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#000"
+        android:textSize="24sp" />
 
 </LinearLayout>
