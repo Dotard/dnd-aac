@@ -29,6 +29,8 @@ public class ReferenceListPreferencesActivity extends PreferenceActivity {
         getPreferenceManager().setSharedPreferencesName(
                 PrivacyAppSharedPrefs.PREFS_NAME);
         addPreferencesFromResource(R.xml.prefs);
+        
+        setTheme(R.style.DarkText);
 
         final DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override

@@ -3,5 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference android:title="Reset all quiz answers"
         android:key="button"
-        android:summary="Clears all the saved data for your quiz answers" />
+        android:summary="Clears all the saved data for your quiz answers"
+         />
 </PreferenceScreen>

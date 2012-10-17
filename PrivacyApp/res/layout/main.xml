@@ -28,7 +28,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Certificate"
-        android:onClick="openCertificate" />
+        android:onClick="openCertificate" 
+        style="@style/ButtonText" 
+        android:background="@drawable/btn_orange_matte"/>
     
          <TextView
         android:layout_width="wrap_content"

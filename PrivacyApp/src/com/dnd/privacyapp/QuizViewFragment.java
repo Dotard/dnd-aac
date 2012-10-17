@@ -167,7 +167,7 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
     {	 	
     	if(questionCursor.getCount() == 0)
     	{
-    		Toast.makeText(getActivity(), "No questions found", Toast.LENGTH_SHORT).show();
+    		//Toast.makeText(getActivity(), "No questions found", Toast.LENGTH_SHORT).show();
     		QuizListFragment listfragment = (QuizListFragment) getActivity().getSupportFragmentManager()
     	            .findFragmentById(R.id.quizlistfragment);
 
@@ -240,7 +240,7 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 			int updated = getActivity().getContentResolver().update(Uri.withAppendedPath(PrivacyAppProvider.QUIZ_URI, String.valueOf(quizID))
 					, quizValues, null, null);
 
-			if(updated == 1) Toast.makeText(getActivity(), "1 Row updated",Toast.LENGTH_SHORT).show();
+//			if(updated == 1) Toast.makeText(getActivity(), "1 Row updated",Toast.LENGTH_SHORT).show();
 			
 			//Check if all questions in Quiz completed
 			String projection[] = {"quizID as _id"};
@@ -248,7 +248,7 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 			Cursor c = getActivity().getContentResolver().query(Uri.withAppendedPath(PrivacyAppProvider.QUIZ_URI,"SEC/" + String.valueOf(sectionID)),
 					projection, "quizComplete=?", selectionArgs, null);
 			if(c.getCount() == 0){ 
-				Toast.makeText(getActivity(), "All questions in quiz completed",Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getActivity(), "All questions in quiz completed",Toast.LENGTH_SHORT).show();
 				//Mark section complete in database
 				ContentValues sectionValues = new ContentValues();
 				sectionValues.put("secQuizComplete", true);
@@ -256,7 +256,7 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 				int updateCount = getActivity().getContentResolver().update(Uri.withAppendedPath(PrivacyAppProvider.SECTION_URI, String.valueOf(sectionID))
 						, sectionValues, null, null);
 
-				if(updateCount == 1) Toast.makeText(getActivity(), "Section complete!",Toast.LENGTH_SHORT).show();
+//				if(updateCount == 1) Toast.makeText(getActivity(), "Section complete!",Toast.LENGTH_SHORT).show();
 			}
 			
 			//Check if every Quiz is complete in app
@@ -265,7 +265,7 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 			c = getActivity().getContentResolver().query(PrivacyAppProvider.SECTION_URI,
 					projection, "secQuizComplete=?", selectionArgs, null);
 			if(c.getCount() == 0){ 
-				Toast.makeText(getActivity(), "You completed every single quiz!",Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getActivity(), "You completed every single quiz!",Toast.LENGTH_SHORT).show();
 				
 				FragmentManager fm = this.getFragmentManager();
 				ViewCertificateDialog vcd = new ViewCertificateDialog();

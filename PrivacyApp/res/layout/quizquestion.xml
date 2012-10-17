@@ -29,6 +29,7 @@
         android:layout_toRightOf="@+id/buttonPrev"
         android:layout_centerHorizontal="true"
         android:textColor="#000"
+        
         android:text="1of1"
         />
 
