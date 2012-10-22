@@ -6,11 +6,15 @@
     android:background="@drawable/pbd_ambassadar_graphic"
     >
 
-    
-        <TextView 
-        android:id="@+id/mainText"
-        android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-     android:linksClickable="true"
-    ></TextView>
+        <TextView
+            android:id="@+id/mainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:linksClickable="true"
+            android:paddingTop="75px"
+            android:text="Sample Text"
+            android:textSize="24sp" >
+
+</TextView>
 </LinearLayout>

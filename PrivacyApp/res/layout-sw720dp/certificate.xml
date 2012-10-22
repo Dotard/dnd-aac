@@ -2,24 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/pbd_ambassadar_graphic"
+    >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical|center"
-        android:textColor="#000"
-        android:text="Congratulations on completing all questions.  We would like to award you with the PBD certificate." >
-    </TextView>
-
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="562dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:scaleType="fitCenter"
-        android:src="@drawable/splash" />
-
+    
+        <TextView 
+        android:id="@+id/mainText"
+        android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+     android:linksClickable="true"
+     android:paddingTop="75px"
+     android:textSize="24sp"
+    ></TextView>
+        
+        
 </LinearLayout>

@@ -32,17 +32,22 @@ package com.dnd.privacyapp;
 
 import com.dnd.privacyapp.R;
 import com.dnd.privacyapp.data.PrivacyAppProvider;
+import com.dnd.privacyapp.data.PrivacyAppSharedPrefs;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,6 +61,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 public class QuizViewFragment extends Fragment implements OnClickListener{
     private ScrollView viewer = null;
@@ -266,6 +272,7 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 					projection, "secQuizComplete=?", selectionArgs, null);
 			if(c.getCount() == 0){ 
 //				Toast.makeText(getActivity(), "You completed every single quiz!",Toast.LENGTH_SHORT).show();
+				setCompletionDateQuiz();
 				
 				FragmentManager fm = this.getFragmentManager();
 				ViewCertificateDialog vcd = new ViewCertificateDialog();
@@ -334,5 +341,15 @@ public class QuizViewFragment extends Fragment implements OnClickListener{
 				btnLast.setEnabled(true);
 			}
 		}
+	}
+	
+	private void setCompletionDateQuiz(){
+		Time today = new Time(Time.getCurrentTimezone());
+		today.setToNow();
+		
+		SharedPreferences sp = getActivity().getSharedPreferences(PrivacyAppSharedPrefs.PREFS_NAME, Context.MODE_PRIVATE);
+		SharedPreferences.Editor prefEditor = sp.edit();
+		prefEditor.putString("QuizCompleteDate",today.format("%B %d, %Y"));
+		prefEditor.commit();
 	}
 }

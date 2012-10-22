@@ -10,10 +10,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.dnd.privacyapp.data.PrivacyAppProvider;
@@ -22,10 +24,11 @@ import com.dnd.privacyapp.receiver.AlarmReceiver;
 import com.dnd.privacyapp.R;
 
 public class ReferenceListPreferencesActivity extends PreferenceActivity {
+	private final Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        
         getPreferenceManager().setSharedPreferencesName(
                 PrivacyAppSharedPrefs.PREFS_NAME);
         addPreferencesFromResource(R.xml.prefs);
@@ -47,9 +50,16 @@ public class ReferenceListPreferencesActivity extends PreferenceActivity {
             				, sectionValues, null, null);   
                 	
                 	updateCount = getContentResolver().update(PrivacyAppProvider.QUIZ_URI
-            				, quizValues, null, null);   
-                    break;
-
+            				, quizValues, null, null);
+                	
+                	SharedPreferences sp = context.getSharedPreferences(PrivacyAppSharedPrefs.PREFS_NAME, Context.MODE_PRIVATE);
+            		SharedPreferences.Editor prefEditor = sp.edit();
+            		prefEditor.remove("QuizCompleteDate");
+            		prefEditor.commit();
+            		
+            		
+                	break;
+                   
                 case DialogInterface.BUTTON_NEGATIVE:
                     dialog.dismiss();
                     break;

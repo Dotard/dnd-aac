@@ -288,7 +288,7 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 				",'the Allied forces made them do it','All of the above','None of the above',2);");
 
 		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
-				+ "(2,'“Privacy by Obscurity” means','Hiding','Covering Up','No record made','All of the above','None of the above',3);");
+				+ "(2,'\"Privacy by Obscurity means\"','Hiding','Covering Up','No record made','All of the above','None of the above',3);");
 		
 		
 		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
@@ -310,7 +310,7 @@ public class PrivacyAppDatabase extends SQLiteOpenHelper {
 				+ "(7,'Okay this is an easy question: how many Privacy by Design Foundational Principles are there??','Zero','One','Four ','Seven','Ten',4);");
 		
 		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
-				+ "(8,'An ounce of prevention is worth a pound of cure. If privacy breaches aren’t prevented, then what is typically the “cure”?','negative publicity and brand damage','costs of remediation ','customer churn','fines and lawsuits','All of the above',5);");
+				+ "(8,'An ounce of prevention is worth a pound of cure. If privacy breaches aren’t prevented, then what is typically the \"cure\"?','negative publicity and brand damage','costs of remediation ','customer churn','fines and lawsuits','All of the above',5);");
 		
 		db.execSQL("INSERT into Quiz(secID, quizText, quizOption1, quizOption2, quizOption3, quizOption4, quizOption5, quizCorrectOption) values" 
 				+ "(9,'Which of the following examples illustrates Privacy as the Default Setting??','Wi-fi routers require first time users to create a secure key upon installation','Online services require users to agree to lengthy privacy policies before allowing to proceed'" +
