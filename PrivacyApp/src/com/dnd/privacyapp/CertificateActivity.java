@@ -34,11 +34,11 @@ public class CertificateActivity extends Activity {
 				"<b>Certificate of Completion</b><br />" +
 				date +
 				" <br />" +
-				"<a href=\"http://www.PrivacyByDesign.com\">www.PrivacyByDesign.com</a>";}
+				"<a href=\"http://www.PrivacyByDesign.ca\">www.PrivacyByDesign.ca</a>";}
     		else{
     			 html = "PbD Tutorial <br />" +
     					"<b>Certificate of Completion</b><br />" +
-    					"<a href=\"http://www.PrivacyByDesign.com\">www.PrivacyByDesign.com</a>";
+    					"<a href=\"http://www.PrivacyByDesign.ca\">www.PrivacyByDesign.ca</a>";
     		}
     	
         TextView tv = (TextView)this.findViewById(R.id.mainText);

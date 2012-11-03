@@ -25,7 +25,7 @@ public class ViewCertificateDialog extends DialogFragment{
 		final Dialog d = this.getDialog();
 		
 		TextView link = (TextView)view.findViewById(R.id.tvLink);
-		link.setText(Html.fromHtml("Learn more about PbD at <a href=\"http://www.PrivacyByDesign.com\">www.PrivacyByDesign.com</a>"));
+		link.setText(Html.fromHtml("Learn more about PbD at <a href=\"http://www.PrivacyByDesign.ca\">www.PrivacyByDesign.ca</a>"));
 		link.setMovementMethod(LinkMovementMethod.getInstance());
 		
 		Button button = (Button)view.findViewById(R.id.btnMainMenu);
