@@ -1,0 +1,1 @@
+Demo app for aac for non-verbal autistic people.
